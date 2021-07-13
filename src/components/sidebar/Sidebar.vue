@@ -7,12 +7,14 @@
             </span>
             <span v-else>Restauracja</span>
         </h1>
-
-        <SidebarLink to="/" icon="fas fa-home">Strona Główna</SidebarLink>
-        <SidebarLink to="/" icon="fas fa-user">Zaloguj się</SidebarLink>
-        <SidebarLink to="/" icon="fas fa-home">Strona Główna</SidebarLink>
-        <SidebarLink to="/" icon="fas fa-home">Strona Główna</SidebarLink>
-        <SidebarLink to="/" icon="fas fa-home">Strona Główna</SidebarLink>
+        
+        <div class="sidebar-items">
+            <SidebarLink to="/" icon="fas fa-home">Strona Główna</SidebarLink>
+            <SidebarLink to="/login" icon="fas fa-user">Zaloguj się</SidebarLink>
+            <SidebarLink to="/" icon="fas fa-utensils">Menu</SidebarLink>
+            <SidebarLink to="/" icon="fas fa-shopping-cart">Koszyk</SidebarLink>
+            <SidebarLink to="/" icon="fas fa-glass-cheers">Rezerwuj Stolik</SidebarLink>
+        </div>
 
         <span 
         class="collapse-icon" 
@@ -51,6 +53,7 @@ export default {
     color: white;
     background-color: var(--sidebar-bg-color);
 
+    /*box-sizing: border-box; */
     float: left;
     position: fixed;
     z-index: 1;

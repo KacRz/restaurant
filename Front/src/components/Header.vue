@@ -1,6 +1,5 @@
 <template>
 <div>
-    
     <a  href="/" style="height: 200px; width: 200px;"><img src="@/assets/Logo.jpg" alt="" > </a>
 </div>
 </template>

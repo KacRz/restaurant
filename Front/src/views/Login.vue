@@ -1,17 +1,29 @@
 <template>
     <div class="login-page" >
 
-        <form class="login-page__form" @submit.prevent = "handleSubmit">
+        <form 
+            class="login-page__form" 
+            @submit.prevent = "checkForm" 
+            method="post"
+        >
+
             <div class="login-page__title">
                 <h3>Posiadasz konto? Zaloguj się</h3>
             </div>
+
+            <div class="login-page__error" v-if="errors.length">
+                    <div class="login-page__error-item" v-for="(error, index) in errors" :key="index">
+                        {{ error }}
+                    </div>
+            </div>
+
             <div class="login-page__form-group">
                 <label for="email">Email*</label>
-                <input type="email" v-model="email" id="email" class="login-page__input" placeholder="Email"/>
+                <input type="email" v-model="email" id="email" class="login-page__input" placeholder="Email" required/>
             </div>
             <div class="login-page__form-group">
                 <label for="password">Hasło*</label>
-                <input type="password" v-model="password" id="password" class="login-page__input" placeholder="Hasło"/>
+                <input type="password" v-model="password" id="password" class="login-page__input" placeholder="Hasło" required/>
             </div>
             <button type="submit" class="login-page__button">Zaloguj</button>
         </form>
@@ -19,7 +31,7 @@
         <div class="login-page__register-group">
             <h3>Nie masz konta?</h3>
             <router-link to="/register" class="login-page__register-group-link">Zarejestruj się</router-link>
-            <router-link to="/" class="login-page__register-group-link">Zapomniałeś hasła?</router-link>
+            <router-link to="/remindpassword" class="login-page__register-group-link">Zapomniałeś hasła?</router-link>
         </div>
 
     </div>
@@ -30,11 +42,28 @@ export default {
     name: 'Login',
     data() {
         return {
+            errors: [],
             email: '',
             password: ''
         }
     },
     methods: {
+        checkForm() {
+            if (this.email && this.password) {
+                this.handleSubmit();
+                return true;
+            }
+            this.errors = [];
+
+            if (!this.email) {
+                this.errors.push('Podaj email');
+            }
+            if (!this.password) {
+                this.errors.push('Podaj hasło');
+            }
+
+        },
+
         handleSubmit() {
             const data = {
                 email: this.email,
@@ -42,6 +71,7 @@ export default {
             };
             console.log('Login form submitted');
             console.log(data);
+            console.log(this.errors)
         }
     },
     setup() {
@@ -54,7 +84,7 @@ export default {
 .login-page {
     background-color: rgb(192, 81, 81);
     width: 40em;
-    margin-top: 3em;
+    margin-top: 1em;
     box-sizing: border-box;
 
     color: rgb(56, 27, 27);
@@ -126,6 +156,10 @@ export default {
     cursor: pointer;
 }
 
+.login-page__button:active {
+    background-color: rgb(46, 38, 37);;
+}
+
 .login-page__register-group {
     width: 100%;
     box-sizing: border-box;
@@ -145,9 +179,34 @@ export default {
     text-decoration: none;
 }
 
-@media (max-width: 540px) {
-    .login-page {
-    width: 24em;
+.login-page__error {
+    width: 100%;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
+
+.login-page__error-item {
+    background-color: red;
+    
+    width: 60%;
+    padding: 0.3em;
+    margin: 0.1em;
+    border-radius: 5px;
+    border: 1px solid black;
+
+    font-weight: bold;
+}
+
+@media (max-width: 750px) {
+    .login-page {
+    width: 22em;
+    }
+    
+    .login-page__register-group {
+        font-size: 0.6em;
+    }
 }
 </style>

@@ -1,12 +1,4 @@
 <template>
-<<<<<<< Updated upstream
-  <div id="app">
-    <Sidebar />
-    <div :style=" { 'margin-left': sidebarWidth } ">
-      
-      <router-view/>
-    </div>
-=======
   <Sidebar />
 <div class="MarginToSidebar" :style="{ 'margin-left': sidebarWidth }">
 <Header style="width: 100%" />
@@ -31,7 +23,6 @@ kraju spożywał ok. 100 kg chleba, a w początkach XXI wieku – około 80 kg[4
 
   <div :style=" { 'margin-left': sidebarWidth } ">
     <router-view/>
->>>>>>> Stashed changes
   </div>
 
 </template>
@@ -55,20 +46,12 @@ export default {
 
 
 <style>
-<<<<<<< Updated upstream
-body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-=======
 body, html
 {
 
   width:100%;
   height: 100%;
   margin: 0;
->>>>>>> Stashed changes
 }
 
 #app {

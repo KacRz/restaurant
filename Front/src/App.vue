@@ -1,22 +1,29 @@
 <template>
-  <div id="app">
-    <Sidebar />
+  <div style="width=100%">
+  <Sidebar />
+  <Background/>
+  <div class="MarginToSidebar" :style="{ 'margin-left': sidebarWidth }">
+<Content-Component >
+        <router-view/>
+</Content-Component >
 
-    <div :style=" { 'margin-left': sidebarWidth } ">
-      <router-view/>
-    </div>
   </div>
+</div>
 </template>
 
 <script>
 
 import Sidebar from '@/components/sidebar/Sidebar.vue'
 import { sidebarWidth } from '@/components/sidebar/state'
-//import Header from './components/Header.vue'
+import Background from './components/Background.vue'
+import ContentComponent from './components/ContentComponent.vue'
+
 
 export default {
   components: {
     Sidebar,
+    Background,
+    ContentComponent,
   },
     setup() {
     return { sidebarWidth }
@@ -64,5 +71,6 @@ body, html
 .MarginToSidebar
 {
   height: 100%;
+
 }
 </style>

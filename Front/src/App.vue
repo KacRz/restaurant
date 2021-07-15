@@ -1,7 +1,7 @@
 <template>
   <div style="width=100%">
   <Sidebar />
-  <Header/>
+  <Background/>
   <div class="MarginToSidebar" :style="{ 'margin-left': sidebarWidth }">
 <Content-Component >
         <router-view/>
@@ -15,14 +15,14 @@
 
 import Sidebar from '@/components/sidebar/Sidebar.vue'
 import { sidebarWidth } from '@/components/sidebar/state'
-import Header from './components/Header.vue'
+import Background from './components/Background.vue'
 import ContentComponent from './components/ContentComponent.vue'
 
 
 export default {
   components: {
     Sidebar,
-    Header,
+    Background,
     ContentComponent,
   },
     setup() {

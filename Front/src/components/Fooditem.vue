@@ -57,8 +57,15 @@ export default {
     width: 100%;
     height: auto;
 
-    
+    z-index: 3;
+    transition: transform 0.5s ease-in-out;
+
 }
+.fooditem-top:hover > img {
+    transform: scale(1.5) rotate(20deg);
+}
+
+
 .fooditem-top__number {
     background-color: brown;
     width: 1em;
@@ -71,6 +78,7 @@ export default {
     position: absolute;
     right: 0;
     top: 0;
+    z-index: 4;
 
     border-bottom-left-radius: 0.3em;
 }

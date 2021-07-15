@@ -82,14 +82,15 @@ export default {
 
 <style scoped>
 .login-page {
-    background-color: rgb(192, 81, 81);
+    background: rgb(165,42,42);
+    background: linear-gradient(146deg, rgba(165,42,42,1) 0%, rgba(140,49,49,1) 75%, rgba(165,42,42,1) 100%);
     width: 40em;
     margin-top: 1em;
     margin-left: auto;
     margin-right: auto;
     box-sizing: border-box;
 
-    color: rgb(56, 27, 27);
+    color: rgb(0, 0, 0);
 
     display: flex;
     flex-direction: column;
@@ -113,7 +114,7 @@ export default {
 }
 
 .login-page__title {
-    background-color: rgb(160, 68, 68);
+    background-color: rgb(119, 45, 45);
     width: 100%;
     color: rgb(0, 0, 0);
 }

@@ -50,6 +50,8 @@ export default {
     width: 40em;
     margin-top: 1em;
     box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
 
     color: rgb(56, 27, 27);
 

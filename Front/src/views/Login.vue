@@ -85,6 +85,8 @@ export default {
     background-color: rgb(192, 81, 81);
     width: 40em;
     margin-top: 1em;
+    margin-left: auto;
+    margin-right: auto;
     box-sizing: border-box;
 
     color: rgb(56, 27, 27);

@@ -43,7 +43,7 @@ unmounted() {
 </script>
 <style scoped>
 .Content{
-    
+    color: black;
 }
 
 </style>

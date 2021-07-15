@@ -1,13 +1,13 @@
 <template>
 <div class="banner">
     
-   <img src="@/assets/Logo.jpg" alt="" >
+   <img src="@/assets/backgroun.jpg" alt="" >
 </div>
 </template>
 <script>
 
 export default {
-name: "Header"
+name: "Background"
 }
 </script>
 <style scoped>

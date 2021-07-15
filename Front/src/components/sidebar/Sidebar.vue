@@ -11,7 +11,7 @@
         <div class="sidebar-items">
             <SidebarLink to="/" icon="fas fa-home">Strona Główna</SidebarLink>
             <SidebarLink to="/login" icon="fas fa-user">Zaloguj się</SidebarLink>
-            <SidebarLink to="/" icon="fas fa-utensils">Menu</SidebarLink>
+            <SidebarLink to="/menu" icon="fas fa-utensils">Menu</SidebarLink>
             <SidebarLink to="/" icon="fas fa-shopping-cart">Koszyk</SidebarLink>
             <SidebarLink to="/" icon="fas fa-glass-cheers">Rezerwuj Stolik</SidebarLink>
         </div>

@@ -1,7 +1,7 @@
 <template>
-<div>
+<div class="banner">
     
-    <a  href="/" style="height: 200px; width: 200px;"><img src="@/assets/Logo.jpg" alt="" > </a>
+   <img src="@/assets/Logo.jpg" alt="" >
 </div>
 </template>
 <script>
@@ -11,12 +11,20 @@ name: "Header"
 }
 </script>
 <style scoped>
-img
+
+.banner
 {
-    width: 100%;
-    height: 150px;
-}
-div{
-    margin:0px;
+    color: white;
+    background-color: var(--sidebar-bg-color);
+
+    /*box-sizing: border-box; */
+    float: top;
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    transition: 0.3s ease;
+
 }
 </style>

@@ -1,30 +1,14 @@
 <template>
+  <div style="width=100%">
   <Sidebar />
-<div class="MarginToSidebar" :style="{ 'margin-left': sidebarWidth }">
-<Header style="width: 100%" />
-<div style="margin-left: 15px">
-  Chleb – pieczywo otrzymywane z wypieku ciasta, będącego jednorodnym połączeniem mąki zbożowej różnego gatunku i wody, poddanego najczęściej, 
-  ale nie zawsze, fermentacji alkoholowej (z wykorzystaniem drożdży), wyrobionego w bochny różnego kształtu i wielkości. Oprócz chleba pulchnego, 
-  wyrabianego z ciasta drożdżowego lub ciasta z dodatkiem proszku do pieczenia (kwaśny węglan sodu), znane są też odmiany chleba opartego na niespulchnianym cieście kruchym.
+  <Header/>
+  <div class="MarginToSidebar" :style="{ 'margin-left': sidebarWidth }">
+<Content-Component >
+        <router-view/>
+</Content-Component >
 
-Chleb znany w starożytności nie przypominał współczesnego pulchnego wypieku, raczej zbliżony był do podpłomyka, znanej obecnie macy 
-lub cienkiego podkładu pod pizzę. Taki chleb łatwiej było łamać niż kroić i zapewne stąd wziął się powszechnie znany w wielu kulturach 
-zwyczaj obrzędowego łamania chlebem. Zwyczaj łamania, a nie krojenia chleba, utrzymał się zresztą do dzisiaj w kulturze śródziemnomorskiej (m.in. we Francji).
-
-Słowo chleb jest prawdopodobnie pochodzenia praindoeuropejskiego, występuje w językach słowiańskich, pragermańskich i sanskrycie[1].
-
-Wedle innej wersji chleb jest zapożyczeniem z języka starogermańskiego – hlaiba, starogockie hlaifs, staroislandzkie hleifr[2].
-
-Według szacunków Instytutu Polskie Pieczywo w 2015 r. statystyczny Polak zjadł 45,3 kg pieczywa, czyli o 2,5 kg mniej niż rok 
-wcześniej[3] (2014 – 47,8 kg, 2010 – 56,7 kg, 2009 – 59 kg, 2008 – 61 kg). Tymczasem jeszcze w 1981 przeciętny mieszkaniec tego 
-kraju spożywał ok. 100 kg chleba, a w początkach XXI wieku – około 80 kg[4]. 
-</div>
-</div>
-
-  <div :style=" { 'margin-left': sidebarWidth } ">
-    <router-view/>
   </div>
-
+</div>
 </template>
 
 <script>
@@ -32,11 +16,14 @@ kraju spożywał ok. 100 kg chleba, a w początkach XXI wieku – około 80 kg[4
 import Sidebar from '@/components/sidebar/Sidebar.vue'
 import { sidebarWidth } from '@/components/sidebar/state'
 import Header from './components/Header.vue'
+import ContentComponent from './components/ContentComponent.vue'
+
 
 export default {
   components: {
     Sidebar,
     Header,
+    ContentComponent,
   },
     setup() {
     return { sidebarWidth }
@@ -84,5 +71,6 @@ body, html
 .MarginToSidebar
 {
   height: 100%;
+
 }
 </style>

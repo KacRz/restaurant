@@ -1,3 +1,4 @@
+
 .DS_Store
 Front/node_modules
 Backend/node_modules
@@ -22,3 +23,4 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+

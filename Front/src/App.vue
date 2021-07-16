@@ -1,12 +1,11 @@
 <template>
-  <div style="width=100%">
-  <Sidebar />
-  <Background/>
-  <div class="MarginToSidebar" :style="{ 'margin-left': sidebarWidth }">
-<Content-Component >
+  <div style="width=100%" id="app">
+    <Sidebar />
+    <Background/>
+    <div class="MarginToSidebar" :style="{ 'margin-left': sidebarWidth }">
+      <Content-Component >
         <router-view/>
-</Content-Component >
-
+      </Content-Component >
   </div>
 </div>
 </template>

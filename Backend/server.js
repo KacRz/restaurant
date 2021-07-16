@@ -13,16 +13,14 @@ app.use(cors());
 
 const db = require("./models");
 
-db.sequelize.sync({force: true}).then(() => {
+db.sequelize.sync({force: false}).then(() => {
     console.log("Drop and re-sync db.");
 
 });
 
 //Simple route
-app.get('/', (req, res) => {
-    console.log('Server is working');
-    res.send("Hello world!");
-})
+const route = require('./routes/routes');
+app.use(route);
 
 
 

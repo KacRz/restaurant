@@ -10,9 +10,12 @@ app.use(express.json());
 app.use(cors());
 
 //Database connection
+
 const db = require("./models");
+
 db.sequelize.sync({force: true}).then(() => {
     console.log("Drop and re-sync db.");
+
 });
 
 //Simple route

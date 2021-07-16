@@ -1,6 +1,8 @@
 const dbConfig = require("../config/db.config.js");
 
 const Sequelize = require("sequelize");
+const { Model } = require("sequelize");
+
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
     host: dbConfig.HOST,
     dialect: dbConfig.dialect,
@@ -20,9 +22,11 @@ sequelize.authenticate()
 
 const db = {};
 
-db.Sequelize = Sequelize;
+module.exports = sequelize;
+global.sequelize = sequelize;
 db.sequelize = sequelize;
 
-db.restaurant = require("./model.js")(sequelize, Sequelize);
+
 
 module.exports = db;
+require("./ForeignKeyMenager")();

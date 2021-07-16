@@ -4,6 +4,7 @@ import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Remindpassword from '../views/Remindpassword.vue'
 import Menu from '../views/Menu.vue'
+import CartPage from '../views/CartPage.vue'
 
 const routes = [
   {
@@ -40,6 +41,11 @@ const routes = [
     path: '/menu',
     name: 'Menu',
     component: Menu
+  },
+  {
+    path: '/cart',
+    name: 'Cart',
+    component: CartPage
   }
 ]
 

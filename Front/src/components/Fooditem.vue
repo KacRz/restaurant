@@ -3,6 +3,7 @@
       <div class="fooditem-top">
           <span class="fooditem-top__number"> {{ number }} </span>
           <img v-bind:src="imgsource" />
+          <i class="fas fa-pizza-slice fooditem-top__bg" />
       </div>
       <div class="fooditem-content">
         <h4>
@@ -35,7 +36,7 @@ export default {
 .fooditem {
     width: 300px;
     height: 400px;
-    background-color: red;
+    background-color: brown;
 
     box-sizing: border-box;
     display: flex;
@@ -47,6 +48,10 @@ export default {
 
     overflow: hidden;
 }
+.fooditem:hover {
+    cursor: pointer;
+}
+
 .fooditem-top {
     height: 50%;
 
@@ -81,6 +86,14 @@ export default {
     z-index: 4;
 
     border-bottom-left-radius: 0.3em;
+}
+
+.fooditem-top__bg {
+    color: rgba(255, 255, 255, 0.9);
+    width: 50%;
+    height: auto;
+
+    margin-top: 1em;
 }
 
 .fooditem-content {

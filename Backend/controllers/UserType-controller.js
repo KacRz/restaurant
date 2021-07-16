@@ -1,6 +1,4 @@
-const db = require("../models");
-const Restaurant = db.Restaurant;
-const Op = db.Sequelize.Op;
+
 
 // Create and Save a new UserType
 exports.create = (req, res) => {

@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 
-module.exports =  sequelize.define("UserType", {
+module.exports =  global.sequelize.define("UserType", {
         id:{
 
             type: Sequelize.INTEGER(11),

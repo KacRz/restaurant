@@ -13,4 +13,4 @@ router.get('/', (req, res)=> {
 })
 
 module.exports = router;
-//module.exports = user_routes;
+module.exports = user_routes;

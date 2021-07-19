@@ -6,8 +6,8 @@ module.exports = global.sequelize.define("Table", {
         autoIncrement: true,
         primaryKey: true,
     },
-    ReservationStart: {
-        type: Sequelize.INTEGER(2),
+    Size: {
+        type: Sequelize.INTEGER(3),
     },
 
 });

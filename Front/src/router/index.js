@@ -5,6 +5,7 @@ import Register from '../views/Register.vue'
 import Remindpassword from '../views/Remindpassword.vue'
 import Menu from '../views/Menu.vue'
 import CartPage from '../views/CartPage.vue'
+import Reservation from '../views/Reservation.vue'
 
 const routes = [
   {
@@ -46,6 +47,11 @@ const routes = [
     path: '/cart',
     name: 'Cart',
     component: CartPage
+  },
+  {
+    path: '/reservation',
+    name: 'Reservation',
+    component: Reservation
   }
 ]
 

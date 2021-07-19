@@ -23,7 +23,7 @@
       <div class="addto-cart__bottom">
           <!-- TODO: Wybieranie rozmiaru? dodatków? -->
           <h3>Wybierz rozmiar</h3>
-          <div class="addto-cart__add-button">
+          <div class="addto-cart__add-button" v-on:click="emitAddProduct">
               Dodaj do koszyka<i class="fas fa-cart-plus" />
           </div>
       </div>
@@ -44,6 +44,9 @@ export default {
     methods: {
         closeWindow() {
             this.$emit('closeNow');
+        },
+        emitAddProduct() {
+            this.$emit('addProductToCart');
         }
     }
 }
@@ -67,6 +70,7 @@ export default {
 
     display: flex;
     flex-direction: column;
+
 }
 .addto-cart__info {
     width: 100%;

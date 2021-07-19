@@ -16,6 +16,7 @@
             <span>{{ price }} zł</span>
         </div>
       </div>
+
   </div>
 </template>
 
@@ -33,6 +34,8 @@ export default {
 </script>
 
 <style scoped>
+
+
 .fooditem {
     width: 300px;
     height: 400px;

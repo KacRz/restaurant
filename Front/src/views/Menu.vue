@@ -5,14 +5,13 @@
             <div class="menu-category__title">
                 <h1>Pizze</h1>
             </div>
-            <div class="menu-category__element" v-for="item in foodlist" :key="item.number">
+            <div class="menu-category__element" v-for="(item, index) in foodlist" :key="index">
                 <Fooditem v-bind="item" v-on:click="onClickedItem(item.number)"/>
-                
             </div>
-
+            
             <AdditemToCart v-if="!isHidden" v-bind="foodlist[clickedItem]" @closeNow="closeWindow"/>
+            
         </div>
-
 
     </div>
 </template>
@@ -27,6 +26,7 @@ export default {
         return {
             isHidden: true,
             clickedItem: '',
+            cart: [],
             foodlist: [
                 {
                     title: "Mexicana",

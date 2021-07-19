@@ -12,9 +12,11 @@
                     <i class="fas fa-arrow-circle-right"></i>
                 </router-link>
             </div>
-            
-            <Cartitem /> <!-- TODO: Wygląd jednej rzeczy w koszyku -->
+            <div v-else class="cart-page__info">
+                <Cartitem v-bind="foodlist[0]"/>
+                <Cartitem v-bind="foodlist[1]"/>
 
+            </div>
         </div>
     </div>
 </template>
@@ -28,23 +30,7 @@ export default {
         Cartitem
     },
     data() {
-        return { /*
-            foodlist: [
-                {
-                    title: "Mexicana",
-                    description: "Bardzo dobra pizza o niesamowitym smaku. Ciekawy wybór dla koneserów ostrej pizzy. Jedyna w swoim rodzaju.",
-                    price: "29.00",
-                    imgsource: "https://kuron.com.pl/wp-content/uploads/2019/03/P3251115.jpg.webp",
-                    number: "1"
-                },
-                {
-                    title: "Neapolitana",
-                    description: "Pizza o bardzo wyrazistym smaku. Polecamy dla każdego fana zdrowego żywienia. Sos majonezowy dodatkowo podkreśla smak.",
-                    price: "22.99",
-                    imgsource: "https://fotokulinarnie.pl/wp-content/uploads/2021/02/IMG_4279-2-792x528.jpg?v=1612889508",
-                    number: "2"
-                },
-            ]*/
+        return { 
         }
     }
 }

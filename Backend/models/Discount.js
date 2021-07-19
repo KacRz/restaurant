@@ -11,10 +11,10 @@ module.exports = global.sequelize.define("Discount", {
             type: Sequelize.DECIMAL(6,2),
         },
         DateStart: {
-            type: Sequelize.DATE,
+            type: Sequelize.DATEONLY,
         },
         DateEnd: {
-            type: Sequelize.DATE,
+            type: Sequelize.DATEONLY,
         },
 
     });

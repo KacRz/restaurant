@@ -4,6 +4,7 @@ module.exports = {
     PASSWORD: "",
     DB: "restaurant",
     dialect: "mysql",
+    
     pool: {
         max: 5,
         min: 0,

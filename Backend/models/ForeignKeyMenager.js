@@ -24,7 +24,7 @@ module.exports = async () => {
     Booking.belongsTo(User,{foreignKey: 'User_fk', targetKey: 'id'});
     Booking.belongsTo(Table,{foreignKey: 'Table_fk', targetKey: 'id'});
 
-    Address.belongsTo(UserType,{foreignKey: 'User_fk', targetKey: 'id'});
+    Address.belongsTo(User,{foreignKey: 'User_fk', targetKey: 'id'});
     
     Order.belongsTo(Address,{foreignKey: 'Address_fk', targetKey: 'id'});
    

@@ -19,8 +19,9 @@ module.exports = global.sequelize.define("Fooditem", {
         isAvalilable: {
             type: Sequelize.TINYINT(1),
         },
-
-    
+        Number:{
+            type: Sequelize.TINYINT(5)
+        }   
 
 });
  

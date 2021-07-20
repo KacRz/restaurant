@@ -1,11 +1,8 @@
-const { USER } = require("../config/db.config.js");
-
 
 /*
 Here we will make conections between tables in database
 */
 module.exports = async () => {
-
     const User = require("./User.js");
     const UserType = require("./UserType.js");
     const Booking = require("./Booking.js");
@@ -16,9 +13,6 @@ module.exports = async () => {
     const Fooditem = require("./Fooditem.js");
     const Category = require("./Category.js");
     const Discount = require("./Discount.js");
-
-
-
     User.belongsTo(UserType,{foreignKey: 'UserType_fk', targetKey: 'id'});
 
     Booking.belongsTo(User,{foreignKey: 'User_fk', targetKey: 'id'});

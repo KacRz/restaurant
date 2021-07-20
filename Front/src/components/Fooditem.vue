@@ -37,6 +37,7 @@ export default {
 
 
 .fooditem {
+
     width: 300px;
     height: 400px;
     background-color: brown;

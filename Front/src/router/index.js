@@ -6,6 +6,7 @@ import Remindpassword from '../views/Remindpassword.vue'
 import Menu from '../views/Menu.vue'
 import CartPage from '../views/CartPage.vue'
 import Reservation from '../views/Reservation.vue'
+import FoodDetails from '../views/FoodDetails.vue'
 
 const routes = [
   {
@@ -52,6 +53,11 @@ const routes = [
     path: '/reservation',
     name: 'Reservation',
     component: Reservation
+  },
+  {
+    path: '/menu/food-details',
+    name: 'food-details',
+    component: FoodDetails
   }
 ]
 

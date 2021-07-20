@@ -5,32 +5,62 @@
             <span>Koszyk</span>
         </div>
         <div class="cart-page__content">
-            <div v-if="!foodlist" class="cart-page__empty">
+
+            <div v-if="countCart == 0" class="cart-page__empty">
                 <span>Twój koszyk jest pusty. Śmiało, zamów coś!</span>
                 <router-link to="/menu" class="cart-page__empty-btn">
                     Przejdź do menu
                     <i class="fas fa-arrow-circle-right"></i>
                 </router-link>
             </div>
-            <div v-else class="cart-page__info">
-                <Cartitem v-bind="foodlist[0]"/>
-                <Cartitem v-bind="foodlist[1]"/>
 
+            <div v-else class="cart-page__info">
+                <div v-for="item in cartItems" :key="item.id">
+                    <Cartitem v-bind="item" @addProduct="addItem(item)" @removeProduct="removeItem(item)"/>
+                </div>
+
+                <Summary v-bind:totalPrice="totalPrice"/>
             </div>
+            
         </div>
     </div>
 </template>
 
 <script>
 import Cartitem from '../components/Cartitem.vue'
+import Summary from '../components/Summary.vue'
 
 export default {
     name: "Cart page",
     components: {
-        Cartitem
+        Cartitem,
+        Summary
     },
     data() {
         return { 
+        }
+    },
+    methods: {
+        addItem(item) {
+            this.$store.dispatch("addToCart", item);
+        },
+        removeItem(item) {
+            this.$store.dispatch("removeItem", item);
+        }
+    },
+    computed: {
+        cartItems() {
+            return this.$store.state.cartItems;
+        },
+        totalPrice() {
+            let price = 0;
+            this.$store.state.cartItems.map(el => {
+                price += el["quantity"] * el["price"]
+            })
+            return price;
+        },
+        countCart() {
+            return this.$store.state.cartItemCount;
         }
     }
 }

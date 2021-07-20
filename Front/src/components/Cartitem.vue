@@ -10,8 +10,19 @@
           {{ description }}
       </div>
       <div class="cart-element__info">
-          Ilość 1  Cena {{ price }}
-          <i class="fas fa-times-circle"></i>
+          <div class="cart-element__quantity">
+              <div class="cart-element__btn-quantity minus" v-on:click="emitRemoveProduct">
+                   <i class="fas fa-minus-square" ></i> 
+              </div>
+              <div class="cart-element__btn-quantity">
+                  {{ quantity }}
+              </div>
+              <div class="cart-element__btn-quantity plus" v-on:click="emitAddProduct">
+                  <i class="fas fa-plus-square"></i>
+              </div>
+             
+          </div>
+          Cena {{ price }}
       </div>
   </div>
 </template>
@@ -24,8 +35,17 @@ export default {
         description: { type: String, required: true },
         price: { type: String, required: true },
         imgsource: { type: String, required: true },
-        number: { type: String, required: true }
+        number: { type: String, required: true },
+        quantity: { type: Number, required: true }
     },
+    methods: {
+        emitAddProduct() {
+            this.$emit("addProduct")
+        },
+        emitRemoveProduct() {
+            this.$emit("removeProduct")
+        }
+    }
 }
 </script>
 
@@ -72,6 +92,28 @@ export default {
 
 .cart-element__info {
     margin-left: auto;
+
+    display: flex;
+    flex-direction: row;
+}
+
+.cart-element__quantity {
+    display: flex;
+}
+.cart-element__btn-quantity {
+    margin-left: 0.2em;
+    margin-right: 0.2em;
+    transition: color 0.5s;
+}
+.cart-element__btn-quantity:hover {
+    cursor: pointer;
+    
+}
+.minus:hover {
+    color: red;
+}
+.plus:hover {
+    color: green;
 }
 
 </style>

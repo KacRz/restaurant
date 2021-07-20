@@ -3,14 +3,11 @@ const user_contr = require("../controllers/User-controller");
 const express = require('express');
 const router = express.Router();
 
-router.get('/user', (req,res) =>{
-    user_contr.delete(req,res);
-
-});
-router.post('/user', (req,res) =>{
-    user_contr.create(req,res);
-
-});
+router.delete('/user/:id', user_contr.delete);
+router.post('/register', user_contr.create);
+router.post('/login', user_contr.validateUser);
+router.post('/update', user_contr.update);
+router.get('/users', user_contr.findAll)
 router.get('/fill_the_database/users', user_contr.fill_the_database_Users);
 router.get('/fill_the_database/booking', user_contr.fill_the_database_Booking);
 router.get('/fill_the_database/address', user_contr.fill_the_database_Address);

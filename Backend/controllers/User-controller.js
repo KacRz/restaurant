@@ -8,42 +8,110 @@ const OrderList = require("../models/OrderList.js");
 const Table = require("../models/Table.js");
 const User = require("../models/User.js");
 const UserType = require("../models/UserType.js");
-const db = require("../models/index.js");
-const moment = require('moment');
+const { Op } = require("sequelize");
 
-const Restaurant = db.Restaurant;
-//const Op = db.Sequelize.Op;
+exports.validateUser = async (req, res) => {
+    console.log(res.body);
+    console.log(req.body);
+    User.findOne({ where: {email: req.body.email } }).then(async function (user) {
 
-const router = require("express").Router();
-
-// Create and Save a new User
-exports.create = (req, res) => {
-    res.send("I'm a pirate");
+        if (!user) {
+            res.send("Not found");
+            //res.redirect('/login');
+        }
+        else if (!(await user.validPassword(req.body.password)) ) {
+            res.send("Not validated");
+            //res.redirect('/login');
+        } else {
+            //req.session.user = user.dataValues;
+            //res.redirect('/connected');
+            res.send("Logged in");
+        }
+ 
+    })
+};
+// Create and Save a new User - register or create
+exports.create = async (req, res) => {
+    User.findOne({ where: {email: req.body.email } }).then(async function (user)
+    {
+        if(!user)
+        {
+           var id = await User.create({
+                email: req.body.email,
+                password: req.body.password,
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
+                UserType_fk: 1
+            }).id;
+            await Address.create({
+                User_fk: id,
+                Country: "Poland",
+                City: req.body.City,
+                Street: req.body.Street,
+                HouseNumber: req.body.HouseNumber,
+                PostalCode: req.body.PostalCode               
+            });
+            res.send("user created");
+        }
+        else{
+            //create response thath user with that e-mail exists
+            res.send("user Exists");
+        }
+        
+    })
+    
 };
 
 // Retrieve all Users from the database.
-exports.findAll = (req, res) => {
-  
+exports.findAll = async (req, res) => {
+    User.findAll({attributes: ['id', 'UserType_fk','firstname','lastname', 'email'],where: {[Op.not]: [{UserType_fk: 1}]}}).then(function (users) {
+        res.send(users);
+    });
 };
 
 // Find a single User with an id
-exports.findOne = (req, res) => {
-  
+exports.findOne = async (req, res) => {
+    await User.findOne({attributes: ['id', 'UserType_fk','firstname','lastname', 'email'],where: {id: req.params.id}}).then(async function (user)
+    {
+        res.send(User);
+    });
 };
 
 // Update a User by the id in the request
-exports.update = (req, res) => {
-  
+exports.update = async (req, res) => {
+
+    User.findOne({ where: {id: req.body.id } }).then(async function (user)
+    {
+        console.log(user);
+        if(!user)
+        {
+            res.send("user doesnt exists");
+        }
+        else{
+            user.id = req.body.id;
+            user.email = req.body.email;
+            user.password = req.body.password;
+            await user.hashPass();
+            user.firstname = req.body.firstname;
+            user.lastname = req.body.lastname
+            await user.save();
+            res.send("user updated");
+        }        
+    })
 };
 
 // Delete a User with the specified id in the request
-exports.delete = (req, res) => {
-    res.send("I gonna be the very best");
+exports.delete = async (req, res) =>  {
+    await User.findOne({where: {id: req.params.id}}).then(async function (user)
+    {
+        user.destroy();
+        res.send("user detroyed");
+    });
 };
 
 // Delete all Users from the database.
 exports.deleteAll = (req, res) => {
-  
+  //its dangerous to create it
 };
 
 
@@ -60,28 +128,28 @@ User.create({email: "poirko@gmail.com", password: "123", firstname: "Dawid", las
 User.create({email: "Karolcia9128@gmail.com", password: "123", firstname: "Karolina", lastname: "Przbyszewka", UserType_fk: 1, id:24});
 User.create({email: "Komandos4231@gmail.com", password: "123", firstname: "Karol", lastname: "Komadowski", UserType_fk: 1, id:23});
 User.create({email: "Wesolek@gmail.com", password: "123", firstname: "Marcelina", lastname: "Wesołowska", UserType_fk: 1, id:22});
-User.create({email: "adamW@gmail.com", password: "123", firstname: "Bartosz", lastname: "Czekański", UserType_fk: 1, id:21});
-User.create({email: "adamW@gmail.com", password: "123", firstname: "Norbert", lastname: "Kret", UserType_fk: 1, id:20});
-User.create({email: "adamW@gmail.com", password: "123", firstname: "Hubert", lastname: "Kłoda", UserType_fk: 1, id:19});
-User.create({email: "adamW@gmail.com", password: "123", firstname: "Andrzej", lastname: "Piekarz", UserType_fk: 1, id:18});
-User.create({email: "adamW@gmail.com", password: "123", firstname: "Arkadiusz", lastname: "Król", UserType_fk: 1, id:17});
-User.create({email: "adamW@gmail.com", password: "123", firstname: "Barbara", lastname: "Kasprzyk", UserType_fk: 1, id:16});
-User.create({email: "adamW@gmail.com", password: "123", firstname: "Maria", lastname: "Węgiel", UserType_fk: 1, id:15});
-User.create({email: "adamW@gmail.com", password: "123", firstname: "Katarzyna", lastname: "Chleb", UserType_fk: 1, id:14});
-User.create({email: "adamW@gmail.com", password: "123", firstname: "Krzysztof", lastname: "Bułka", UserType_fk: 1,  id:13});
-User.create({email: "adamW@gmail.com", password: "123", firstname: "Ewa", lastname: "Stadny", UserType_fk: 1, id:12});
-User.create({email: "adamW@gmail.com", password: "123", firstname: "Zuzanna", lastname: "Pięta", UserType_fk: 1, id:12});
-User.create({email: "adamW@gmail.com", password: "123", firstname: "Zofia", lastname: "Trzmiel", UserType_fk: 1, id:11});
-User.create({email: "adamW@gmail.com", password: "123", firstname: "Oliwia", lastname: "Narutowicz", UserType_fk: 1, id:10});
-User.create({email: "adamW@gmail.com", password: "123", firstname: "Dominik", lastname: "Nazarko", UserType_fk: 1,  id:9});
+User.create({email: "Czekan@gmail.com", password: "123", firstname: "Bartosz", lastname: "Czekański", UserType_fk: 1, id:21});
+User.create({email: "Kretek@gmail.com", password: "123", firstname: "Norbert", lastname: "Kret", UserType_fk: 1, id:20});
+User.create({email: "Huberk@gmail.com", password: "123", firstname: "Hubert", lastname: "Kłoda", UserType_fk: 1, id:19});
+User.create({email: "Adnrzej123@gmail.com", password: "123", firstname: "Andrzej", lastname: "Piekarz", UserType_fk: 1, id:18});
+User.create({email: "Krola@gmail.com", password: "123", firstname: "Arkadiusz", lastname: "Król", UserType_fk: 1, id:17});
+User.create({email: "Barbarak@gmail.com", password: "123", firstname: "Barbara", lastname: "Kasprzyk", UserType_fk: 1, id:16});
+User.create({email: "Carbon@gmail.com", password: "123", firstname: "Maria", lastname: "Węgiel", UserType_fk: 1, id:15});
+User.create({email: "Kate6819@gmail.com", password: "123", firstname: "Katarzyna", lastname: "Chleb", UserType_fk: 1, id:14});
+User.create({email: "Bulek@gmail.com", password: "123", firstname: "Krzysztof", lastname: "Bułka", UserType_fk: 1,  id:13});
+User.create({email: "EwaS@gmail.com", password: "123", firstname: "Ewa", lastname: "Stadny", UserType_fk: 1, id:12});
+User.create({email: "PietkaZ@gmail.com", password: "123", firstname: "Zuzanna", lastname: "Pięta", UserType_fk: 1, id:12});
+User.create({email: "Trzmielu@gmail.com", password: "123", firstname: "Zofia", lastname: "Trzmiel", UserType_fk: 1, id:11});
+User.create({email: "OliwerQ@gmail.com", password: "123", firstname: "Oliwia", lastname: "Narutowicz", UserType_fk: 1, id:10});
+User.create({email: "Domino687@gmail.com", password: "123", firstname: "Dominik", lastname: "Nazarko", UserType_fk: 1,  id:9});
 
-User.create({email: "adamW@gmail.com", password: "123", firstname: "Zbigniew", lastname: "Niedzielski", UserType_fk: 2, id:8});
-User.create({email: "adamW@gmail.com", password: "123", firstname: "Damian", lastname: "Chrobry", UserType_fk: 2, id:7});
-User.create({email: "adamW@gmail.com", password: "123", firstname: "Adrian", lastname: "Reguła", UserType_fk: 2, id:6});
-User.create({email: "adamW@gmail.com", password: "123", firstname: "Aleksander", lastname: "Żuk", UserType_fk: 2, id:5});
-User.create({email: "adamW@gmail.com", password: "123", firstname: "Bogdan", lastname: "Sosna", UserType_fk: 3, id:4});
-User.create({email: "adamW@gmail.com", password: "123", firstname: "Oleg", lastname: "Ziobro", UserType_fk: 3, id:3});
-User.create({email: "adamW@gmail.com", password: "123", firstname: "Joanna", lastname: "Wilk", UserType_fk: 3,id:2});
+User.create({email: "DjZibi@gmail.com", password: "123", firstname: "Zbigniew", lastname: "Niedzielski", UserType_fk: 2, id:8});
+User.create({email: "Damain1234@gmail.com", password: "123", firstname: "Damian", lastname: "Chrobry", UserType_fk: 2, id:7});
+User.create({email: "RegulaA@gmail.com", password: "123", firstname: "Adrian", lastname: "Reguła", UserType_fk: 2, id:6});
+User.create({email: "Aleks@gmail.com", password: "123", firstname: "Aleksander", lastname: "Żuk", UserType_fk: 2, id:5});
+User.create({email: "Bohdan@gmail.com", password: "123", firstname: "Bogdan", lastname: "Sosna", UserType_fk: 3, id:4});
+User.create({email: "ZiobOO@gmail.com", password: "123", firstname: "Oleg", lastname: "Ziobro", UserType_fk: 3, id:3});
+User.create({email: "Wiq@gmail.com", password: "123", firstname: "Joanna", lastname: "Wilk", UserType_fk: 3,id:2});
 User.create({email: "KowalJan@gmail.com", password: "123", firstname: "Jan", lastname: "Kowalski", UserType_fk: 4, id:1});
 
 

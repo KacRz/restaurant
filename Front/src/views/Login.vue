@@ -67,7 +67,12 @@ export default {
         },
 
         async handleSubmit() {
-            console.log(await Service.login(this.email, this.password));
+            const tmp = await Service.login(this.email, this.password);
+            if(tmp.data.isLogged)
+            {
+                this.$router.push('/')
+            }             
+            console.log(tmp.data.isLogged);
         }
     },
     setup() {

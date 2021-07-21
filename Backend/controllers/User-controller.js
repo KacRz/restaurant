@@ -12,18 +12,31 @@ const { Op } = require("sequelize");
 
 exports.validateUser = async (req, res) => {
     User.findOne({ where: {email: req.body.email } }).then(async function (user) {
-
+        var data= {
+            isLogged: false,
+            Email: '',
+            FirstName: '',
+            LastName: '',
+            id: ''
+        };
         if (!user) {
-            res.send("Not found");
+            res.send(data);
             //res.redirect('/login');
         }
         else if (!(await user.validPassword(req.body.password)) ) {
-            res.send("Not validated");
+            res.send(data);
             //res.redirect('/login');
         } else {
-            //req.session.user = user.dataValues;
-            //res.redirect('/connected');
-            res.send("Logged in");
+            data={
+                isLogged: true,
+                Email: user.email,
+                FirstName: user.firstname,
+                LastName: user.lastname,
+                id: user.id
+            }
+            
+            res.send(data);
+
         }
  
     })
@@ -207,18 +220,18 @@ exports.fill_the_database_Orders = (req, res) =>
 
 
 
-    OrderList.create({id: 1,Fooditem_fk: 1, Order_fk: 1, Quantity:1   ,StablePrice: 29.99});
-    OrderList.create({id: 2,Fooditem_fk: 2, Order_fk: 1, Quantity:4   ,StablePrice: 39.99});
-    OrderList.create({id: 3,Fooditem_fk: 3, Order_fk: 1, Quantity:5   ,StablePrice: 23.99});
-    OrderList.create({id: 4,Fooditem_fk: 4, Order_fk: 1, Quantity:3   ,StablePrice: 26.99});
-    OrderList.create({id: 5,Fooditem_fk: 5, Order_fk: 1, Quantity:2   ,StablePrice: 20.99});
-    OrderList.create({id: 6,Fooditem_fk: 8, Order_fk: 2, Quantity:2   ,StablePrice: 18.99});
-    OrderList.create({id: 7,Fooditem_fk: 9, Order_fk: 2, Quantity:4   ,StablePrice: 25.99});
-    OrderList.create({id: 8,Fooditem_fk: 10, Order_fk: 2, Quantity:5  ,StablePrice: 10.00});
-    OrderList.create({id: 9,Fooditem_fk: 10, Order_fk: 3, Quantity:6  ,StablePrice: 10.00});
-    OrderList.create({id: 10,Fooditem_fk: 1, Order_fk: 3, Quantity:4  ,StablePrice: 29.99});
-    OrderList.create({id: 11,Fooditem_fk: 2, Order_fk: 3, Quantity:3  ,StablePrice: 39.99});
-    OrderList.create({id: 12,Fooditem_fk: 3, Order_fk: 3, Quantity:2  ,StablePrice: 23.99});
+    OrderList.create({id: 1,  Quantity:1   ,StablePrice: 29.99,Fooditem_fk: 1,  Order_fk: 1,});
+    OrderList.create({id: 2,  Quantity:4   ,StablePrice: 39.99,Fooditem_fk: 2,  Order_fk: 1,});
+    OrderList.create({id: 3,  Quantity:5   ,StablePrice: 23.99,Fooditem_fk: 3,  Order_fk: 1,});
+    OrderList.create({id: 4,  Quantity:3   ,StablePrice: 26.99,Fooditem_fk: 4,  Order_fk: 1,});
+    OrderList.create({id: 5,  Quantity:2   ,StablePrice: 20.99,Fooditem_fk: 5,  Order_fk: 1,});
+    OrderList.create({id: 6,  Quantity:2   ,StablePrice: 18.99,Fooditem_fk: 8,  Order_fk: 2,});
+    OrderList.create({id: 7,  Quantity:4   ,StablePrice: 25.99,Fooditem_fk: 9,  Order_fk: 2,});
+    OrderList.create({id: 8,  Quantity:5   ,StablePrice: 10.00,Fooditem_fk: 10, Order_fk: 2,});
+    OrderList.create({id: 9,  Quantity:6   ,StablePrice: 10.00,Fooditem_fk: 10, Order_fk: 3,});
+    OrderList.create({id: 10, Quantity:4   ,StablePrice: 29.99,Fooditem_fk: 1,  Order_fk: 3,});
+    OrderList.create({id: 11, Quantity:3   ,StablePrice: 39.99,Fooditem_fk: 2,  Order_fk: 3,});
+    OrderList.create({id: 12, Quantity:2   ,StablePrice: 23.99,Fooditem_fk: 3,  Order_fk: 3,});
     
     res.send("Created booking "+ new Date(2021, 7, 19, 10,00));
  

@@ -9,9 +9,9 @@ export const store = createStore({
                 id: "1",
                 title: "Mexicana",
                 description: "Bardzo dobra pizza o niesamowitym smaku. Ciekawy wybór dla koneserów ostrej pizzy. Jedyna w swoim rodzaju.",
-                price: "29.00",
+                price: "27.99",
                 imgsource: "https://kuron.com.pl/wp-content/uploads/2019/03/P3251115.jpg.webp",
-                number: "1"
+                number: "1",
             },
             {
                 id: "2",

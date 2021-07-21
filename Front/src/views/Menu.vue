@@ -5,13 +5,12 @@
             <div class="menu-category__title">
                 <h1>Pizze</h1>
             </div>
-            <div class="menu-category__element" v-for="item in products" :key="item.id">
-                <!--<Fooditem v-bind="item" v-on:click="onClickedItem(item.id)"/>-->
-                <Fooditem v-bind="item" v-on:click="foodDetails(item)" />
+            <div class="menu-category__row">
+                <div class="menu-category__element" v-for="item in products" :key="item.id">
+                    <!--<Fooditem v-bind="item" v-on:click="onClickedItem(item.id)"/>-->
+                    <Fooditem v-bind="item" v-on:click="foodDetails(item)" />
+                </div>
             </div>
-            
-            <AdditemToCart v-if="!isHidden" v-bind="products[clickedItem]" @closeNow="closeWindow" @addToCart="addItemToCart"/>
-            
         </div>
 
     </div>
@@ -19,7 +18,6 @@
 
 <script>
 import Fooditem from '../components/Fooditem.vue'
-import AdditemToCart from '../components/AddItemToCart.vue'
 
 export default {
     name: "Menu",
@@ -31,7 +29,6 @@ export default {
     },
     components: {
         Fooditem,
-        AdditemToCart
     },
     setup() {
 
@@ -76,8 +73,16 @@ export default {
 
     padding: 0.5em;
 }
+.menu-category__row {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    
+}
 .menu-category__element {
-    padding: 1em;
+    padding: 0.5em;
+    flex: 1;
 }
 .menu-category__title {
     width: 100%;
@@ -90,5 +95,26 @@ export default {
     display: flex;
     justify-content: flex-start;
 }
+
+@media (max-width: 660px) {
+    .menu-category__element {
+        width: 100%;
+        min-width: 250px;
+        max-width: 450px;
+    }
+}
+@media (max-width: 1100px) {
+    .menu-category__element {
+        min-width: 300px;
+        max-width: 450px;
+    }
+}
+@media (min-width: 1101px) {
+    .menu-category__element {
+        min-width: 300px;
+        max-width: 350px;
+    }
+}
+
 
 </style>

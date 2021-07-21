@@ -22,7 +22,7 @@
               </div>
              
           </div>
-          Cena {{ price }}
+          Cena {{ price }}zł
       </div>
   </div>
 </template>
@@ -51,7 +51,7 @@ export default {
 
 <style scoped>
 .cart-element {
-    width: 100%;
+    max-width: 100%;
     box-sizing: border-box;
     padding: 0.3em;
 
@@ -111,6 +111,9 @@ export default {
 }
 .minus:hover {
     color: red;
+}
+.plus {
+    margin-right: 1em;
 }
 .plus:hover {
     color: green;

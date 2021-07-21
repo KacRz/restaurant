@@ -6,7 +6,7 @@
             </router-link>
           <span class="addto-cart__number"> {{ details.number }} </span>
           <div class="addto-cart__title">
-            <h2>{{ details.title }}</h2>
+            <h1>{{ details.title }}</h1>
           </div>
           <div class="addto-cart__info-content">
               <div class="addto-cart__info-content-img">
@@ -16,18 +16,19 @@
                 <p>
                     {{ details.description }}
                 </p>
+                <div class="addto-cart__price">
+                   Cena: {{ details.price }}zł
+                </div>
               </div>
           </div>
       </div>
 
       <div class="addto-cart__bottom">
-          <!-- TODO: Wybieranie rozmiaru? dodatków? -->
-          <h3>Wybierz rozmiar</h3>
-          <div class="addto-cart__add-button" v-on:click="addToCart">
-              Dodaj do koszyka<i class="fas fa-cart-plus" />
-          </div>
           <div class="addto-cart__delete-button" v-on:click="removeItem">
-              Usuń z koszyka<i class="fas fa-trash-alt"></i>
+              <span>Usuń z koszyka</span><i class="fas fa-trash-alt"></i>
+          </div>
+          <div class="addto-cart__add-button" v-on:click="addToCart">
+              <span>Dodaj do koszyka</span><i class="fas fa-cart-plus" />
           </div>
       </div>
 
@@ -39,7 +40,7 @@ export default {
     name: "FoodDetails",
     data() {
         return {
-            details: this.$route.params
+            details: this.$route.params,
         }
     },
     methods: {
@@ -63,7 +64,7 @@ export default {
 
 <style scoped>
 .addto-cart {
-    width: 100%;
+    width: 80%;
     background: rgb(165,42,42);
     background: linear-gradient(146deg, rgba(165,42,42,1) 0%, rgba(140,49,49,1) 75%, rgba(165,42,42,1) 100%);
     margin-top: 2em;
@@ -75,6 +76,8 @@ export default {
 
     display: flex;
     flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
 }
 .addto-cart__info {
     width: 100%;
@@ -131,6 +134,14 @@ export default {
 .addto-cart__title {
     display: block;
 }
+
+.addto-cart__price {
+    margin-top: auto;
+    margin-left: auto;
+    padding: 0.5em;
+    font-size: 2em;
+}
+
 .addto-cart__info-content {
     width: 90%;
     height: 100%;
@@ -163,7 +174,8 @@ export default {
     width: 60%;
     height: 100%;
     display: flex;
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: center;
 
     box-sizing: border-box;
     padding-left: 1em;
@@ -174,14 +186,18 @@ export default {
     height: 50%;
 
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
+    justify-content: flex-end;
+    box-sizing: border-box;
+    padding: 0.3em;
 }
 
 .addto-cart__add-button {
     background-color: green;
     color: white;
     padding: 0.5em 1.2em;
+    margin: 0 0.3em;
     border-radius: 10px;
     font-size: 1.2em;
 
@@ -201,6 +217,7 @@ export default {
     padding: 0.5em 1.2em;
     border-radius: 10px;
     font-size: 1.2em;
+    margin: 0 0.3em;
 
     transition: padding 0.3s, background-color 0.3s;
 }
@@ -214,6 +231,9 @@ export default {
 
 
 @media (max-width: 750px) {
+    .addto-cart {
+        font-size: 0.8em;
+    }
     .addto-cart__info-content {
     display: flex;
     flex-direction: column;
@@ -222,12 +242,13 @@ export default {
         width: 100%;
     }
     .addto-cart__info-content-img {
-        width: 100%;
+        display: none;
     }
-    .addto-cart__info-content-img > img {
-    width: 30%;
-    height: auto;
-    overflow: hidden;
+    .addto-cart__delete-button > span {
+        display: none;
+    }
+    .addto-cart__add-button > span {
+        display: none;
     }
 }
 

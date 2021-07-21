@@ -1,8 +1,5 @@
 <template>
   <div class="home">
-    <div class="home-title">
-      <h1>Restauracja</h1>
-    </div>
       <div class="home-about">
         <div class="row">
           <Homeinfo icon="fas fa-phone" :content="phoneslist"/>

@@ -13,9 +13,10 @@
             {{ description }}
         </p>
         <div class="fooditem-content__price">
-            <span>{{ price }} zł</span>
+           Cena: {{ price }}zł
         </div>
       </div>
+
   </div>
 </template>
 
@@ -27,14 +28,16 @@ export default {
         description: { type: String, required: true },
         price: { type: String, required: true },
         imgsource: { type: String, required: true },
-        number: { type: String, required: true }
+        number: { type: String, required: true },
     },
 }
 </script>
 
 <style scoped>
+
+
 .fooditem {
-    width: 300px;
+
     height: 400px;
     background-color: brown;
 
@@ -47,6 +50,7 @@ export default {
     border-radius: 3px;
 
     overflow: hidden;
+
 }
 .fooditem:hover {
     cursor: pointer;
@@ -123,5 +127,6 @@ export default {
     text-align: right;
     margin-top: auto;
 }
+
 
 </style>

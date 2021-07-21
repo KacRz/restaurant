@@ -12,8 +12,8 @@
             <SidebarLink to="/" icon="fas fa-home">Strona Główna</SidebarLink>
             <SidebarLink to="/login" icon="fas fa-user">Zaloguj się</SidebarLink>
             <SidebarLink to="/menu" icon="fas fa-utensils">Menu</SidebarLink>
-            <SidebarLink to="/cart" icon="fas fa-shopping-cart">Koszyk</SidebarLink>
-            <SidebarLink to="/" icon="fas fa-glass-cheers">Rezerwuj Stolik</SidebarLink>
+            <SidebarLink to="/cart" icon="fas fa-shopping-cart">Koszyk ({{countCart}})</SidebarLink>
+            <SidebarLink to="/reservation" icon="fas fa-glass-cheers">Rezerwuj Stolik</SidebarLink>
         </div>
 
         <span 
@@ -37,6 +37,11 @@ export default {
     setup() {
         return { collapsed, toggleSidebar, sidebarWidth }
     },
+    computed: {
+        countCart() {
+            return this.$store.state.cartItemCount;
+        }
+    }
 }
 </script>
 

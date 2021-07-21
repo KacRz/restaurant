@@ -1,30 +1,34 @@
 <template>
   <div class="addto-cart">
       <div class="addto-cart__info">
-          <div class="addto-cart__exit" v-on:click="closeWindow">
-              <i class="fas fa-times-circle"></i>
-          </div>
-          <span class="addto-cart__number"> {{ number }} </span>
+            <router-link to="/menu" class="addto-cart__exit">
+                <i class="fas fa-times-circle"></i>
+            </router-link>
+          <span class="addto-cart__number"> {{ details.number }} </span>
           <div class="addto-cart__title">
-            <h2>{{ title }}</h2>
+            <h1>{{ details.title }}</h1>
           </div>
           <div class="addto-cart__info-content">
               <div class="addto-cart__info-content-img">
-                <img v-bind:src="imgsource" />
+                <img v-bind:src="details.imgsource" />
               </div>
               <div class="addto-cart__info-content-description">
                 <p>
-                    {{ description }}
+                    {{ details.description }}
                 </p>
+                <div class="addto-cart__price">
+                   Cena: {{ details.price }}zł
+                </div>
               </div>
           </div>
       </div>
 
       <div class="addto-cart__bottom">
-          <!-- TODO: Wybieranie rozmiaru? dodatków? -->
-          <h3>Wybierz rozmiar</h3>
-          <div class="addto-cart__add-button" v-on:click="addProductToCart">
-              Dodaj do koszyka<i class="fas fa-cart-plus" />
+          <div class="addto-cart__delete-button" v-on:click="removeItem">
+              <span>Usuń z koszyka</span><i class="fas fa-trash-alt"></i>
+          </div>
+          <div class="addto-cart__add-button" v-on:click="addToCart">
+              <span>Dodaj do koszyka</span><i class="fas fa-cart-plus" />
           </div>
       </div>
 
@@ -33,35 +37,37 @@
 
 <script>
 export default {
-    name: "AdditemToCart",
-    props: {
-        title: { type: String, required: true },
-        description: { type: String, required: true },
-        price: { type: String, required: true },
-        imgsource: { type: String, required: true },
-        number: { type: String, required: true }
+    name: "FoodDetails",
+    data() {
+        return {
+            details: this.$route.params,
+        }
     },
     methods: {
-        closeWindow() {
-            this.$emit('closeNow');
+        addToCart() {
+            this.$store.dispatch("addToCart", this.details);
         },
-        addProductToCart() {
-            this.$emit('addToCart');
+        removeItem() {
+            this.$store.dispatch("removeItem", this.details);
         }
+    },
+    created() {
+        if (this.$route.params.id !== undefined){
+            localStorage.setItem("details", JSON.stringify(this.$route.params))
+        }
+    },
+    mounted() {
+        this.details = JSON.parse(localStorage.getItem("details"));
     }
 }
 </script>
 
 <style scoped>
 .addto-cart {
-    width: 70vw;
-    height: 80vh;
+    width: 80%;
     background: rgb(165,42,42);
     background: linear-gradient(146deg, rgba(165,42,42,1) 0%, rgba(140,49,49,1) 75%, rgba(165,42,42,1) 100%);
     margin-top: 2em;
-
-    position: fixed;
-    z-index: 20;
 
     border: 1px solid black;
     border-radius: 10px;
@@ -70,7 +76,8 @@ export default {
 
     display: flex;
     flex-direction: column;
-
+    margin-left: auto;
+    margin-right: auto;
 }
 .addto-cart__info {
     width: 100%;
@@ -94,6 +101,8 @@ export default {
     overflow: hidden;
 
     font-size: 3em;
+    text-decoration: none;
+    color: white;
 
     display: flex;
     align-items: center;
@@ -125,6 +134,14 @@ export default {
 .addto-cart__title {
     display: block;
 }
+
+.addto-cart__price {
+    margin-top: auto;
+    margin-left: auto;
+    padding: 0.5em;
+    font-size: 2em;
+}
+
 .addto-cart__info-content {
     width: 90%;
     height: 100%;
@@ -157,7 +174,8 @@ export default {
     width: 60%;
     height: 100%;
     display: flex;
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: center;
 
     box-sizing: border-box;
     padding-left: 1em;
@@ -168,14 +186,18 @@ export default {
     height: 50%;
 
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
+    justify-content: flex-end;
+    box-sizing: border-box;
+    padding: 0.3em;
 }
 
 .addto-cart__add-button {
     background-color: green;
     color: white;
     padding: 0.5em 1.2em;
+    margin: 0 0.3em;
     border-radius: 10px;
     font-size: 1.2em;
 
@@ -189,8 +211,29 @@ export default {
     cursor: pointer;
 }
 
+.addto-cart__delete-button {
+    background-color: red;
+    color: white;
+    padding: 0.5em 1.2em;
+    border-radius: 10px;
+    font-size: 1.2em;
+    margin: 0 0.3em;
+
+    transition: padding 0.3s, background-color 0.3s;
+}
+
+.addto-cart__delete-button:hover {
+    background-color: rgb(211, 43, 43);
+    padding: 0.5em 1.6em;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
 
 @media (max-width: 750px) {
+    .addto-cart {
+        font-size: 0.8em;
+    }
     .addto-cart__info-content {
     display: flex;
     flex-direction: column;
@@ -199,12 +242,13 @@ export default {
         width: 100%;
     }
     .addto-cart__info-content-img {
-        width: 100%;
+        display: none;
     }
-    .addto-cart__info-content-img > img {
-    width: 30%;
-    height: auto;
-    overflow: hidden;
+    .addto-cart__delete-button > span {
+        display: none;
+    }
+    .addto-cart__add-button > span {
+        display: none;
     }
 }
 

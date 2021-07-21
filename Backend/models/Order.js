@@ -10,6 +10,6 @@ module.exports = global.sequelize.define("Order", {
         Date: {
             type: Sequelize.DATE,
         },
-
+        
 });
  

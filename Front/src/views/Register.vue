@@ -67,6 +67,7 @@
 </template>
 
 <script>
+import Service from '../Service/Service';
 export default {
     name: 'Register',
     data() {
@@ -108,7 +109,7 @@ export default {
             }
         },
 
-        handleSubmit() {
+        async handleSubmit() {
             const data = {
                 email: this.email,
                 password: this.password,
@@ -120,9 +121,8 @@ export default {
                 housenumber: this.housenumber,
                 postalcode: this.postalcode,
             }
-            console.log('Register form submitted');
-            console.log(data);
-
+            console.log(await Service.register(data));
+            
         },
 
         validPostalcode(postalcode) {

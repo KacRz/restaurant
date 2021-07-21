@@ -12,5 +12,6 @@ module.exports =  global.sequelize.define("UserType", {
         {
             type: Sequelize.STRING(50)
         }
+        
     });
     

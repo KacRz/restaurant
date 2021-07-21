@@ -17,9 +17,16 @@ class Service
         }
     }
     //register
-    static register()
+    static register(data)
     {
-
+        try{
+            console.log(data);
+            return axios.post(url+'register/', {data});
+        }
+        catch(err)
+        {
+            console.log(err);
+        }
     }
 }
 export default Service;

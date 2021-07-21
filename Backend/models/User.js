@@ -19,7 +19,7 @@ User = global.sequelize.define("User", {
         lastname: {
             type: Sequelize.STRING(50)
         },
-  
+        
     });
 User.prototype.validPassword = async function(password) {
         

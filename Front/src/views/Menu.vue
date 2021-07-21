@@ -88,6 +88,10 @@ export default {
         closeWindow() {
             this.isHidden = true;
         }
+    },
+    created()
+    {
+
     }
 }
 </script>

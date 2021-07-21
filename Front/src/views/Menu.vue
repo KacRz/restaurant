@@ -20,7 +20,7 @@
 <script>
 import Fooditem from '../components/Fooditem.vue'
 import AdditemToCart from '../components/AddItemToCart.vue'
-
+import Service from '../Service/Service.js'
 export default {
     name: "Menu",
     data() {
@@ -89,9 +89,9 @@ export default {
             this.isHidden = true;
         }
     },
-    created()
+    async created()
     {
-
+        console.log(await Service.menu());
     }
 }
 </script>

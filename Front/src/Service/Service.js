@@ -14,14 +14,25 @@ class Service
         catch(err)
         {
             console.log(err);
+            return {isLogged: false};  
         }
     }
     //register
     static register(data)
     {
         try{
-            console.log(data);
             return axios.post(url+'register/', {data});
+        }
+        catch(err)
+        {
+            console.log(err);
+            return {isLogged: false};            
+        }
+    }
+    static menu()
+    {
+        try{
+            return axios.get(url+'fooditem/');
         }
         catch(err)
         {

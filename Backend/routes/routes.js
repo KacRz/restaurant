@@ -37,7 +37,7 @@ router.post('/fooditem/update',fooditem_contr.update);
 router.delete('/fooditem/del/:id',fooditem_contr.delete);
 //orders
 router.post('/orders/create/',order_contr.create);
-router.get('/orders/:id',order_contr.returnAll);
+router.put('/orders/:id',order_contr.find);
 
 //orderLists
 router.post('/order/create/',orderlist_contr.create);

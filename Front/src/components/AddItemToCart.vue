@@ -56,8 +56,7 @@ export default {
 .addto-cart {
     width: 70vw;
     height: 80vh;
-    background: rgb(165,42,42);
-    background: linear-gradient(146deg, rgba(165,42,42,1) 0%, rgba(140,49,49,1) 75%, rgba(165,42,42,1) 100%);
+    background-color: #1b1b1b;
     margin-top: 2em;
 
     position: fixed;

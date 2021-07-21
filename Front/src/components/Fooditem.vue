@@ -39,7 +39,7 @@ export default {
 .fooditem {
 
     height: 400px;
-    background-color: brown;
+    background-color: #1b1b1b;
 
     box-sizing: border-box;
     display: flex;
@@ -76,13 +76,13 @@ export default {
 
 
 .fooditem-top__number {
-    background-color: brown;
+    background-color: #1b1b1b;
     width: 1em;
     height: auto;
     padding: 0.2em;
 
     font-size: 2em;
-    color: white;
+    color: rgb(255, 205, 124);;
 
     position: absolute;
     right: 0;
@@ -93,7 +93,7 @@ export default {
 }
 
 .fooditem-top__bg {
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(27, 27, 27, 0.9);
     width: 50%;
     height: auto;
 
@@ -102,9 +102,8 @@ export default {
 
 .fooditem-content {
     height: 50%;
-    background: rgb(165,42,42);
-    background: linear-gradient(146deg, rgba(165,42,42,1) 0%, rgba(140,49,49,1) 75%, rgba(165,42,42,1) 100%); 
-    color: white;
+    background-color: #1b1b1b;
+    color: rgb(255, 205, 124);
 
     display: flex;
     flex-direction: column;
@@ -115,7 +114,7 @@ export default {
     padding: 0.3em;
     margin: 0;
 
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid rgb(255, 205, 124);;
 }
 .fooditem-content > p {
     text-align: left;

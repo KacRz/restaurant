@@ -46,15 +46,14 @@ export default {
 
 <style scoped>
 .remindpassword-page {
-    background: rgb(165,42,42);
-    background: linear-gradient(146deg, rgba(165,42,42,1) 0%, rgba(140,49,49,1) 75%, rgba(165,42,42,1) 100%);
+    background: #1b1b1b;
     width: 40em;
     margin-top: 1em;
     box-sizing: border-box;
     margin-left: auto;
     margin-right: auto;
 
-    color: rgb(0, 0, 0);
+    color: rgb(255, 205, 124);
 
     display: flex;
     flex-direction: column;
@@ -78,9 +77,9 @@ export default {
 }
 
 .remindpassword-page__title {
-    background-color: rgb(119, 45, 45);
+    background-color: #2d2d2d;
     width: 100%;
-    color: rgb(0, 0, 0);
+    color: rgb(255, 205, 124);
 }
 
 .remindpassword-page__form-group {
@@ -113,7 +112,7 @@ export default {
 }
 
 .remindpassword-page__button {
-    background-color: rgb(31, 15, 12);
+    background-color: green;
     font-size: 1em;
     width: 70%;
     margin-top: 1em;

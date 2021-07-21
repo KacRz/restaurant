@@ -63,7 +63,7 @@ export default {
     font-size: 1.5em;
 
     margin-bottom: 0.3em;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    border-bottom: 1px solid rgba(255, 205, 124, 0.5);
 }
 .cart-element__number {
     height: 100%;

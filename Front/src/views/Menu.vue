@@ -70,8 +70,6 @@ export default {
     flex-wrap: wrap;
     justify-content: center;
     align-content: space-between;
-
-    padding: 0.5em;
 }
 .menu-category__row {
     width: 100%;
@@ -88,9 +86,8 @@ export default {
     width: 100%;
     padding-left: 4em;
 
-    background: rgb(165,42,42);
-    background: linear-gradient(146deg, rgba(165,42,42,1) 0%, rgba(140,49,49,1) 75%, rgba(165,42,42,1) 100%);
-    color: white;
+    background-color: #2d2d2d;
+    color: rgb(255, 205, 124);
 
     display: flex;
     justify-content: flex-start;

@@ -2,9 +2,9 @@
   <div class="home">
       <div class="home-about">
         <div class="row">
-          <Homeinfo icon="fas fa-phone" :content="phoneslist"/>
-          <Homeinfo icon="fas fa-car-side" :content="location"/>
-          <Homeinfo icon="fas fa-calendar-alt" :content="timetable"/>
+          <Homeinfo icon="fas fa-phone" :content="phoneslist" />
+          <Homeinfo icon="fas fa-car-side" :content="location" />
+          <Homeinfo icon="fas fa-calendar-alt" :content="timetable" />
         </div>
       </div>
       <div class="home-content">
@@ -36,12 +36,9 @@ data() {
   }
 }
 </script>
-<style>
-:root {
-  --background-transparent-color: rgba(165, 42, 42, 0.8);
-}
-</style>
+
 <style scoped>
+
 .home {
   display: flex;
   flex-direction: column;
@@ -58,7 +55,6 @@ data() {
   justify-content: center;
 
   width: 100%;
-  background-color: brown;
 }
 
 .home-content {

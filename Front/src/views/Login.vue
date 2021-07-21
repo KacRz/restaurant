@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import '../Service/Service'
+import Service from '../Service/Service';
 export default {
     name: 'Login',
     data() {
@@ -64,14 +66,8 @@ export default {
 
         },
 
-        handleSubmit() {
-            const data = {
-                email: this.email,
-                password: this.password
-            };
-            console.log('Login form submitted');
-            console.log(data);
-            console.log(this.errors)
+        async handleSubmit() {
+            console.log(await Service.login(this.email, this.password));
         }
     },
     setup() {

@@ -13,6 +13,6 @@ module.exports = global.sequelize.define("OrderList", {
         StablePrice: {
             type: Sequelize.DECIMAL(6,2),
         },
-
+        
 });
  

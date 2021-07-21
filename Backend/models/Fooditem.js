@@ -1,6 +1,6 @@
 const Sequelize = require("sequelize");
 
-module.exports = global.sequelize.define("Fooditem", {
+Fooditem = global.sequelize.define("Fooditem", {
         id:{
             type: Sequelize.INTEGER(11),
             allowNull: false,
@@ -21,7 +21,8 @@ module.exports = global.sequelize.define("Fooditem", {
         },
         Number:{
             type: Sequelize.TINYINT(5)
-        }   
+        },  
 
 });
- 
+
+module.exports = Fooditem

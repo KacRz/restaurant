@@ -22,6 +22,7 @@ module.exports = global.sequelize.define("Address", {
         PostalCode: {
             type: Sequelize.STRING(7),
         },  
+        
 
 });
  

@@ -54,6 +54,10 @@ export default {
         products() {
             return this.$store.getters.getProducts;
         }
+    },
+    created()
+    {
+
     }
 }
 </script>

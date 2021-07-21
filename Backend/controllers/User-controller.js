@@ -11,8 +11,6 @@ const UserType = require("../models/UserType.js");
 const { Op } = require("sequelize");
 
 exports.validateUser = async (req, res) => {
-    console.log(res.body);
-    console.log(req.body);
     User.findOne({ where: {email: req.body.email } }).then(async function (user) {
 
         if (!user) {
@@ -32,24 +30,24 @@ exports.validateUser = async (req, res) => {
 };
 // Create and Save a new User - register or create
 exports.create = async (req, res) => {
-    User.findOne({ where: {email: req.body.email } }).then(async function (user)
+    User.findOne({ where: {email: req.body.data.email } }).then(async function (user)
     {
         if(!user)
         {
            var id = await User.create({
-                email: req.body.email,
-                password: req.body.password,
-                firstname: req.body.firstname,
-                lastname: req.body.lastname,
+                email: req.body.data.email,
+                password: req.body.data.password,
+                firstname: req.body.data.firstname,
+                lastname: req.body.data.lastname,
                 UserType_fk: 1
             }).id;
             await Address.create({
                 User_fk: id,
                 Country: "Poland",
-                City: req.body.City,
-                Street: req.body.Street,
-                HouseNumber: req.body.HouseNumber,
-                PostalCode: req.body.PostalCode               
+                City: req.body.data.City,
+                Street: req.body.data.Street,
+                HouseNumber: req.body.data.HouseNumber,
+                PostalCode: req.body.data.PostalCode               
             });
             res.send("user created");
         }
@@ -243,19 +241,19 @@ exports.fill_the_database_Offerts = (req, res) =>
     Category.create({id: 4,Name: 'Napoje'});
     Category.create({id: 5,Name: 'Sałatki'});
 
-    Fooditem.create({id: 1,Category_fk: 1, Discount_fk: null, Name: 'Spagetti Bolognese',Price: 29.99, isDishOfDay: false, IsAvalilable:true});
-    Fooditem.create({id: 2,Category_fk: 1, Discount_fk: null, Name: 'Spagetti Carbonare',Price: 39.99, isDishOfDay: false, IsAvalilable:true});
-    Fooditem.create({id: 3,Category_fk: 1, Discount_fk: null, Name: 'Spagetti z Tuńczykiem',Price: 23.99, isDishOfDay: false, IsAvalilable:true});
-    Fooditem.create({id: 4,Category_fk: 3, Discount_fk: null, Name: 'Hamburger',Price: 26.99, isDishOfDay: false, IsAvalilable:true});
-    Fooditem.create({id: 5,Category_fk: 3, Discount_fk: null, Name: 'Cheeseburger',Price: 20.99, isDishOfDay: false, IsAvalilable:true});
-    Fooditem.create({id: 6,Category_fk: 3, Discount_fk: null, Name: 'Amerykański burger',Price: 39.99, isDishOfDay: false, IsAvalilable:true});
-    Fooditem.create({id: 7,Category_fk: 2, Discount_fk: null, Name: 'Pizza margarita',Price: 15.99, isDishOfDay: false, IsAvalilable:true});
-    Fooditem.create({id: 8,Category_fk: 2, Discount_fk: null, Name: 'Pizza z Ananasem',Price: 18.99, isDishOfDay: false, IsAvalilable:true});
-    Fooditem.create({id: 9,Category_fk: 2, Discount_fk: null, Name: 'Pizza w stylu Nowojorskim',Price: 25.99, isDishOfDay: false, IsAvalilable:true});
-    Fooditem.create({id: 10,Category_fk: 4, Discount_fk: null, Name: 'Pepsi',Price: 10.00, isDishOfDay: false, IsAvalilable:true});
-    Fooditem.create({id: 11,Category_fk: 4, Discount_fk: null, Name: 'Mirinda',Price: 8.00, isDishOfDay: false, IsAvalilable:true});
-    Fooditem.create({id: 12,Category_fk: 5, Discount_fk: null, Name: 'Sałatka po grecku',Price: 8.99, isDishOfDay: false, IsAvalilable:true});
-    Fooditem.create({id: 13,Category_fk: 5, Discount_fk: null, Name: 'Sałatka Cezar',Price: 9.99, isDishOfDay: false, IsAvalilable:true});
+    Fooditem.create({id: 1,Category_fk: 1, Discount_fk: null, Name: 'Spagetti Bolognese',Price: 29.99, isDishOfDay: false, isAvalilable:true});
+    Fooditem.create({id: 2,Category_fk: 1, Discount_fk: null, Name: 'Spagetti Carbonare',Price: 39.99, isDishOfDay: false, isAvalilable:true});
+    Fooditem.create({id: 3,Category_fk: 1, Discount_fk: null, Name: 'Spagetti z Tuńczykiem',Price: 23.99, isDishOfDay: false, isAvalilable:true});
+    Fooditem.create({id: 4,Category_fk: 3, Discount_fk: null, Name: 'Hamburger',Price: 26.99, isDishOfDay: false, isAvalilable:true});
+    Fooditem.create({id: 5,Category_fk: 3, Discount_fk: null, Name: 'Cheeseburger',Price: 20.99, isDishOfDay: false, isAvalilable:true});
+    Fooditem.create({id: 6,Category_fk: 3, Discount_fk: null, Name: 'Amerykański burger',Price: 39.99, isDishOfDay: false, isAvalilable:true});
+    Fooditem.create({id: 7,Category_fk: 2, Discount_fk: null, Name: 'Pizza margarita',Price: 15.99, isDishOfDay: false, isAvalilable:true});
+    Fooditem.create({id: 8,Category_fk: 2, Discount_fk: null, Name: 'Pizza z Ananasem',Price: 18.99, isDishOfDay: false, isAvalilable:true});
+    Fooditem.create({id: 9,Category_fk: 2, Discount_fk: null, Name: 'Pizza w stylu Nowojorskim',Price: 25.99, isDishOfDay: false, isAvalilable:true});
+    Fooditem.create({id: 10,Category_fk: 4, Discount_fk: null, Name: 'Pepsi',Price: 10.00, isDishOfDay: false, isAvalilable:true});
+    Fooditem.create({id: 11,Category_fk: 4, Discount_fk: null, Name: 'Mirinda',Price: 8.00, isDishOfDay: false, isAvalilable:true});
+    Fooditem.create({id: 12,Category_fk: 5, Discount_fk: null, Name: 'Sałatka po grecku',Price: 8.99, isDishOfDay: false, isAvalilable:true});
+    Fooditem.create({id: 13,Category_fk: 5, Discount_fk: null, Name: 'Sałatka Cezar',Price: 9.99, isDishOfDay: false, isAvalilable:true});
 
 
     res.send("Created booking "+ new Date(2021, 7, 19, 10,00));

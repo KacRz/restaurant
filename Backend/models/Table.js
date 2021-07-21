@@ -9,6 +9,6 @@ module.exports = global.sequelize.define("Table", {
     Size: {
         type: Sequelize.INTEGER(3),
     },
-
+    
 });
 

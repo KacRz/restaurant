@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import '../Service/Service'
+
 import Service from '../Service/Service';
 export default {
     name: 'Login',

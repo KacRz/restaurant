@@ -14,7 +14,7 @@ class Service
         catch(err)
         {
             console.log(err);
-            return {isLogged: false};  
+
         }
     }
     //register

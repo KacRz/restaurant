@@ -21,7 +21,7 @@ export default {
 .homeitem {
     max-width: 750px;
     height: 200px;
-    background-color: rgb(110, 41, 41);
+    background-color: #1b1b1b;
     margin: 1em;
     flex: 1;
     border-radius: 10px;
@@ -62,11 +62,13 @@ export default {
     font-size: 2em;
     font-weight: bold;
     transition: transform 1s ease-in-out;
+    color: #1b1b1b;
+    text-shadow: -1px 0 #ffcd7c, 0 1px #ffcd7c, 1px 0 #ffcd7c, 0 -1px #ffcd7c;
 }
 
 @media (max-width: 880px) {
   .homeitem {
-    max-width: 600px;
+    max-width: 900px;
     height: 400px;
     
   }

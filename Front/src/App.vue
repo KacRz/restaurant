@@ -1,31 +1,22 @@
 <template>
-  <div style="width=100%" id="app">
-    <Sidebar />
-    <Background/>
-    <div class="MarginToSidebar" :style="{ 'margin-left': sidebarWidth }">
-      <Content-Component >
-        <router-view/>
-      </Content-Component >
+  <div id="app">
+    <Navbar />
+    <router-view style="margin-top: 130px"/>
   </div>
-</div>
 </template>
 
 <script>
-
-import Sidebar from '@/components/sidebar/Sidebar.vue'
-import { sidebarWidth } from '@/components/sidebar/state'
-import Background from './components/Background.vue'
-import ContentComponent from './components/ContentComponent.vue'
+import Navbar from '@/components/navbar/Navbar.vue'
 
 
 export default {
   components: {
-    Sidebar,
-    Background,
-    ContentComponent,
+    Navbar
   },
     setup() {
-    return { sidebarWidth }
+    return { 
+
+    }
   }
 }
 </script>
@@ -34,10 +25,17 @@ export default {
 <style>
 body, html
 {
-
-  width:100%;
-  height: 100%;
+  width: 100%;
   margin: 0;
+  padding: 0;
+
+  background: 
+    url(https://images.unsplash.com/32/Mc8kW4x9Q3aRR3RkP5Im_IMG_4417.jpg?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80)
+    no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 #app {
@@ -48,28 +46,9 @@ body, html
   color: #2c3e50;
 
   width: 100%;
-  height: 100%;
   margin: 0;
   padding: 0;
 
-  display: flex;
-  justify-content: center;
-}
-#nav {
-  padding: 30px;
-}
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-#nav a.router-link-exact-active {
-  color: #42b983;
-  
 }
 
-.MarginToSidebar
-{
-  height: 100%;
-
-}
 </style>

@@ -38,7 +38,6 @@
 </template>
 
 <script>
-
 import Service from '../Service/Service';
 export default {
     name: 'Login',
@@ -67,7 +66,7 @@ export default {
         },
 
         async handleSubmit() {
-            const tmp = await Service.login(this.email, this.password);
+        const tmp = await Service.login(this.email, this.password);
             if(tmp.data.isLogged)
             {
                 this.$router.push('/')
@@ -83,15 +82,12 @@ export default {
 
 <style scoped>
 .login-page {
-    background: rgb(165,42,42);
-    background: linear-gradient(146deg, rgba(165,42,42,1) 0%, rgba(140,49,49,1) 75%, rgba(165,42,42,1) 100%);
+    background-color: #1b1b1b;
     width: 40em;
-    margin-top: 1em;
     margin-left: auto;
     margin-right: auto;
-    box-sizing: border-box;
 
-    color: rgb(0, 0, 0);
+    color: rgb(255, 205, 124);
 
     display: flex;
     flex-direction: column;
@@ -115,9 +111,9 @@ export default {
 }
 
 .login-page__title {
-    background-color: rgb(119, 45, 45);
+    background-color: #2d2d2d;
     width: 100%;
-    color: rgb(0, 0, 0);
+    color: rgb(255, 205, 124);
 }
 
 .login-page__form-group {
@@ -141,7 +137,7 @@ export default {
 }
 
 .login-page__button {
-    background-color: rgb(31, 15, 12);
+    background-color: green;
     font-size: 1em;
     width: 70%;
     margin-top: 1em;
@@ -181,6 +177,7 @@ export default {
     margin-left: 0.6em;
 
     text-decoration: none;
+    color: rgb(202, 171, 120);
 }
 
 .login-page__error {

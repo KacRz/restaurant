@@ -28,10 +28,11 @@ export default {
 .homeinfo {
     max-width: 500px;
     height: 250px;
-    background-color: rgb(148, 39, 39);
+    background-color: rgba(27, 27, 27, 0.8);
     margin: 1em;
     box-sizing: border-box;
     flex: 1;
+    color: rgb(255, 205, 124);
 
     border-radius: 10px;
 
@@ -67,7 +68,7 @@ export default {
 @media (max-width: 880px) {
   .homeinfo {
     flex: 100%;
-    max-width: 600px;
+    max-width: 900px;
     height: 300px;
     box-sizing: border-box;
   }

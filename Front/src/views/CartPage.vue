@@ -69,11 +69,11 @@ export default {
 <style scoped>
 .cart-page {
     width: 100%;
-    background-color: brown;
+    background-color: #1b1b1b;
     margin-top: 1em;
 
     border-radius: 10px;
-    color: white;
+    color: rgb(255, 205, 124);
     overflow: hidden;
 
     display: flex;
@@ -89,7 +89,7 @@ export default {
     padding: 0.3em;
     font-size: 2em;
     
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid rgb(255, 205, 124);
 }
 .cart-page__title > span {
     padding-left: 0.3em;

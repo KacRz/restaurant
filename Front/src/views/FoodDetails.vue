@@ -65,14 +65,13 @@ export default {
 <style scoped>
 .addto-cart {
     width: 80%;
-    background: rgb(165,42,42);
-    background: linear-gradient(146deg, rgba(165,42,42,1) 0%, rgba(140,49,49,1) 75%, rgba(165,42,42,1) 100%);
+    background-color: #1b1b1b;
     margin-top: 2em;
 
     border: 1px solid black;
     border-radius: 10px;
 
-    color: white;
+    color: rgb(255, 205, 124);;
 
     display: flex;
     flex-direction: column;

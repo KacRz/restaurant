@@ -19,7 +19,7 @@ export default {
 name: "Localization",
 data: function()
 {
-return {city: 'Rzeszów', street: 'Wincentego Pola 34', temp: 'Qwant'}
+return {city: 'Rzeszów', street: 'Wincentego Pola 34', temp: 'Restauracja'}
 
 
 

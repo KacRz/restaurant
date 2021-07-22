@@ -1,19 +1,19 @@
 <template>
   <div class="fooditem">
       <div class="fooditem-top">
-          <span class="fooditem-top__number"> {{ number }} </span>
+          <span class="fooditem-top__number"> {{ Foodnumber }} </span>
           <img v-bind:src="imgsource" />
           <i class="fas fa-pizza-slice fooditem-top__bg" />
       </div>
       <div class="fooditem-content">
         <h4>
-            <a>{{ title }}</a>
+            <a>{{ Title }}</a>
         </h4>
         <p class="fooditem-content__description">
-            {{ description }}
+            {{ Description }}
         </p>
         <div class="fooditem-content__price">
-           Cena: {{ price }}zł
+           Cena: {{ Price }}zł
         </div>
       </div>
 
@@ -24,11 +24,12 @@
 export default {
     name: "Fooditem",
     props: {
-        title: { type: String, required: true },
-        description: { type: String, required: true },
-        price: { type: String, required: true },
+        Title: { type: String, required: true },
+        Description: { type: String, required: true },
+        Price: { type: String, required: true },
         imgsource: { type: String, required: true },
-        number: { type: String, required: true },
+        Foodnumber: { type: Number, required: true },
+        Name: { type: String, required: false }
     },
 }
 </script>
@@ -82,7 +83,7 @@ export default {
     padding: 0.2em;
 
     font-size: 2em;
-    color: rgb(255, 205, 124);;
+    color: rgb(255, 205, 124);
 
     position: absolute;
     right: 0;
@@ -93,8 +94,8 @@ export default {
 }
 
 .fooditem-top__bg {
-    color: rgba(27, 27, 27, 0.9);
-    width: 50%;
+    color: rgba(255, 205, 124, 0.7);
+    width: 30%;
     height: auto;
 
     margin-top: 1em;

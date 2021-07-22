@@ -38,5 +38,16 @@ class Service
             console.log(err);
         }
     }
+    // pobranie kategorii z menu
+    static category()
+    {
+        try {
+            return axios.get(url+'categories/');
+        }
+        catch(err)
+        {
+            console.log(err);
+        }
+    }
 }
 export default Service;

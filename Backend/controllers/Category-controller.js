@@ -14,8 +14,8 @@ exports.create = (req, res) => {
   });
 };
 
-exports.returnAll = (req,res)=>{
-    res.send(Category.findAll());
+exports.returnAll = async (req,res)=>{
+    res.send(await Category.findAll());
 
 }
 // Update a type by the id in the request

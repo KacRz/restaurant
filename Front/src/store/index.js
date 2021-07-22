@@ -7,7 +7,7 @@ export const store = createStore({
     {
         cart: cart,
         user: user,
-    
+
     }
 
 })

@@ -4,9 +4,9 @@
             <router-link to="/menu" class="addto-cart__exit">
                 <i class="fas fa-times-circle"></i>
             </router-link>
-          <span class="addto-cart__number"> {{ details.number }} </span>
+          <span class="addto-cart__number"> {{ details.Foodnumber }} </span>
           <div class="addto-cart__title">
-            <h1>{{ details.title }}</h1>
+            <h1>{{ details.Title }}</h1>
           </div>
           <div class="addto-cart__info-content">
               <div class="addto-cart__info-content-img">
@@ -14,10 +14,10 @@
               </div>
               <div class="addto-cart__info-content-description">
                 <p>
-                    {{ details.description }}
+                    {{ details.Description }}
                 </p>
                 <div class="addto-cart__price">
-                   Cena: {{ details.price }}zł
+                   Cena: {{ details.Price }}zł
                 </div>
               </div>
           </div>
@@ -116,7 +116,7 @@ export default {
     padding: 0.2em;
 
     font-size: 2em;
-    color: white;
+    color: rgb(255, 205, 124);
 
     position: absolute;
     left: 0;
@@ -163,8 +163,10 @@ export default {
 .addto-cart__info-content-img {
     width: 40%;
     height: 100%;
+    max-height: 400px;
     display: flex;
     overflow: hidden;
+
 
     justify-content: center;
     align-items: center;

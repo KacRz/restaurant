@@ -54,8 +54,10 @@ export default {
         },
         totalPrice() {
             let price = 0;
-            this.$store.state.cart.cartItems.map(el => {
-                price += el["quantity"] * el["price"]
+
+            this.$store.state.cartItems.map(el => {
+                price += el["quantity"] * el["Price"]
+
             })
             return price;
         },

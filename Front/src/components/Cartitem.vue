@@ -1,13 +1,13 @@
 <template>
   <div class="cart-element">
       <div class="cart-element__number">
-          {{ number }}.
+          {{ Foodnumber }}.
       </div>
       <div class="cart-element__title">
-          {{ title }}
+          {{ Title }}
       </div>
       <div class="cart-element__description">
-          {{ description }}
+          {{ Description }}
       </div>
       <div class="cart-element__info">
           <div class="cart-element__quantity">
@@ -22,7 +22,7 @@
               </div>
              
           </div>
-          Cena {{ price }}zł
+          Cena {{ Price }}zł
       </div>
   </div>
 </template>
@@ -31,11 +31,11 @@
 export default {
     name: "Cartitem",
     props: {
-        title: { type: String, required: true },
-        description: { type: String, required: true },
-        price: { type: String, required: true },
+        Title: { type: String, required: true },
+        Description: { type: String, required: true },
+        Price: { type: String, required: true },
         imgsource: { type: String, required: true },
-        number: { type: String, required: true },
+        Foodnumber: { type: String, required: true },
         quantity: { type: Number, required: true }
     },
     methods: {

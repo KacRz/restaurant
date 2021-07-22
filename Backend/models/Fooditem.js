@@ -7,7 +7,7 @@ Fooditem = global.sequelize.define("Fooditem", {
             autoIncrement: true,
             primaryKey: true,
         },
-        Name: {
+        Title: {
             type: Sequelize.STRING(30),
         },
         Price: {
@@ -19,9 +19,15 @@ Fooditem = global.sequelize.define("Fooditem", {
         isAvalilable: {
             type: Sequelize.TINYINT(1),
         },
-        Number:{
+        Foodnumber:{
             type: Sequelize.TINYINT(5)
-        },  
+        },
+        Description: {
+            type: Sequelize.STRING(60),
+        },
+        imgsource: {
+            type: Sequelize. STRING(200),
+        }
 
 });
 

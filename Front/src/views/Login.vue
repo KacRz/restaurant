@@ -69,6 +69,7 @@ export default {
         const tmp = await Service.login(this.email, this.password);
             if(tmp.data.isLogged)
             {
+                console.log(tmp);
                 this.$router.push('/')
             }             
             console.log(tmp.data.isLogged);

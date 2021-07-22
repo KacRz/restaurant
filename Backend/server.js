@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const mysql = require('mysql');
 const mysql2 = require('mysql2');
-
+const vars =  require('./Env.js')
 const app = express();
 
 //Middleware

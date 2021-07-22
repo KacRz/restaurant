@@ -29,6 +29,7 @@ export default {
         price: { type: String, required: true },
         imgsource: { type: String, required: true },
         number: { type: String, required: true },
+        Name: { type: String, required: true }
     },
 }
 </script>

@@ -6,7 +6,7 @@
                 <h1>Pizze</h1>
             </div>
             <div class="menu-category__row">
-                <div class="menu-category__element" v-for="item in products" :key="item.id">
+                <div class="menu-category__element" v-for="item in productList" :key="item.id">
                     <!--<Fooditem v-bind="item" v-on:click="onClickedItem(item.id)"/>-->
                     <Fooditem v-bind="item" v-on:click="foodDetails(item)" />
                 </div>
@@ -18,8 +18,6 @@
 
 <script>
 import Fooditem from '../components/Fooditem.vue'
-
-import AdditemToCart from '../components/AddItemToCart.vue'
 import Service from '../Service/Service.js'
 
 export default {
@@ -27,7 +25,8 @@ export default {
     data() {
         return {
             isHidden: true,
-            clickedItem: '',    
+            clickedItem: '',
+            productList: [], 
         }
     },
     components: {
@@ -42,25 +41,15 @@ export default {
                 name: 'food-details', params: item
             })
         },
-        onClickedItem(id) {
-            this.isHidden = !this.isHidden;
-            this.clickedItem = --id;
-        },
-        closeWindow() {
-            this.isHidden = true;
-        },
         addItemToCart() {
             this.$store.dispatch("addToCart", this.products[this.clickedItem]);
         },
-    },
-    computed: {
-        products() {
-            return this.$store.getters.getProducts;
-        }
+
     },
     async created()
     {
-        console.log(await Service.menu());
+        const tmp = await Service.menu();
+        Array.prototype.push.apply(this.productList, tmp.data);  
     }
 }
 </script>

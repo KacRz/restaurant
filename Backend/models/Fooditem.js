@@ -21,7 +21,10 @@ Fooditem = global.sequelize.define("Fooditem", {
         },
         Number:{
             type: Sequelize.TINYINT(5)
-        },  
+        },
+        Description: {
+            type: Sequelize.STRING(60),
+        }
 
 });
 

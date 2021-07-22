@@ -254,9 +254,11 @@ exports.fill_the_database_Offerts = (req, res) =>
     Category.create({id: 4,Name: 'Napoje'});
     Category.create({id: 5,Name: 'Sałatki'});
 
-    Fooditem.create({id: 1,Category_fk: 1, Discount_fk: null, Name: 'Spagetti Bolognese',Price: 29.99, isDishOfDay: false, isAvalilable:true});
-    Fooditem.create({id: 2,Category_fk: 1, Discount_fk: null, Name: 'Spagetti Carbonare',Price: 39.99, isDishOfDay: false, isAvalilable:true});
-    Fooditem.create({id: 3,Category_fk: 1, Discount_fk: null, Name: 'Spagetti z Tuńczykiem',Price: 23.99, isDishOfDay: false, isAvalilable:true});
+    Fooditem.create({id: 1,Category_fk: 1, Discount_fk: null, Name: 'Bolognese',Price: 29.99, isDishOfDay: false, isAvalilable:true, Description: 'mięso wołowe, pomidory, przyprawy'});
+    Fooditem.create({id: 2,Category_fk: 1, Discount_fk: null, Name: 'Carbonara',Price: 39.99, isDishOfDay: false, isAvalilable:true, Description: 'bekon, śmietana, przyprawy'});
+    Fooditem.create({id: 3,Category_fk: 1, Discount_fk: null, Name: 'Tuńczyk',Price: 23.99, isDishOfDay: false, isAvalilable:true, Description: 'tuńczyk, cebula, przyprawy'});
+    Fooditem.create({id: 14,Category_fk: 1, Discount_fk: null, Name: 'Szpinak',Price: 28.99, isDishOfDay: false, isAvalilable:true, Description: 'szpinak, śmietana, przyprawy'});
+    Fooditem.create({id: 15,Category_fk: 1, Discount_fk: null, Name: 'Meksyk',Price: 30.99, isDishOfDay: false, isAvalilable:true, Description: 'mięso wołowe, jalapeno, pomidory, przyprawy'});
     Fooditem.create({id: 4,Category_fk: 3, Discount_fk: null, Name: 'Hamburger',Price: 26.99, isDishOfDay: false, isAvalilable:true});
     Fooditem.create({id: 5,Category_fk: 3, Discount_fk: null, Name: 'Cheeseburger',Price: 20.99, isDishOfDay: false, isAvalilable:true});
     Fooditem.create({id: 6,Category_fk: 3, Discount_fk: null, Name: 'Amerykański burger',Price: 39.99, isDishOfDay: false, isAvalilable:true});

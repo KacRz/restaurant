@@ -42,25 +42,27 @@ export default {
     },
     methods: {
         addItem(item) {
-            this.$store.dispatch("addToCart", item);
+            this.$store.dispatch("cart/addToCart", item);
         },
         removeItem(item) {
-            this.$store.dispatch("removeItem", item);
+            this.$store.dispatch("cart/removeItem", item);
         }
     },
     computed: {
         cartItems() {
-            return this.$store.state.cartItems;
+            return this.$store.cart.state.cartItems;
         },
         totalPrice() {
             let price = 0;
+
             this.$store.state.cartItems.map(el => {
                 price += el["quantity"] * el["Price"]
+
             })
             return price;
         },
         countCart() {
-            return this.$store.state.cartItemCount;
+            return this.$store.state.cart.cartItemCount;
         }
     }
 }

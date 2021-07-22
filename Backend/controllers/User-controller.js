@@ -26,6 +26,7 @@ exports.validateUser = async (req, res) => {
                 Email: user.email,
                 FirstName: user.firstname,
                 LastName: user.lastname,
+                UserType: await UserType.findOne({attributes: ['NameType'], where:{id: user.UserType_fk}}).then(async function (user){return user.NameType}),
                 token: tok
             }
             res.status(200).send(data);

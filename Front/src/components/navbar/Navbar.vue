@@ -52,7 +52,7 @@ export default {
     },
     computed: {
         countCart() {
-            return this.$store.state.cartItemCount;
+            return this.$store.state.cart.cartItemCount;
         }
     }
 }

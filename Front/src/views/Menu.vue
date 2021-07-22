@@ -22,6 +22,7 @@
 
 <script>
 import Fooditem from '../components/Fooditem.vue'
+
 import Service from '../Service/Service.js'
 
 export default {
@@ -47,7 +48,7 @@ export default {
             })
         },
         addItemToCart() {
-            this.$store.dispatch("addToCart", this.products[this.clickedItem]);
+            this.$store.dispatch("cart/addToCart", this.products[this.clickedItem]);
         },
 
     },

@@ -61,21 +61,24 @@ exports.create = async (req, res) => {
                 HouseNumber: req.body.data.HouseNumber,
                 PostalCode: req.body.data.PostalCode               
             });
-            res.send("user created");
+            res.status(200).send("user created");
         }
         else{
             //create response thath user with that e-mail exists
-            res.send("user Exists");
+            res.status(400).send("user Exists");
         }
         
-    })
+    }).catch(err)
+    {
+        res.status(400).send("Error occured"+err);
+    }
     
 };
 
 // Retrieve all Users from the database.
 exports.findAll = async (req, res) => {
     User.findAll({attributes: ['id', 'UserType_fk','firstname','lastname', 'email'],where: {[Op.not]: [{UserType_fk: 1}]}}).then(function (users) {
-        res.send(users);
+        res.status(200).send(users);
     });
 };
 
@@ -83,8 +86,11 @@ exports.findAll = async (req, res) => {
 exports.findOne = async (req, res) => {
     await User.findOne({attributes: ['id', 'UserType_fk','firstname','lastname', 'email'],where: {id: req.params.id}}).then(async function (user)
     {
-        res.send(user);
-    });
+        res.status(200).send(user);
+    }).catch(err)
+    {
+        res.status(400).send("Error occured"+err);
+    };
 };
 
 // Update a User by the id in the request
@@ -105,24 +111,59 @@ exports.update = async (req, res) => {
             user.firstname = req.body.firstname;
             user.lastname = req.body.lastname
             await user.save();
-            res.send("user updated");
+            res.status(200).send("user updated");
         }        
-    })
+    }).catch(err)
+    {
+        res.status(400).send("Error occured"+err);
+    }
 };
 
 // Delete a User with the specified id in the request
 exports.delete = async (req, res) =>  {
+    console.log(req.params.id)
+    try{
     await User.findOne({where: {id: req.params.id}}).then(async function (user)
     {
         user.destroy();
-        res.send("user detroyed");
+        res.status(200).send("user detroyed");
     });
+    }
+    catch(err){
+        res.status(400).send("Error occured"+err);
+    }
 };
 
 // Delete all Users from the database.
 exports.deleteAll = (req, res) => {
   //its dangerous to create it
 };
+exports.createStaff = async (req, res) =>  {
+    await User.findOne({where: {email: req.body.data.email}}).then(async function (user)
+    {
+        if(user)
+        {
+            res.status(400).send("user updated");
+        }
+        else{
+            try{
+                await User.create({
+                    email: req.body.data.email,
+                    password: req.body.data.password,
+                    firstname: req.body.data.firstname,
+                    lastname: req.body.data.lastname,
+                    UserType_fk: req.body.data.userType,
+                }).id;        
+                res.status(200).send("user created");
+             }
+            catch(err){
+                res.status(400).send("Error occured"+err);
+            }
+        }
+    });
+};
+
+
 
 
 exports.fill_the_database_Users = (req, res) =>

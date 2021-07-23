@@ -11,13 +11,18 @@
            {{ email }}
         
             {{ UserType_fk }}
+            
         </h4>
+        
       </div>
-
+    <div class="delete-staff-button" v-on:click="deleteStaff(id)">
+        <i class="far fa-times-circle" style="font-size:2.5em"></i>
+    </div>
   </div>
 </template>
 
 <script>
+//import ManagerService from '../../Service/ManagerService'
 export default {
     name: "Fooditem",
     props: {
@@ -27,12 +32,43 @@ export default {
         email: { type: String, required: true },
         UserType_fk: { type: Number, required: true },
     },
+    methods:
+    {
+        deleteStaff(id)
+        {
+            
+            //ManagerService.delStaff(this.$store.state.user.token,this.$props.id);
+            this.$emit('delete', id)
+        }
+
+    }
 }
 </script>
 
 <style scoped>
-
-
+.delete-staff-button
+{
+    margin-bottom: auto;
+    position: absolute;
+    left: 10px;
+    top: 25%;
+    display: flex;
+    flex-direction: row;
+}
+.delete-staff-button:hover
+{
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+    color: rgb(247, 162, 25)
+}
+.delete-staff-button:active
+{
+   margin-left: auto;
+    display: flex;
+    flex-direction: row;
+     color: rgb(255, 220, 163)
+}
 .PersonPanel {
 
     
@@ -41,6 +77,7 @@ export default {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    position: relative;
 
     border-right: 3px solid black;
     border-bottom: 3px solid black;
@@ -70,7 +107,7 @@ export default {
     text-align: left;
     padding: 0.3em;
     margin: 0;
-
+    
     border-bottom: 1px solid rgb(255, 205, 124);;
 }
 

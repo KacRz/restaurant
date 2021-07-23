@@ -51,10 +51,11 @@ export const user = {
             }
         }
         ,
-        setIsLogged(status)
+        setIsLogged(state,status)
         {
             this.state.user.isLogged = status;
         },
+
   
     },
 
@@ -68,14 +69,42 @@ export const user = {
         LogOut:(context)=>
         {
             context.setUserType('');
-            context.setData('');
+            
 
         },
+
     },
 
     getters: {
         getProducts (state) {
             return state.foodlist;
+        },
+        getMode (state)
+        {
+            if(!state.isLogged)
+            {
+                return 0;
+            }
+            else
+            {
+                if(state.UserType =='Klient')
+                {
+                    return 1;
+                }
+                if(state.UserType =='Dostawca')
+                {
+                    return 2;
+                }
+                if(state.UserType =='Obsługa')
+                {
+                    return 3;
+                }
+                if(state.UserType =='Kierownik')
+                {
+                    return 4;
+                }
+
+            }
         }
     }
     

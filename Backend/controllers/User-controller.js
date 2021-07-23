@@ -12,34 +12,33 @@ const { Op } = require("sequelize");
 
 exports.validateUser = async (req, res) => {
     User.findOne({ where: {email: req.body.email } }).then(async function (user) {
-        var data= {
-            isLogged: false,
-            Email: '',
-            FirstName: '',
-            LastName: '',
-            id: ''
-        };
         if (!user) {
-            res.send(data);
+            res.status(400).send({Error:"Invalid Email and/or Password", isLogged: false});
             //res.redirect('/login');
         }
         else if (!(await user.validPassword(req.body.password)) ) {
-            res.send(data);
+            res.status(400).send({Error:"Invalid Email and/or Password", isLogged: false});
             //res.redirect('/login');
         } else {
+            const tok = await user.generateAuthToken();
             data={
                 isLogged: true,
                 Email: user.email,
                 FirstName: user.firstname,
                 LastName: user.lastname,
-                id: user.id
+                UserType: await UserType.findOne({attributes: ['NameType'], where:{id: user.UserType_fk}}).then(async function (user){return user.NameType}),
+                token: tok
             }
-            
-            res.send(data);
+            res.status(200).send(data);
 
         }
  
-    })
+    }).catch(function(err)
+    {
+        res.status(400).send({Error:"Something gone wrong", isLogged: false});
+    }
+    
+    )
 };
 // Create and Save a new User - register or create
 exports.create = async (req, res) => {

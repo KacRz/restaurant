@@ -8,7 +8,6 @@ class Service
     static login(email, password)
     {
         try{
-            console.log(email, password);
             return axios.post(url+'login/', {email, password});
         }
         catch(err)

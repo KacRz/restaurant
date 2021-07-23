@@ -1,5 +1,7 @@
 const Sequelize = require("sequelize");
-var bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
 User = global.sequelize.define("User", {
         id:{
             type: Sequelize.INTEGER(11),
@@ -33,5 +35,12 @@ User.prototype.hashPass = async function() {
     const salt = await bcrypt.genSalt(10); //whatever number you want
     this.password = await bcrypt.hash(this.password, salt);
 }
+User.prototype.generateAuthToken = async function()
+{
+    const token = jwt.sign({ _id: this._id }, process.env.JWTPRIVATEKEY);
+    return token.toString().valueOf();
+}
+
+
 module.exports = User;
     

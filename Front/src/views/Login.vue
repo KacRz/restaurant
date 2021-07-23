@@ -39,6 +39,7 @@
 
 <script>
 import Service from '../Service/Service';
+
 export default {
     name: 'Login',
     data() {
@@ -66,10 +67,11 @@ export default {
         },
 
         async handleSubmit() {
-        const tmp = await Service.login(this.email, this.password);
+            const tmp = await Service.login(this.email, this.password);
             if(tmp.data.isLogged)
             {
-                this.$router.push('/')
+                this.$store.dispatch('user/SignIn', tmp.data);
+                this.$router.push('/');
             }             
             console.log(tmp.data.isLogged);
         }

@@ -45,10 +45,10 @@ export default {
     },
     methods: {
         addToCart() {
-            this.$store.dispatch("addToCart", this.details);
+            this.$store.dispatch("cart/addToCart", this.details);
         },
         removeItem() {
-            this.$store.dispatch("removeItem", this.details);
+            this.$store.dispatch("cart/removeItem", this.details);
         }
     },
     created() {

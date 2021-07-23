@@ -3,7 +3,7 @@
         <div class="navMobile" :class="{'open':showNav}">
             <NavMobile />
         </div>
-        <router-link to="/"><img src="@/assets/logo.jpg" alt="logo" ></router-link>
+        <router-link to="/"><img src="@/assets/logo.jpg" alt="logo" title="http://www.freepik.com Designed by Freepik"></router-link>
         <ul v-if="!mobileView">
             <li v-if="!logged">
                 <router-link to="/login" class="link"><i class="fas fa-user icon"></i>Zaloguj się</router-link>
@@ -63,6 +63,7 @@ export default {
     computed: {
         countCart() {
             return this.$store.state.cart.cartItemCount;
+
         },
         logged()
         {
@@ -75,6 +76,7 @@ export default {
         isManager()
         {
             return (this.$store.getters['user/getMode'] == 'Kierownik')
+
         }
     },
 

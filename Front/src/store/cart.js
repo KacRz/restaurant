@@ -47,5 +47,8 @@ export const cart = {
         }
     },
 
-    
+    getters: {
+
+    }
+
 }

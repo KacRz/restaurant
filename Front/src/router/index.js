@@ -8,6 +8,7 @@ import CartPage from '../views/CartPage.vue'
 import Reservation from '../views/Reservation.vue'
 import FoodDetails from '../views/FoodDetails.vue'
 import Settings from '../views/Settings.vue'
+import Staff from '../views/Staff.vue'
 
 const routes = [
   {
@@ -56,6 +57,11 @@ const routes = [
     path: '/menu/food-details',
     name: 'food-details',
     component: FoodDetails
+  },
+  {
+    path: '/staff',
+    name: 'staff',
+    component: Staff
   }
 ]
 

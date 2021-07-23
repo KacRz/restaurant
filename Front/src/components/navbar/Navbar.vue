@@ -5,14 +5,20 @@
         </div>
         <router-link to="/"><img src="@/assets/logo.jpg" alt="logo" ></router-link>
         <ul v-if="!mobileView">
-            <li>
+            <li v-if="!logged">
                 <router-link to="/login" class="link"><i class="fas fa-user icon"></i>Zaloguj się</router-link>
+            </li>
+            <li v-else>
+                <router-link to="/" class="link" exact v-on:click="logOut()"><i class="fas fa-user icon"></i>Wyloguj się</router-link>
             </li>
             <li>
                 <router-link to="/menu" class="link"><i class="fas fa-utensils icon"></i>Menu</router-link>
             </li>
-            <li>
+            <li v-if="isClient">
                 <router-link to="/cart" class="link"><i class="fas fa-shopping-cart icon"></i>Koszyk ({{countCart}})</router-link>
+            </li>
+            <li v-if="isManager">
+                <router-link to="/staff" class="link"><i class="fab fa-creative-commons-by"></i>Ogsługa</router-link>
             </li>
             <li>
                 <router-link to="/reservation" class="link"><i class="fas fa-glass-cheers icon"></i>Rezerwacja</router-link>
@@ -44,6 +50,10 @@ export default {
         },
         showNavigation() {
             this.showNav = !this.showNav;
+        },
+         logOut()
+        {
+            this.$store.dispatch('user/LogOut');
         }
     },
     created() {
@@ -52,9 +62,22 @@ export default {
     },
     computed: {
         countCart() {
-            return this.$store.state.cartItemCount;
+            return this.$store.state.cart.cartItemCount;
+        },
+        logged()
+        {
+            return this.$store.getters['user/getLogged'];
+        },
+        isClient()
+        {
+            return (this.$store.getters['user/getMode'] == 'Guest' || this.$store.getters['user/getMode'] == 'Klient')
+        },
+        isManager()
+        {
+            return (this.$store.getters['user/getMode'] == 'Kierownik')
         }
-    }
+    },
+
 }
 </script>
 

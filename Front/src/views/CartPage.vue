@@ -50,7 +50,7 @@ export default {
     },
     computed: {
         cartItems() {
-            return this.$store.cart.state.cartItems;
+            return this.$store.state.cart.cartItems;
         },
         totalPrice() {
             let price = 0;

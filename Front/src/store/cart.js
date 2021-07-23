@@ -99,7 +99,7 @@ export const cart = {
 
     getters: {
         getProducts (state) {
-            return state.cart.foodlist;
+            return state.foodlist;
         }
     }
 

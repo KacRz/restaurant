@@ -5,7 +5,7 @@ import { store } from "./store/index"
 
 
 import '@fortawesome/fontawesome-free/js/all'
-console.log(store)
+
 createApp(App)
     .use(store)    
     .use(router)

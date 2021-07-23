@@ -20,6 +20,7 @@
                 </div>
 
                 <Summary v-bind:totalPrice="totalPrice"/>
+                
             </div>
             
         </div>
@@ -50,12 +51,12 @@ export default {
     },
     computed: {
         cartItems() {
-            return this.$store.cart.state.cartItems;
+            return this.$store.state.cart.cartItems;
         },
         totalPrice() {
             let price = 0;
 
-            this.$store.state.cartItems.map(el => {
+            this.$store.state.cart.cartItems.map(el => {
                 price += el["quantity"] * el["Price"]
 
             })

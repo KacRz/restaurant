@@ -8,7 +8,11 @@ import CartPage from '../views/CartPage.vue'
 import Reservation from '../views/Reservation.vue'
 import FoodDetails from '../views/FoodDetails.vue'
 import Settings from '../views/Settings.vue'
+
 import Staff from '../views/Staff.vue'
+
+import Order from '../views/Order.vue'
+
 
 const routes = [
   {
@@ -47,6 +51,11 @@ const routes = [
     path: '/cart',
     name: 'Cart',
     component: CartPage
+  },
+  {
+    path: '/cart/order',
+    name: 'Order',
+    component: Order
   },
   {
     path: '/reservation',

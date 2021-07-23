@@ -76,8 +76,9 @@ export default {
             console.log(tmp.data.isLogged);
         }
     },
-    setup() {
-        
+    created() {
+        if(this.$store.getters['user/getLogged'])
+            this.$router.push("/");
     },
 }
 </script>

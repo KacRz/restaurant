@@ -83,7 +83,7 @@ exports.findAll = async (req, res) => {
 exports.findOne = async (req, res) => {
     await User.findOne({attributes: ['id', 'UserType_fk','firstname','lastname', 'email'],where: {id: req.params.id}}).then(async function (user)
     {
-        res.send(User);
+        res.send(user);
     });
 };
 

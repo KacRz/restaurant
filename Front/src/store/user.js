@@ -1,4 +1,5 @@
 
+
 export const user = {
     namespaced: true,
     state: {
@@ -65,12 +66,12 @@ export const user = {
 
             context.commit("setUserType", payload.UserType);
             context.commit("setData", payload);
+            
         },
         LogOut:(context)=>
         {
-            context.setUserType('');
-            
-
+            context.commit("setUserType", '')
+            context.commit("setData", '');
         },
 
     },
@@ -81,30 +82,12 @@ export const user = {
         },
         getMode (state)
         {
-            if(!state.isLogged)
-            {
-                return 0;
-            }
-            else
-            {
-                if(state.UserType =='Klient')
-                {
-                    return 1;
-                }
-                if(state.UserType =='Dostawca')
-                {
-                    return 2;
-                }
-                if(state.UserType =='Obsługa')
-                {
-                    return 3;
-                }
-                if(state.UserType =='Kierownik')
-                {
-                    return 4;
-                }
-
-            }
+            return state.userType;
+            
+        },
+        getLogged(state)
+        {
+            return state.isLogged;
         }
     }
     

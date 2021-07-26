@@ -1,5 +1,6 @@
 <template>
-    <div class="register-page">
+    <!--<for unregistered user>-->
+    <div class="register-page" v-if="!isManager()">
 
         <form 
             class="register-page__form" 
@@ -64,10 +65,56 @@
 
         </form>
     </div>
+    <div class="register-page" v-else>
+
+        <form 
+            class="register-page__form" 
+            @submit.prevent="checkForm2"
+            method="post">
+
+            <div class="register-page__title">
+                <!--<router-link to="/login" style="register-page__title-link">Zaloguj się</router-link>-->
+                <h3>Nie masz konta? Załóż je!</h3>
+            </div>
+
+            <div class="register-page__error" v-if="errors.length">
+                    <div class="register-page__error-item" v-for="(error, index) in errors" :key="index">
+                        {{ error }}
+                    </div>
+            </div>
+
+            <div class="register-page__form-title">
+                <h4>1. Dane logowania</h4>
+            </div>
+            <div class="register-page__form-group">
+                <label for="email">Email*</label>
+                <input type="email" v-model="email" id="email" class="register-page__input" placeholder="Email" required/>
+            </div>
+            <div class="register-page__form-group">
+                <label for="password">Hasło*</label>
+                <input type="password" v-model="password" minlength="8" id="password" class="register-page__input" placeholder="Hasło" required/>
+            </div>
+            <div class="register-page__form-group">
+                <label for="password2">Powtórz hasło*</label>
+                <input type="password" v-model="password2" minlength="8" id="password2" class="register-page__input" placeholder="Powtórz hasło" required/>
+            </div>
+            <div class="register-page__form-group">
+                <label for="User type">Typ użytkownika*</label>
+                <select v-model="usertype" id="usertype">
+                    <option disabled value=0>Wybierz typ użytkownika</option>
+                        <option v-bind:value="option.value" v-for="option in options" v-bind:key="option.value" >{{ option.text }}</option>
+                </select>
+            </div>
+
+            <button type="submit" class="register-page__button">Zarejestruj</button>
+
+        </form>
+    </div>
 </template>
 
 <script>
 import Service from '../Service/Service';
+import ManagerService from '../Service/ManagerService';
 export default {
     name: 'Register',
     data() {
@@ -81,7 +128,9 @@ export default {
             city: '',
             street: '',
             housenumber: '',
-            postalcode: ''
+            postalcode: '',
+            options: [{text: 'Dostawca', value: 2},{text: 'Obsługa', value: 3},{text: 'Kierownik', value: 4}],
+            usertype: 0,
         }
     },
     methods: {
@@ -108,7 +157,23 @@ export default {
                 return true;
             }
         },
+        checkForm2() {
+            this.errors = [];
 
+            if (this.password !== this.password2){
+                this.errors.push('Podane hasła nie są identyczne');
+            }
+            
+
+            if (!this.email || !this.password || !this.password2 || !this.usertype ) {
+                this.errors.push('Musisz wypełnić wszystkie pola');
+            }
+
+            if (this.email && this.password && this.password2 && this.usertype ) {
+                this.handleSubmit();
+                return true;
+            }
+        },
         async handleSubmit() {
             const data = {
                 email: this.email,
@@ -120,8 +185,17 @@ export default {
                 street: this.street,
                 housenumber: this.housenumber,
                 postalcode: this.postalcode,
+                usertype: this.usertype
             }
-            console.log(await Service.register(data));
+            if(!this.usertype)
+            {
+                //zwykły user
+                console.log(await Service.register(data));
+            }
+            else{
+                console.log(await ManagerService.addStaff(this.$store.getters['user/getToken'],data));
+            }
+            
             
         },
 
@@ -129,7 +203,19 @@ export default {
             let re = /^(([0-9]{2}-[0-9]{3}))$/;
             return re.test(postalcode);
         },
+        isManager()
+        {
+            return this.$store.getters['user/isManager'];
+        },
 
+    },
+    created()
+    {
+
+        if(this.$store.getters['user/getLogged'] && !this.isManager())
+        {
+            this.$router.push("/");
+        }
     },
     setup() {
         

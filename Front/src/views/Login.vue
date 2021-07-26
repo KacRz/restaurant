@@ -73,7 +73,6 @@ export default {
                 this.$store.dispatch('user/SignIn', tmp.data);
                 this.$router.push('/');
             }             
-            console.log(tmp.data.isLogged);
         }
     },
     created() {

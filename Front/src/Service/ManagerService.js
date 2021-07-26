@@ -18,7 +18,7 @@ class ManagerService
     static async addStaff(toke, dat)
     {
         try{
-            return await axios.post(url+'user/all/',{ headers: {"x-auth-token" :  toke}, body:{data: dat} });
+            return await axios.post(url+'user/addStaf/',{data: dat },{ headers: {"x-auth-token" :  toke}});
         }
         catch(err)
         {
@@ -30,7 +30,7 @@ class ManagerService
     {
         console.log(uid)
         try{
-            return await axios.delete(url+'user/del/'+uid, { headers: {"x-auth-token" :  toke}, params:{id: uid} });
+            return await axios.delete(url+'user/del/'+uid, { headers: {"x-auth-token" :  toke} });
         }
         catch(err)
         {

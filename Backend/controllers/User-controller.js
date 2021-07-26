@@ -141,9 +141,10 @@ exports.deleteAll = (req, res) => {
 exports.createStaff = async (req, res) =>  {
     await User.findOne({where: {email: req.body.data.email}}).then(async function (user)
     {
+
         if(user)
         {
-            res.status(400).send("user updated");
+            res.status(400).send("user exists");
         }
         else{
             try{
@@ -152,7 +153,7 @@ exports.createStaff = async (req, res) =>  {
                     password: req.body.data.password,
                     firstname: req.body.data.firstname,
                     lastname: req.body.data.lastname,
-                    UserType_fk: req.body.data.userType,
+                    UserType_fk: req.body.data.usertype,
                 }).id;        
                 res.status(200).send("user created");
              }

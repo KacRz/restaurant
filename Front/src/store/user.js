@@ -19,22 +19,22 @@ export const user = {
     mutations: {
         setData(state,dat)
         {
-            if(dat =='' && this.state.user.userType =='Guest')
+            if(dat =='' && state.userType =='Guest')
             {
-                this.state.user.token = '';
-                this.state.user.data.Email = '';
-                this.state.user.data.Firstname = '';
-                this.state.user.data.Lastname = '';
-                this.state.user.Permissions = {};
-                this.state.user.isLogged = dat.isLogged;
+                state.token = '';
+                state.data.Email = '';
+                state.data.Firstname = '';
+                state.data.Lastname = '';
+                state.Permissions = {};
+                state.isLogged = dat.isLogged;
             }
             else{
-                this.state.user.token = dat.token;
-                this.state.user.Permissions = dat.Permissions;
-                this.state.user.data.Email = dat.Email;
-                this.state.user.data.Lastname = dat.LastName;
-                this.state.user.data.Firstname = dat.FirstName;
-                this.state.user.isLogged = dat.isLogged;
+                state.token = dat.token;
+                state.Permissions = dat.Permissions;
+                state.data.Email = dat.Email;
+                state.data.Lastname = dat.LastName;
+                state.data.Firstname = dat.FirstName;
+                state.isLogged = dat.isLogged;
 
             }
         },
@@ -45,16 +45,16 @@ export const user = {
             
             if(types.includes(uType) && typeof uType == 'string')
             {
-                this.state.user.userType = uType;
+                state.userType = uType;
             }
             else{
-                this.state.user.userType = 'Guest';
+                state.userType = 'Guest';
             }
         }
         ,
         setIsLogged(state,status)
         {
-            this.state.user.isLogged = status;
+            state.isLogged = status;
         },
 
   
@@ -88,6 +88,20 @@ export const user = {
         getLogged(state)
         {
             return state.isLogged;
+        },
+        getToken(state)
+        {
+            return state.token;
+        }        ,
+        getEmail(state)
+        {
+            return state.data.Email;
+        },
+        isManager(state){
+            return (state.userType == 'Kierownik' && state.isLogged && state.token != '');
+        },
+        isStaff(state){
+            return ((state.userType == 'Kierownik' || state.userType == 'Obsługa')&& state.isLogged && state.token != '');
         }
     }
     

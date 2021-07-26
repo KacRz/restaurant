@@ -13,6 +13,9 @@ export const user = {
         userType: 'Guest',    
         Permissions:{
 
+        },
+        Addresses: {
+
         }
     },
 
@@ -29,12 +32,14 @@ export const user = {
                 state.isLogged = dat.isLogged;
             }
             else{
+
                 state.token = dat.token;
                 state.Permissions = dat.Permissions;
                 state.data.Email = dat.Email;
                 state.data.Lastname = dat.LastName;
                 state.data.Firstname = dat.FirstName;
                 state.isLogged = dat.isLogged;
+
 
             }
         },
@@ -56,7 +61,10 @@ export const user = {
         {
             state.isLogged = status;
         },
-
+        setUserAdresses(state, data) {
+            this.state.user.Addresses = data;
+            
+        }
   
     },
 
@@ -73,7 +81,13 @@ export const user = {
             context.commit("setUserType", '')
             context.commit("setData", '');
         },
-
+        setAddress: (context, payload) =>
+        {
+            context.commit("setUserAdresses", payload);
+        },
+        updateData: (context, payload) => {
+            context.commit("setData", payload);
+        }
     },
 
     getters: {
@@ -83,25 +97,34 @@ export const user = {
         getMode (state)
         {
             return state.userType;
-            
         },
         getLogged(state)
         {
             return state.isLogged;
         },
+
         getToken(state)
         {
             return state.token;
-        }        ,
-        getEmail(state)
-        {
-            return state.data.Email;
         },
+
         isManager(state){
             return (state.userType == 'Kierownik' && state.isLogged && state.token != '');
         },
         isStaff(state){
             return ((state.userType == 'Kierownik' || state.userType == 'Obsługa')&& state.isLogged && state.token != '');
+
+        getAddresses(state) {
+            return state.Addresses;
+        },
+        getAccountData(state) {
+            return state.data;
+        },
+
+        getEmail(state)
+        {
+            return state.data.Email;
+
         }
     }
     

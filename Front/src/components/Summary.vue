@@ -6,13 +6,13 @@
                 <div class="one-address" v-for="(address, index) in addresslist" :key="index">
                     <input name="addresRadio" type="radio" value="{{ index }}" class="selected" v-on:click="toggleAddress(index)"/>
                     <span>
-                        {{ address.city }}
+                        {{ address.City }}
                     </span>
                     <span>
-                        {{ address.street }} {{ address.housenumber }}
+                        {{ address.Street }} {{ address.HouseNumber }}
                     </span>
                     <span>
-                        {{ address.postalcode }}
+                        {{ address.PostalCode }}
                     </span>
                 </div>
             </div>
@@ -57,10 +57,7 @@ export default {
             housenumber: '',
             postalcode: '',
             selectedAddress: '',
-            addresslist: [
-                { city: 'Rzeszów', street: 'Dąbrowskiego', housenumber: '100', postalcode: '35-210' },
-                { city: 'Kraków', street: 'Dmowskiego', housenumber: '64/128', postalcode: '31-215' }
-            ]
+            addresslist: [  ]
         }
     },
     methods: {
@@ -91,12 +88,9 @@ export default {
                 }
             }   
                 // Obsługa zamówienia dla niezalogowanego
-                console.log(this.email);
                 alert("Zamówienie przyjęto");
             }
-            }
-            
-            
+            }          
             },
         toggleAddress(index) {
             this.selectedAddress = index;
@@ -112,9 +106,11 @@ export default {
     },
     computed: {
         logged() {
-            //return this.$store.state.user.isLogged;
-            return true;
+            return this.$store.state.user.isLogged;
         },
+    },
+    created() {
+        this.addresslist = this.$store.getters['user/getAddresses'];
     }
 }
 </script>

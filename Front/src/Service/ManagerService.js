@@ -15,6 +15,7 @@ class ManagerService
             return {err};            
         }
     }
+
     static async addStaff(toke, dat)
     {
         try{
@@ -38,6 +39,7 @@ class ManagerService
             return {err};            
         }
     }
+
     
 }
 export default ManagerService

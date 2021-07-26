@@ -49,5 +49,43 @@ class Service
             console.log(err);
         }
     }
+    static getAddresses(email)
+    {
+        try {
+            return axios.get(url+'address/'+email);
+        }
+        catch(err) {
+            console.log(err);
+        }
+    }
+    static addNewAddress(toke, email, dat) {
+        try {
+            return axios.post(url+'address/addtoclient/',
+            {data: dat, email},
+            { headers: {"x-auth-token" :  toke}});
+        }
+        catch(err) {
+            console.log(err);
+        }
+    }
+    static deleteAddress(toke, adresid) {
+        try {
+            return axios.delete(url+'address/delete/'+adresid,
+            { headers: {"x-auth-token" :  toke}});
+        }
+        catch(err) {
+            console.log(err);
+        }
+    }
+    static updateUserData(toke, dat) {
+        try {
+            return axios.put(url+'user/updateSmall',
+            { data: dat },
+            { headers: {"x-auth-token" :  toke}});
+        }
+        catch(err) {
+            console.log(err);
+        }
+    }
 }
 export default Service;

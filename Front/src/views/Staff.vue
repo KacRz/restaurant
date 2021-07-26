@@ -1,7 +1,7 @@
 <template>
     <div class="staff">
         <ul class="staff-list">
-        <li v-for="person in staff.data" :key="person.id"><PersonPanel v-bind="person" @delete= deletePerson /></li>
+        <li v-for="person in staff.data" :key="person.id"><PersonPanel v-bind="person" /></li>
         </ul>         
     </div>
 </template>
@@ -22,15 +22,7 @@ export default {
             this.$router.push("/");
         else{
             this.staff = await ManagerService.getStaff(this.$store.state.user.token);
-            
-        }
-    },
-    methods:
-    {
-        deletePerson(id)
-        {
-            console.log("Jebać poziomke", this.staff.data.indexOf(id))
-            
+            console.log(this.staff.data)
         }
     }
 

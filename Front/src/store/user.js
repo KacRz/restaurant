@@ -13,6 +13,9 @@ export const user = {
         userType: 'Guest',    
         Permissions:{
 
+        },
+        Addresses: {
+
         }
     },
 
@@ -34,8 +37,7 @@ export const user = {
                 this.state.user.data.Email = dat.Email;
                 this.state.user.data.Lastname = dat.LastName;
                 this.state.user.data.Firstname = dat.FirstName;
-                this.state.user.isLogged = dat.isLogged;
-
+                this.state.user.isLogged = dat.isLogged;             
             }
         },
         setUserType(state, uType)
@@ -56,7 +58,10 @@ export const user = {
         {
             this.state.user.isLogged = status;
         },
-
+        setUserAdresses(state, data) {
+            this.state.user.Addresses = data;
+            
+        }
   
     },
 
@@ -73,7 +78,13 @@ export const user = {
             context.commit("setUserType", '')
             context.commit("setData", '');
         },
-
+        setAddress: (context, payload) =>
+        {
+            context.commit("setUserAdresses", payload);
+        },
+        updateData: (context, payload) => {
+            context.commit("setData", payload);
+        }
     },
 
     getters: {
@@ -83,11 +94,24 @@ export const user = {
         getMode (state)
         {
             return state.userType;
-            
         },
         getLogged(state)
         {
             return state.isLogged;
+        },
+        getAddresses(state) {
+            return state.Addresses;
+        },
+        getAccountData(state) {
+            return state.data;
+        },
+        getToken(state)
+        {
+            return state.token;
+        },
+        getEmail(state)
+        {
+            return state.data.Email;
         }
     }
     

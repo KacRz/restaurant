@@ -60,7 +60,7 @@ export default {
         Array.prototype.push.apply(this.productList, tmp.data);
         Array.prototype.push.apply(this.productCategories, tmp2.data);
 
-        // I know this is bad but i dunno how to do it :( 
+        // I know this is bad but i dunno how to do it better :( 
 
         for (let i=0; i < this.productCategories.length; i++) {
             let temp = [];

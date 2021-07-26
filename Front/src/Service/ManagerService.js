@@ -15,29 +15,6 @@ class ManagerService
             return {err};            
         }
     }
-    static async addStaff(toke, dat)
-    {
-        try{
-            return await axios.post(url+'user/all/',{ headers: {"x-auth-token" :  toke}, body:{data: dat} });
-        }
-        catch(err)
-        {
-            console.log(err);
-            return {err};            
-        }
-    }
-    static async delStaff(toke, uid)
-    {
-        console.log(uid)
-        try{
-            return await axios.delete(url+'user/del/'+uid, { headers: {"x-auth-token" :  toke}, params:{id: uid} });
-        }
-        catch(err)
-        {
-            console.log(err);
-            return {err};            
-        }
-    }
     
 }
 export default ManagerService

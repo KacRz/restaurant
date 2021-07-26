@@ -76,7 +76,7 @@ export default {
                 this.$store.dispatch('user/setAddress', tmp2.data);
                 this.$router.push('/');
             }             
-            console.log(this.$store.state.user.Addresses);
+
         }
     },
     created() {

@@ -143,6 +143,35 @@ exports.deleteAll = (req, res) => {
   //its dangerous to create it
 };
 
+exports.createStaff = async (req, res) =>  {
+    await User.findOne({where: {email: req.body.data.email}}).then(async function (user)
+    {
+
+        if(user)
+        {
+            res.status(400).send("user exists");
+        }
+        else{
+            try{
+                await User.create({
+                    email: req.body.data.email,
+                    password: req.body.data.password,
+                    firstname: req.body.data.firstname,
+                    lastname: req.body.data.lastname,
+                    UserType_fk: req.body.data.usertype,
+                }).id;        
+                res.status(200).send("user created");
+             }
+            catch(err){
+                res.status(400).send("Error occured"+err);
+            }
+        }
+    });
+};
+
+
+
+
 
 exports.fill_the_database_Users = (req, res) =>
 {

@@ -1,9 +1,14 @@
 <template>
     <div class="staff">
         <ul class="staff-list">
+
         <li v-for="person in staff.data" :key="person.id"><PersonPanel v-bind="person" @delete= deletePerson /></li>
         </ul>
         <AddStaffComponent />         
+
+        <li v-for="person in staff.data" :key="person.id"><PersonPanel v-bind="person" /></li>
+        </ul>         
+
     </div>
 </template>
 
@@ -24,6 +29,7 @@ export default {
         if(!this.$store.getters['user/isManager'])
             this.$router.push("/");
         else{
+
             this.staff = await ManagerService.getStaff(this.$store.getters['user/getToken']);
             await this.staff.data.splice(this.searchEmailInData(this.$store.getters['user/getEmail']),1)
         }
@@ -88,6 +94,7 @@ export default {
                 }
             }
                 return -1;
+
         }
         
     }

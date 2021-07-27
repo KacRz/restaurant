@@ -45,15 +45,20 @@ router.post('/order/create/',orderlist_contr.create);
 router.put('/order/one/:id',orderlist_contr.find);
 router.put('/order/:order_fk',orderlist_contr.findbyOrderFk);
 //users
-router.delete('/user/del/:id', auth,user_contr.delete);
+router.delete('/user/:id', auth,user_contr.delete);
 router.post('/register', auth,user_contr.create);
 router.post('/login', user_contr.validateUser);
 router.post('/user/update', auth,user_contr.update);
 router.get('/user/all', auth,user_contr.findAll);
-router.post('/user/addStaf', auth,user_contr.createStaff);
+
+//user update from settings page
+router.put('/user/updateSmall', auth, user_contr.updateSmall);
 
 //addresses
 router.get('/address', addrress_contr.findAll);
+router.get('/address/:email', addrress_contr.findbyMail);
+router.post('/address/addtoclient', auth, addrress_contr.create);
+router.delete('/address/delete/:id', auth, addrress_contr.delete);
 
 //testing data
 router.get('/fill_the_database/users', user_contr.fill_the_database_Users);

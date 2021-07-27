@@ -61,24 +61,21 @@ exports.create = async (req, res) => {
                 HouseNumber: req.body.data.HouseNumber,
                 PostalCode: req.body.data.PostalCode               
             });
-            res.status(200).send("user created");
+            res.send("user created");
         }
         else{
             //create response thath user with that e-mail exists
-            res.status(400).send("user Exists");
+            res.send("user Exists");
         }
         
-    }).catch(err)
-    {
-        res.status(400).send("Error occured"+err);
-    }
+    })
     
 };
 
 // Retrieve all Users from the database.
 exports.findAll = async (req, res) => {
     User.findAll({attributes: ['id', 'UserType_fk','firstname','lastname', 'email'],where: {[Op.not]: [{UserType_fk: 1}]}}).then(function (users) {
-        res.status(200).send(users);
+        res.send(users);
     });
 };
 
@@ -86,12 +83,28 @@ exports.findAll = async (req, res) => {
 exports.findOne = async (req, res) => {
     await User.findOne({attributes: ['id', 'UserType_fk','firstname','lastname', 'email'],where: {id: req.params.id}}).then(async function (user)
     {
-        res.status(200).send(user);
-    }).catch(err)
-    {
-        res.status(400).send("Error occured"+err);
-    };
+        res.send(user);
+    });
 };
+
+exports.updateSmall = async(req, res) => {
+
+    User.findOne({ where: {email: req.body.data.email} }).then(async function (user)
+    {
+        console.log(user);
+        if (!user) {
+            res.send("user doesnt exist");
+        }
+        else {
+            user.email = req.body.data.email;
+            user.firstname = req.body.data.firstname;
+            user.lastname = req.body.data.lastname;
+            await user.save();
+            res.send("user updated");
+        }
+    })
+
+}
 
 // Update a User by the id in the request
 exports.update = async (req, res) => {
@@ -111,33 +124,25 @@ exports.update = async (req, res) => {
             user.firstname = req.body.firstname;
             user.lastname = req.body.lastname
             await user.save();
-            res.status(200).send("user updated");
+            res.send("user updated");
         }        
-    }).catch(err)
-    {
-        res.status(400).send("Error occured"+err);
-    }
+    })
 };
 
 // Delete a User with the specified id in the request
 exports.delete = async (req, res) =>  {
-    console.log(req.params.id)
-    try{
     await User.findOne({where: {id: req.params.id}}).then(async function (user)
     {
         user.destroy();
-        res.status(200).send("user detroyed");
+        res.send("user detroyed");
     });
-    }
-    catch(err){
-        res.status(400).send("Error occured"+err);
-    }
 };
 
 // Delete all Users from the database.
 exports.deleteAll = (req, res) => {
   //its dangerous to create it
 };
+
 exports.createStaff = async (req, res) =>  {
     await User.findOne({where: {email: req.body.data.email}}).then(async function (user)
     {
@@ -163,6 +168,7 @@ exports.createStaff = async (req, res) =>  {
         }
     });
 };
+
 
 
 

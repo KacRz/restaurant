@@ -68,16 +68,20 @@ export default {
 
         async handleSubmit() {
             const tmp = await Service.login(this.email, this.password);
+            const tmp2 = await Service.getAddresses(this.email);
+
             if(tmp.data.isLogged)
             {
                 this.$store.dispatch('user/SignIn', tmp.data);
+                this.$store.dispatch('user/setAddress', tmp2.data);
                 this.$router.push('/');
             }             
-            console.log(tmp.data.isLogged);
+
         }
     },
-    setup() {
-        
+    created() {
+        if(this.$store.getters['user/getLogged'])
+            this.$router.push("/");
     },
 }
 </script>

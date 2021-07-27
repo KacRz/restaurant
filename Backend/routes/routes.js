@@ -51,8 +51,14 @@ router.post('/login', user_contr.validateUser);
 router.post('/user/update', auth,user_contr.update);
 router.get('/user/all', auth,user_contr.findAll);
 
+//user update from settings page
+router.put('/user/updateSmall', auth, user_contr.updateSmall);
+
 //addresses
 router.get('/address', addrress_contr.findAll);
+router.get('/address/:email', addrress_contr.findbyMail);
+router.post('/address/addtoclient', auth, addrress_contr.create);
+router.delete('/address/delete/:id', auth, addrress_contr.delete);
 
 //testing data
 router.get('/fill_the_database/users', user_contr.fill_the_database_Users);

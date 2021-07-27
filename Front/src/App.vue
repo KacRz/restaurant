@@ -2,7 +2,8 @@
   <div id="app">
     <Navbar />
     <router-view style="margin-top: 130px"/>
-  </div>
+    <p>{{Logged}} </p>
+  </div> 
 </template>
 
 <script>
@@ -17,7 +18,18 @@ export default {
     return { 
 
     }
-  }
+    
+  },
+  data() {
+        return {
+          }
+},
+computed: {
+        Logged() {
+
+            return this.$store.getters['user/getMode'] ;
+        },
+    }
 }
 </script>
 

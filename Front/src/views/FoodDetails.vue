@@ -1,5 +1,5 @@
 <template>
-  <div class="addto-cart">
+  <div class="addto-cart" v-if="!isStaff()">
       <div class="addto-cart__info">
             <router-link to="/menu" class="addto-cart__exit">
                 <i class="fas fa-times-circle"></i>
@@ -22,7 +22,7 @@
               </div>
           </div>
       </div>
-
+    <div >
       <div class="addto-cart__bottom">
           <div class="addto-cart__delete-button" v-on:click="removeItem">
               <span>Usuń z koszyka</span><i class="fas fa-trash-alt"></i>
@@ -31,30 +31,147 @@
               <span>Dodaj do koszyka</span><i class="fas fa-cart-plus" />
           </div>
       </div>
-
+    </div>
+</div>
+<div class="addto-cart" v-else>
+  <div class="addto-cart__info">
+      <router-link to="/menu" class="addto-cart__exit">
+          <i class="fas fa-times-circle"></i>
+      </router-link>
+      <span class="addto-cart__number"> {{ details.Foodnumber }} </span>
+        <div class="addto-cart__title">
+          <h1 class="field-value" v-show="!showField('Title')" @click="focusField('Title')">{{details.Title}}</h1>
+          <input v-model="details.Title" v-show="showField('Title')" id="dish-Title" type="text" class="field-value form-control" @focus="focusField('Title')" @blur="blurField">    
+        </div>
+        <div class="addto-cart__info-content">
+            <div class="addto-cart__info-content-img">
+              <img v-bind:src="details.imgsource" />
+            </div>
+            <div class="addto-cart__info-content-description">
+              
+                <p class="field-value" v-show="!showField('Description')" @click="focusField('Description')">{{details.Description}}</p>
+                <input v-model="details.Description" v-show="showField('Description')" id="dish-Description" type="text" class="field-value form-control" @focus="focusField('Description')" @blur="blurField">
+              <div>
+                  <p class="field-value" v-show="!showField('Price')" @click="focusField('Price')">
+                 Cena: {{ details.Price }}zł</p>
+                <input v-model="details.Price" v-show="showField('Price')" id="dish-Price" type="text" class="field-value form-control" @focus="focusField('Price')" @blur="blurField">
+              </div>
+            </div>
+        </div>
+    </div>
+  <div >
+    <div class="addto-cart__bottom">
+        <div class="addto-cart__dishofday-button" v-on:click="saveChanges">
+            <span>Zapisz zmiany </span><i class="far fa-save" />
+        </div>
+        <div class="addto-cart__add-button" v-on:click="undoChanges">
+            <span>Cofnij zmiany </span><i class="fas fa-undo-alt" />
+        </div>
+        <div class="addto-cart__delete-button" v-on:click="changeAvailable">
+            <span>Ustaw dostępne </span><i class="fas fa-ban"></i>
+        </div>
+        <div class="addto-cart__dishofday-button" v-on:click="setDishOfDay">
+            <span>Danie dnia </span><i class="fab fa-hotjar" />
+        </div>
+    </div>
   </div>
+</div>
 </template>
 
 <script>
+import StaffService from '../Service/StaffService'
 export default {
     name: "FoodDetails",
     data() {
+        let det = this.$route.params
         return {
-            details: this.$route.params,
+            isEditing: false,
+            editField: '',
+            details: det,
+            changed: {
+            Price: 0,
+            Title: '',
+            Description: '',
+            isAvalilable:'',
+            IsDishOfDay: ''
+            }
         }
+        
     },
     methods: {
+        initChanged()
+        {
+            this.changed ={
+            Price: this.details.Price,
+            Title: this.details.Title,
+            Description: this.details.Description,
+            isAvalilable:this.details.isAvalilable,
+            IsDishOfDay: this.details.IsDishOfDay}
+        },
         addToCart() {
             this.$store.dispatch("cart/addToCart", this.details);
         },
         removeItem() {
             this.$store.dispatch("cart/removeItem", this.details);
-        }
+        },
+        isStaff()
+        {
+            
+            if(this.changed.isAvalilable =='')
+            {
+                this.initChanged();
+            }
+            return this.$store.getters['user/isStaff'];
+        },
+        changeAvailable()
+        {
+
+            this.changed.isAvalilable = !this.changed.isAvalilable;
+            
+        },
+        undoChanges()
+        {
+            console.log(this.changed)
+        },
+        setDishOfDay()
+        {
+            this.changed.IsDishOfDay = !this.changed.IsDishOfDay;
+        },
+        async saveChanges()
+        {
+            if(this.details.IsDishOfDay != this.changed.IsDishOfDay)
+            {
+               await StaffService.IsDishOfDay(this.$store.getters['user/getToken'],this.details.id)
+            }
+            if(this.details.isAvalilable != this.changed.isAvalilable)
+            {
+               await StaffService.IsDishOfDay(this.$store.getters['user/getToken'],this.details.id)
+            }
+            if(this.details.Description != this.changed.Description || this.details.Title != this.changed.Title ||this.details.Price != this.changed.Price)
+            {
+                let temp = {
+                    Title: this.changed.Title,
+                    Description: this.tmp.Description,
+                    Price: this.changed.Price
+                }
+                await StaffService.hangeDescription(this.$store.getters['user/getToken'], this.details.id, temp)
+            }
+        },
+        focusField(name){
+            this.editField = name;
+        },
+        blurField(){
+          this.editField = '';
+        },
+        showField(name){
+          return (this.details[name] == '' || this.editField == name)
+        },
     },
     created() {
         if (this.$route.params.id !== undefined){
             localStorage.setItem("details", JSON.stringify(this.$route.params))
         }
+
     },
     mounted() {
         this.details = JSON.parse(localStorage.getItem("details"));
@@ -229,8 +346,24 @@ export default {
     border-radius: 10px;
     cursor: pointer;
 }
+.addto-cart__dishofday-button
+{
+    background-color: rgb(8, 102, 109);
+    color: white;
+    padding: 0.5em 1.2em;
+    margin: 0 0.3em;
+    border-radius: 10px;
+    font-size: 1.2em;
 
-
+    transition: padding 0.3s, background-color 0.3s;
+}
+.addto-cart__dishofday-button:hover
+{
+    background-color: rgb(35, 197, 197);
+    padding: 0.5em 1.6em;
+    border-radius: 10px;
+    cursor: pointer;
+}
 @media (max-width: 750px) {
     .addto-cart {
         font-size: 0.8em;

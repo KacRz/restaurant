@@ -1,6 +1,15 @@
 <template>
     <div class="summary">
-        <div class="summary-form">
+        <div class="summary-delivery">
+            <h3>Wybierz dostawę</h3>
+            <div class="delivery-option" v-on:click="pickDelivery(0)" :class="{chosenOption: isHomeDelivery}">
+                <i class="fas fa-shipping-fast icon"></i>Dostawa do domu
+            </div>
+            <div class="delivery-option" v-on:click="pickDelivery(1)" :class="{chosenOption: isLocalDelivery}">
+                <i class="fas fa-walking icon"></i>Odbiór w lokalu
+            </div>
+        </div>
+        <div class="summary-form" v-if="isHomeDelivery">
             <h3>Podaj dane zamówienia</h3>
             <div class="address-form__logged" v-if="logged">
                 <div class="one-address" v-for="(address, index) in addresslist" :key="index">
@@ -34,12 +43,21 @@
                 </div>
             </div>
         </div>
+        <div class="summary-payment">
+            <h3>Wybierz dostawę</h3>
+            <div class="payment-option" v-on:click="pickPayment(0)" :class="{chosenOption: isCartPayment}">
+                <i class="far fa-credit-card icon"></i>Płatność kartą przy odbiorze
+            </div>
+            <div class="payment-option" v-on:click="pickPayment(1)" :class="{chosenOption: isMoneyPayment}">
+                <i class="fas fa-money-bill-wave icon"></i>Płatność gotówką przy odbiorze
+            </div>
+        </div>
         <div class="summary-total">
             <h2>Suma: {{ totalPrice.toFixed(2) }}zł</h2>
             <div class="summary-btn" v-on:click="submit">
                 Dalej<i class="fas fa-arrow-alt-circle-right"></i>
             </div>
-        </div> 
+        </div>
     </div>
 </template>
 
@@ -57,10 +75,32 @@ export default {
             housenumber: '',
             postalcode: '',
             selectedAddress: '',
-            addresslist: [  ]
+            addresslist: [  ],
+
+            deliveryOptions: [ "homeDelivery", "localDelivery" ],
+            isHomeDelivery: true,
+            isLocalDelivery: false,
+            chosenDelivery: 0,
+
+            paymentOptions: [ "cartPayment", "moneyPayment" ],
+            isCartPayment: true,
+            isMoneyPayment: false,
+            chosenPayment: 0
         }
     },
     methods: {
+        pickDelivery(delivery) {
+            this.chosenDelivery = delivery;
+            if (delivery == 0) { this.isHomeDelivery = true; this.isLocalDelivery = false}
+            if (delivery == 1) { this.isLocalDelivery = true; this.isHomeDelivery = false }
+            console.log(this.chosenDelivery);
+        },
+        pickPayment(payment) {
+            this.chosenPayment = payment;
+            if (payment == 0) { this.isCartPayment = true; this.isMoneyPayment = false }
+            if (payment == 1) { this.isMoneyPayment = true; this.isCartPayment = false }
+            console.log(this.chosenPayment);
+        },
         submit() {
             if (this.logged === true) {
                 if (this.selectedAddress === ''){
@@ -121,6 +161,45 @@ export default {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
+}
+.summary-delivery {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.delivery-option {
+    width: 40%;
+    border: 1px solid rgb(255, 205, 124);
+    padding: 1em;
+    margin: 0.5em;
+}
+.delivery-option:hover {
+    cursor: pointer;
+}
+.summary-payment {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.payment-option {
+    width: 40%;
+    border: 1px solid rgb(255, 205, 124);
+    padding: 1em;
+    margin: 0.5em;
+}
+.payment-option:hover {
+    cursor: pointer;
+}
+.chosenOption {
+    border: 3px solid rgb(255, 205, 124);
+    font-size: 1.1em;
+}
+.icon {
+    margin-right: 0.5em;
 }
 .summary-total {
     width: 100%;

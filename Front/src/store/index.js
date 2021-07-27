@@ -4,7 +4,7 @@ import { user } from './user'
 import createPersistedState from 'vuex-persistedstate'
 import * as Cookies from 'js-cookie'
 
-const persUser = createPersistedState({paths:['user'],
+const persUser = createPersistedState({paths:['user', 'cart'],
 getItem: (key) => Cookies.get(key),
 setItem: (key, value) =>
 Cookies.set(key, value, { expires: 3, secure: true }),

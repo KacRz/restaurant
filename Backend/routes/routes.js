@@ -5,6 +5,7 @@ const fooditem_contr = require("../controllers/Fooditem-controller");
 const order_contr = require("../controllers/Order-controller");
 const orderlist_contr = require("../controllers/OrderList-controller");
 const addrress_contr = require("../controllers/Address-controller");
+const booking_contr = require("../controllers/Booking-controller");
 const auth = require("../middleware/auth");
 
 const express = require('express');
@@ -52,13 +53,18 @@ router.post('/user/update', auth,user_contr.update);
 router.get('/user/all', auth,user_contr.findAll);
 
 //user update from settings page
-router.put('/user/updateSmall', auth, user_contr.updateSmall);
+router.put('/user/updateSmall/:email', auth, user_contr.updateSmall);
+router.get('/user/getSmalldata/:email', auth, user_contr.getSmalldata);
 
 //addresses
 router.get('/address', addrress_contr.findAll);
 router.get('/address/:email', addrress_contr.findbyMail);
 router.post('/address/addtoclient', auth, addrress_contr.create);
 router.delete('/address/delete/:id', auth, addrress_contr.delete);
+
+//booking
+router.get('/booking/:date', booking_contr.findbyDate);
+
 
 //testing data
 router.get('/fill_the_database/users', user_contr.fill_the_database_Users);

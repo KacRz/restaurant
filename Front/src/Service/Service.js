@@ -77,10 +77,19 @@ class Service
             console.log(err);
         }
     }
-    static updateUserData(toke, dat) {
+    static updateUserData(toke, dat, email) {
         try {
-            return axios.put(url+'user/updateSmall',
+            return axios.put(url+'user/updateSmall/'+email,
             { data: dat },
+            { headers: {"x-auth-token" :  toke}});
+        }
+        catch(err) {
+            console.log(err);
+        }
+    }
+    static getUserData(toke, email) {
+        try {
+            return axios.get(url+'user/getSmalldata/'+email,
             { headers: {"x-auth-token" :  toke}});
         }
         catch(err) {

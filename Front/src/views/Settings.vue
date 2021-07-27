@@ -19,8 +19,7 @@
             </div>
             <div class="content">
                 <span class="title">Email</span>
-                <span class="data" v-if="edituser"> {{ AccountData.Email }} </span>
-                <input type="text" v-else class="data-input" :value="AccountData.Email" name="newemail"/>
+                <span class="data" > {{ AccountData.Email }} </span>
             </div>
             <div class="content" v-if="!edituser">
                 <button class="address-btn" v-on:click="changeData">Zmień dane</button>
@@ -108,15 +107,15 @@ export default {
         async changeData() {
             const newfirstname = document.querySelector("input[name=newfirstname]").value;
             const newlastname = document.querySelector("input[name=newlastname]").value;
-            const newemail = document.querySelector("input[name=newemail]").value;
 
             const newData = {
                 firstname: newfirstname,
                 lastname: newlastname,
-                email: newemail
             }
-
-            await Service.updateUserData(this.$store.getters['user/getToken'], newData);
+            await Service.updateUserData(this.$store.getters['user/getToken'], newData, this.$store.getters['user/getEmail']);
+            
+            const temp = await Service.getUserData(this.$store.getters['user/getToken'], this.$store.getters['user/getEmail']);
+            this.$store.dispatch('user/updateData', temp.data);
             this.$router.go();
 
         },

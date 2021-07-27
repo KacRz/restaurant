@@ -13,7 +13,9 @@
             {{ UserType_fk }}
         </h4>
       </div>
-
+    <div class="delete-staff-button" v-on:click="deleteStaff(id)">
+        <i class="far fa-times-circle" style="font-size:2.5em"></i>
+    </div>
   </div>
 </template>
 
@@ -27,6 +29,15 @@ export default {
         email: { type: String, required: true },
         UserType_fk: { type: Number, required: true },
     },
+    methods:
+    {
+        deleteStaff(id)
+        {
+            
+            //ManagerService.delStaff(this.$store.state.user.token,this.$props.id);
+            this.$emit('delete', id)
+        }
+    }
 }
 </script>
 
@@ -45,7 +56,7 @@ export default {
     border-right: 3px solid black;
     border-bottom: 3px solid black;
     border-radius: 3px;
-
+    position: relative;
     overflow: hidden;
 
 }
@@ -73,6 +84,28 @@ export default {
 
     border-bottom: 1px solid rgb(255, 205, 124);;
 }
-
+.delete-staff-button
+{
+    margin-bottom: auto;
+    position: absolute;
+    left: 10px;
+    top: 25%;
+    display: flex;
+    flex-direction: row;
+}
+.delete-staff-button:hover
+{
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+    color: rgb(247, 162, 25)
+}
+.delete-staff-button:active
+{
+   margin-left: auto;
+    display: flex;
+    flex-direction: row;
+     color: rgb(255, 220, 163)
+}
 
 </style>

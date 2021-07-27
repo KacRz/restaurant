@@ -34,6 +34,7 @@ router.get('/fooditem/',fooditem_contr.returnAll);
 router.put('/fooditem/:id', fooditem_contr.find);
 router.put('/fooditem/aval/:id', auth, fooditem_contr.changeAvalilable);
 router.put('/fooditem/dishofday/:id', auth,fooditem_contr.changeDishOfDay);
+router.post('/fooditem/chDescription/:id', auth, fooditem_contr.changeDescription);
 router.post('/fooditem/update',auth,fooditem_contr.update);
 router.delete('/fooditem/del/:id',auth,fooditem_contr.delete);
 //orders

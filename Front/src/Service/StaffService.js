@@ -4,10 +4,10 @@ const url = 'http://localhost:5000/'
 
 class ManagerService
 {
-    static async changeAvailbility(toke,id)
+    static async changeAvailbility(toke,id, isavailable)
     {
         try{
-            return await axios.put(url+'fooditem/Available/'+id,{ headers: {"x-auth-token" :  toke} });
+            return await axios.put(url+'fooditem/aval/'+id,{isavailable},{ headers: {"x-auth-token" :  toke} });
         }
         catch(err)
         {
@@ -15,10 +15,10 @@ class ManagerService
             return {err};            
         }
     }
-    static async changeDishOfDay(toke,id)
+    static async changeDishOfDay(toke,id, dishofday)
     {
         try{
-            return await axios.put(url+'fooditem/Available/'+id,{ headers: {"x-auth-token" :  toke} });
+            return await axios.put(url+'fooditem/dishofday/'+id,{dishofday},{ headers: {"x-auth-token" :  toke} });
         }
         catch(err)
         {
@@ -29,7 +29,7 @@ class ManagerService
     static async changeDescription(toke, id, dat)
     {
         try{
-            return await axios.post(url+'user/descritpion/:id',{data: dat },{ headers: {"x-auth-token" :  toke}});
+            return await axios.post(url+'fooditem/chDescription/'+id,{data: dat },{ headers: {"x-auth-token" :  toke}});
         }
         catch(err)
         {

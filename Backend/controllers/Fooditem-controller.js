@@ -9,17 +9,20 @@ exports.create = (req, res) => {
             res.send("Not found");
         }
         else {
-            res.send("Logged in");
+            res.status(200).send("Logged in");
         }
  
-    })
+    }).catch((err)=>
+    {
+        res.status(400).send("Error occured");
+    });
 };
 // Find a single type with an id
 exports.find= async (req, res) => {
-  res.send(await Fooditem.findOne({where: {id: req.params.id}}));
+  res.status(200).send(await Fooditem.findOne({where: {id: req.params.id}}));
 };
 exports.returnAll= async(req, res) => {
-    res.send(await Fooditem.findAll());
+    res.status(200).send(await Fooditem.findAll());
 };
 
 // Update a type by the id in the request
@@ -45,29 +48,70 @@ exports.update = (req, res) => {
             food.isDishOfDay = false;
         }   
         food.save();
-        res.send("Updated");
+        res.status(200).send("Updated");
     }
+  }).catch((err)=>
+  {
+      res.status(400).send("Error occured");
   });
 };
+exports.changeDescription = async (req, res) => {
+    await Fooditem.findOne({where: {id: req.params.id}}).then( async function (food)
+    {
+        
+      if(!food)
+      {   
+        res.status(400).send("Dish not found");
+      }
+      else{
+        food.Title = req.body.data.Title;
+        food.Price = req.body.data.Price;
+        food.Description = req.body.data.Description;
+        await food.save();
+        res.status(200).send("Updated");
+      }
+    }).catch(err)
+    {
+        console.log(err);
+        res.status(400).send("Error occured");
+    };
+  };
 
-exports.changeAvalilable = (req,res) => 
+exports.changeAvalilable = async (req,res) => 
 {
-    Fooditem.findOne({where:{id: req.params.id}}).then(function (food)
+    console.log(req.body)
+    await Fooditem.findOne({where:{id: req.params.id}}).then(async function (food)
     {
-        food.isAvalilable = !food.available;
-        res.send("Dish updated");
+        
+        food.isAvalilable = req.body.isavailable;
+        await food.save();
+        res.status(200).send("Dish updated");
     }
-    )
-};
-exports.changeDishOfDay = (req,res) =>
-{
-    Fooditem.update({values:{ isDishOfDay:false },where: {
-        isDishOfDay: true }});
-    Fooditem.findOne({where: {id: req.params.id}}).then(function(food)
+    ).catch((err)=>
     {
-        food.isDishOfDay = true;
-        food.save();
-        res.send("Dish updated");
+        res.status(400).send("Error occured");
+    });
+};
+exports.changeDishOfDay = async (req,res) =>
+{
+    console.log(req.body)
+    await Fooditem.findOne({where: {id: req.params.id}}).then(async function(food)
+    {
+        if(req.body.dishofday)
+        {
+            Fooditem.update({values:{ IsDishOfDay:false },where: {
+                IsDishOfDay: true
+            }})
+            food.IsDishOfDay = true;
+        }
+        else{
+            food.IsDishOfDay = false;
+        }   
+        await food.save();
+        res.status(200).send("Dish updated");
+    }).catch((err)=>
+    {
+        res.status(400).send("Error occured");
     });
 
 };
@@ -78,7 +122,10 @@ exports.delete = (req, res) => {
     {
         food.delete();
         res.send("Dish deleted");
-    });
+    }).catch((err)=>
+    {
+        res.status(400).send("Error occured");
+    });;
 };
 
 

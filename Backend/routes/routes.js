@@ -37,14 +37,19 @@ router.put('/fooditem/aval/:id', auth, fooditem_contr.changeAvalilable);
 router.put('/fooditem/dishofday/:id', auth,fooditem_contr.changeDishOfDay);
 router.post('/fooditem/update',auth,fooditem_contr.update);
 router.delete('/fooditem/del/:id',auth,fooditem_contr.delete);
+
 //orders
 router.post('/orders/create/',order_contr.create);
 router.put('/orders/:id',auth,order_contr.find);
+
+//order for unregistered
+router.post('/orders/createforguest/', order_contr.createGuest);
 
 //orderLists
 router.post('/order/create/',orderlist_contr.create);
 router.put('/order/one/:id',orderlist_contr.find);
 router.put('/order/:order_fk',orderlist_contr.findbyOrderFk);
+
 //users
 router.delete('/user/:id', auth,user_contr.delete);
 router.post('/register', auth,user_contr.create);

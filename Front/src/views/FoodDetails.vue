@@ -110,6 +110,17 @@ export default {
         },
         addToCart() {
             this.$store.dispatch("cart/addToCart", this.details);
+            this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Dodano do koszyka</h3></center>',
+                    timer: 1000,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '16rem',
+                    icon: 'success'
+                });
         },
         removeItem() {
             this.$store.dispatch("cart/removeItem", this.details);

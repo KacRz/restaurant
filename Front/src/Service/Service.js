@@ -96,5 +96,23 @@ class Service
             console.log(err);
         }
     }
+    static createNewOrder(dat) {
+        try {
+            return axios.post(url+'orders/create/',
+                { data: dat })
+        }
+        catch(err) {
+            console.log(err);
+        }
+    }
+    static createNewOrderForGuest(dat) {
+        try {
+            return axios.post(url+'orders/createforguest/',
+            { data: dat })
+        }
+        catch(err) {
+            console.log(err);
+        }
+    }
 }
 export default Service;

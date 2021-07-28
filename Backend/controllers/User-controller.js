@@ -184,6 +184,7 @@ UserType.create({NameType: "Klient", id: 1});
 UserType.create({NameType: "Dostawca",id: 2});
 UserType.create({NameType: "Obsługa",id: 3});
 UserType.create({NameType: "Kierownik",id: 4});
+UserType.create({NameType: "Niezarejestrowany", id: 100});
 
 User.create({email: "adamW@gmail.com", password: "123", firstname: "Adam", lastname: "Wesołowski", UserType_fk: 1, id:27});
 User.create({email: "BrzeczyG@gmail.com", password: "123", firstname: "Grzegorz", lastname: "Brzęczystrzykiewicz", UserType_fk: 1, id:26});

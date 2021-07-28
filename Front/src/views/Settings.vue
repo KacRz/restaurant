@@ -98,7 +98,17 @@ export default {
             await Service.addNewAddress(this.$store.getters['user/getToken'], this.$store.getters['user/getEmail'], this.newAddress);
             const tmp2 = await Service.getAddresses(this.$store.getters['user/getEmail']);
             this.$store.dispatch('user/setAddress', tmp2.data);
-            this.$router.go();
+            this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Dodano adres</h3></center>',
+                    position: 'center',
+                    background: '#1b1b1b',
+                    icon: 'success',
+                    confirmButtonColor: 'green'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.$router.go();
+                    }
+                });
         },
         validPostalcode(postalcode) {
             let re = /^(([0-9]{2}-[0-9]{3}))$/;
@@ -116,14 +126,34 @@ export default {
             
             const temp = await Service.getUserData(this.$store.getters['user/getToken'], this.$store.getters['user/getEmail']);
             this.$store.dispatch('user/updateData', temp.data);
-            this.$router.go();
+            this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Złożono zamówienie</h3></center>',
+                    position: 'center',
+                    background: '#1b1b1b',
+                    icon: 'success',
+                    confirmButtonColor: 'green'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.$router.go();
+                    }
+                });
 
         },
         async deleteOneAddress(adresid) {
             await Service.deleteAddress(this.$store.getters['user/getToken'], adresid);
             const tmp2 = await Service.getAddresses(this.$store.getters['user/getEmail']);
             this.$store.dispatch('user/setAddress', tmp2.data);
-            this.$router.go();
+            this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Usunięto adres</h3></center>',
+                    position: 'center',
+                    background: '#1b1b1b',
+                    icon: 'success',
+                    confirmButtonColor: 'green'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.$router.go();
+                    }
+                });
         }
     }
 }

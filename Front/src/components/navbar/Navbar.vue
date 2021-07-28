@@ -14,6 +14,9 @@
             <li v-if="logged">
                 <router-link to="/settings" class="link"><i class="fas fa-user icon"></i>Ustawienia</router-link>
             </li>
+            <li v-if="logged">
+                <router-link to="/order" class="link"><i class="fas fa-clipboard-list icon"></i>Zamówienia</router-link>
+            </li>
             <li>
                 <router-link to="/menu" class="link"><i class="fas fa-utensils icon"></i>Menu</router-link>
             </li>
@@ -57,6 +60,17 @@ export default {
          logOut()
         {
             this.$store.dispatch('user/LogOut');
+            this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Wylogowano</h3></center>',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '16rem',
+                    icon: 'success'
+                });
         }
     },
     created() {

@@ -113,7 +113,7 @@ export const user = {
         },
         isStaff(state){
             return ((state.userType == 'Kierownik' || state.userType == 'Obsługa')&& state.isLogged && state.token != '');
-
+        },
         getAddresses(state) {
             return state.Addresses;
         },

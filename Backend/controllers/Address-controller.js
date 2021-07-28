@@ -12,13 +12,19 @@ User.findOne({where: {email: req.body.email}}).then(async function(user) {
       User_fk: user.id
     })
     res.send("Dodano adres");
-})
+}).catch((err)=>
+{
+    res.status(400).send("Error occured");
+});
 
 };
 
 // Find a single type with an id
 exports.findbyId= (req, res) => {
-  res.send(Address.findOne({where: {id: req.params.id}}));
+  res.send(Address.findOne({where: {id: req.params.id}})).catch((err)=>
+  {
+      res.status(400).send("Error occured");
+  });;
 };
 
 // Find all addresses with user id
@@ -29,19 +35,20 @@ exports.findbyMail= async (req, res) => {
         .then(function(add) {
           res.send(add)
         })
-        .catch(function(err) {
-          res.send("Something gone wrong 1");
-        })
 
     })
-    .catch(function(err) {
-      res.send("Something gone wrong");
-    })
+    .catch((err)=>
+  {
+      res.status(400).send("Error occured");
+  });
 
   };
 
 exports.findAll = async(req, res) => {
-    res.send(await Address.findAll());
+    res.send(await Address.findAll()).catch((err)=>
+    {
+        res.status(400).send("Error occured");
+    });;
 }
 
 // Update a type by the id in the request
@@ -54,7 +61,10 @@ exports.delete = (req, res) => {
   Address.findOne({where: {id: req.params.id}}).then(async function (adres) {
     adres.destroy();
     res.send("Address deleted");
-  })
+  }).catch((err)=>
+  {
+      res.status(400).send("Error occured");
+  });
 };
 
 // Delete all types from the database.

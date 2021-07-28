@@ -72,7 +72,10 @@ exports.create = (req, res) => {
   
 // Find a single type with an id
 exports.find= (req, res) => {
-  res.send(Order.findOne({where: {id: req.params.id}}));
+  res.send(Order.findOne({where: {id: req.params.id}})).catch((err)=>
+  {
+      res.status(400).send("Error occured");
+  });;
 };
 
 // Delete a type with the specified id in the request

@@ -11,7 +11,10 @@ exports.create = (req, res) => {
     {
         res.send("Category Exists");
     }
-  });
+  }).catch((err)=>
+  {
+      res.status(400).send("Error occured");
+  });;
 };
 
 exports.returnAll = async (req,res)=>{
@@ -32,7 +35,10 @@ exports.update = (req, res) => {
         cat.save();
         res.send("Updated");
     }
-  });
+  }).catch((err)=>
+  {
+      res.status(400).send("Error occured");
+  });;
 };
 
 // Delete a type with the specified id in the request
@@ -48,5 +54,8 @@ exports.delete = (req, res) => {
         cat.dalete();
         res.send("Deleted");
     }
+}).catch((err)=>
+{
+    res.status(400).send("Error occured");
 });
 };

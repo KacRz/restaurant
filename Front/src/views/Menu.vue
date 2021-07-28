@@ -2,25 +2,25 @@
     <div class="menu">
     <div v-if="isStaff()" class="MenuManagment">
         <div class="dish-buttons"  @blur="blurField">
-        <div class="MenuManagment-delete-button"  @click="focusField('DeleteDish')" @blur="blurField">
+        <div class="MenuManagment-delete-button"  @click="focusField('DeleteDish')" >
             <span>Usuń danie </span><i class="fas fa-ban" ></i>
         </div>
-        <div class="MenuManagment-add-button"  @click="focusField('AddDish')" @blur="blurField">
+        <div class="MenuManagment-add-button"  @click="focusField('AddDish')">
             <span>Dodaj danie </span><i class="far fa-save" ></i>
         </div>
         </div>
         <div class="category-buttons"> 
-        <div class="MenuManagment-delete-button"  @click="focusField('DeleteCategory')" @blur="blurField">
+        <div class="MenuManagment-delete-button"  @click="focusField('DeleteCategory')">
             <span>Usuń kategorię </span><i class="fas fa-ban"></i>
         </div>
-        <div class="MenuManagment-add-button"  @click="focusField('AddCategory')" @blur="blurField"> 
+        <div class="MenuManagment-add-button"  @click="focusField('AddCategory')" > 
             <span>Dodaj kategorię</span><i class="far fa-save" ></i>
         </div>
         </div>
-        <DeleteDish v-bind:categories= "productCategories" v-bind:dishes="productList"  v-show="showField('DeleteDish')"   @blur="blurField"/>
-        <DeleteCategory v-bind:categories= "productCategories"   v-show="showField('DeleteCategory')"  @blur="blurField"/>
-        <AddDish v-bind:categories= "productCategories"  v-show="showField('AddDish')"  @blur="blurField"/>
-        <AddCategory   v-show="showField('AddCategory')"  @blur="blurField"/>
+        <DeleteDish id ="DeleteDish" v-bind:categories= "productCategories" v-bind:dishes="productList"  v-show="showField('DeleteDish')" @close= blurField @response= deleteDish />
+        <DeleteCategory id ="DeleteCategory" v-bind:categories= "productCategories"   v-show="showField('DeleteCategory')" @close= blurField @response= cos />
+        <AddDish  id ="AddDish" v-bind:categories= "productCategories"  v-show="showField('AddDish')" @close= blurField @response= addDish />
+        <AddCategory id ="AddCategory"  v-show="showField('AddCategory')" @close= blurField @response= cos />
         
     </div>
         <div class="menu-content">
@@ -43,6 +43,7 @@
 <script>
 import Fooditem from '../components/Fooditem.vue'
 import Service from '../Service/Service.js'
+import StaffService from '../Service/StaffService.js'
 
 import DeleteDish from '../components/MenuStaffItems/DeleteDish.vue'
 import DeleteCategory from '../components/MenuStaffItems/DeleteCategory.vue'
@@ -83,17 +84,103 @@ export default {
         {
             return this.$store.getters['user/isStaff'];
         },
-        focusField(name){
-            this.editField = name;
-                
-        },
         blurField(){
+
+            console.log("blurFIeld: aaa")
             this.editField = '';
         },
         showField(name){
+            console.log("showField: "+this.editField == name)
             return (this.editField == name)
         },
+        focusField(name) {
+            console.log("focusField: "+name)
+            this.editField = name;
+        },
+        deleteDish(data)
+        {
 
+
+            let tmp = {foodIndex:this.findByIdDish(data), catIndex: 0, incatIndex: 0 };
+            tmp.catIndex = this.findByIdCategory(this.productList[tmp.foodIndex].Category_fk);
+            tmp.incatIndex = this.findDishInCategory(tmp.catIndex,data);
+            console.log(tmp);
+
+            StaffService.deleteDish(this.$store.getters['user/getToken'],{Foodnumber: this.productList[tmp.foodIndex].Foodnumber,
+            Category: this.productList[tmp.foodIndex].Category_fk},this.productList[tmp.foodIndex].id);
+
+            this.productList.splice(tmp.foodIndex,1);
+            for(let i = tmp.foodIndex; i< this.productCategoryItems[tmp.catIndex].length; i++)
+            {
+                console.log(this.productCategoryItems[tmp.catIndex][i].Foodnumber)
+                this.productCategoryItems[tmp.catIndex][i].Foodnumber = this.productCategoryItems[tmp.catIndex][i].Foodnumber-1;
+            }
+            this.productCategoryItems[tmp.catIndex].splice(tmp.incatIndex,1);
+
+
+        },
+        async addDish(data)
+        {
+            await StaffService.createDish(this.$store.getters['user/getToken'], data);
+            const tmp = await Service.menu();
+            const tmp2 = await Service.category();
+
+            Array.prototype.push.apply(this.productList, tmp.data);
+            Array.prototype.push.apply(this.productCategories, tmp2.data);
+
+            for (let i=0; i < this.productCategories.length; i++) {
+                let temp = [];
+                for (let j=0; j < this.productList.length; j++) {
+                    if (this.productList[j].Category_fk == this.productCategories[i].id) {
+                        temp.push(this.productList[j]);
+                    }
+                }
+                this.productCategoryItems.push(temp);
+            }
+            
+        },
+        //return index in array of item or category
+        findByIdCategory(catID)
+        {
+            for(let i = 0; i < this.productCategories.length; i++)
+            {
+                if(catID == this.productCategories[i].id)
+                {
+                    return i;
+                }
+            }
+                return -1;
+
+        },
+        findByIdDish(dishID)
+        {
+            
+            for(let i = 0; i < this.productList.length; i++)
+            {
+                console.log(this.productList[i].id);
+                if(dishID == this.productList[i].id)
+                {
+                    return i;
+                }
+            }
+                return -1;
+
+        },
+        findDishInCategory(categoryIndex, dishID)
+        {
+            for(let i = 0; i < this.productCategoryItems[categoryIndex].length; i++)
+            {
+                console.log(this.productCategoryItems[categoryIndex][i]);
+                if(dishID == this.productCategoryItems[categoryIndex][i].id)
+                {
+                    return i;
+                }
+            }
+                return -1;
+        }
+    },
+    watch: {
+    
     },
     async created()
     {
@@ -114,8 +201,6 @@ export default {
             }
             this.productCategoryItems.push(temp);
         }
-        console.log(this.productCategories);
-        console.log(this.productList);
 
     }
 }

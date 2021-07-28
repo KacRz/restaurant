@@ -174,7 +174,7 @@ export default {
                 let temp = {
                     Title: this.details.Title ,
                     Description: this.details.Description ,
-                    Price: parseFloat(this.details.Price)
+                    Price: parseFloat(this.details.Price).toFixed(2)
                 }
                 console.log(await StaffService.changeDescription(this.$store.getters['user/getToken'], this.details.id, temp))
             }

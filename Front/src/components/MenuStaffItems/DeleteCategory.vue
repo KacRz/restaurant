@@ -1,10 +1,13 @@
 <template>
-    <div>
+    <div class="form"> 
+        <div class="form-container">
+        <div class="form-button-close" @click="close()">
+            <i class="far fa-times-circle" style="font-size:2.5em"></i>
+        </div>
         <h2>
             Usuwanie kategorii
         </h2>
          <form 
-            class="form" 
             @submit.prevent="checkForm"
             method="post">
             <div class="selectBox">
@@ -14,10 +17,11 @@
                         <option v-bind:value="categories.id" v-for="category in categories" v-bind:key="category.id" >{{ category.Name}}</option>
                 </select>
             </div>
+        <button type="submit" class="submit_button">Usuń kategorię</button>
         </form>
 
-        <button type="submit" class="submit_button">Usuń kategorię</button>
-
+        
+        </div>
     </div>
 </template>
 
@@ -26,11 +30,46 @@ export default {
     name:"",
     props:{
     categories: {type:Object, required: true,}
-    }
+    },
+    methods:
+    {
+        close(){
+            this.$emit('close');
+        },
+        checkForm()
+        {
+            if(!this.Name)
+            {
+                this.errors.push('Musisz wypełnić pole');
+            }
+            else
+            {
+                console.log('No errors')
+            }
+        }
+    },
 }
 </script>
 
 <style scoped>
+
+.form
+{
+    
+    z-index:100;
+    position:fixed;
+    top: 12.5%;
+    left: 12.5%;
+    height: 75%;
+    width: 75%;
+}
+.form-container
+{
+
+    border-radius: 15px;
+    height:100%;
+    background-color: rgba(0,0,0,0.8);
+}
 .submit_button {
     background-color: green;
     font-size: 1em;
@@ -44,5 +83,21 @@ export default {
     border-radius: 5px;
 
     transition: 0.3s width;
+}
+.form-button-close
+{
+    margin-bottom: auto;
+    position: absolute;
+    right: 10px;
+    top: 10%;
+    display: flex;
+}
+.form-button-close:hover
+{
+    color: rgb(247, 162, 25)
+}
+.form-button-close:active
+{
+     color: rgb(255, 220, 163)
 }
 </style>

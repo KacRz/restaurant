@@ -1,20 +1,23 @@
 <template>
     <div class="form">
         <div class="form-container">
+        <div class="form-button-close" @click="close()">
+            <i class="far fa-times-circle" style="font-size:2.5em"></i>
+        </div>
         <h2>
             Utwórz nową kategorię dania
         </h2>
          <form 
-             
             @submit.prevent="checkForm"
             method="post">
             <div class="add-dish-form-input">
             <label for="Name">Nazwa kategorii dania</label>
-                <input type="Name" v-model="Name" id="Namee" class="add-dish-input" placeholder="Name" required/>
+                <input type="Name" v-model="Name" id="Name" class="add-dish-input" placeholder="Name" required maxlength="20"/>
             </div>
+            <button type="submit" class="submit_button">Dodaj kategorię</button>
         </form>
 
-        <button type="submit" class="submit_button">Dodaj kategorię</button>
+        
         </div>
     </div>
 </template>
@@ -22,7 +25,29 @@
 <script>
 export default {
     name:"",
-    
+    data()
+    {
+        return {
+            Name: ''
+            }
+    },
+    methods:
+    {
+        close(){
+            this.$emit('close');
+        },
+        checkForm()
+        {
+            if(!this.Name)
+            {
+                this.errors.push('Musisz wypełnić pole');
+            }
+            else
+            {
+                console.log('No errors')
+            }
+        }
+    },
 }
 </script>
 
@@ -38,6 +63,8 @@ export default {
 }
 .form-container
 {
+    border-radius: 15px;
+    height:100%;
     background-color: rgba(0,0,0,0.8);
 }
 .submit_button {
@@ -53,5 +80,29 @@ export default {
     border-radius: 5px;
 
     transition: 0.3s width;
+}
+.rsubmit_button:hover {
+    width: 75%;
+    cursor: pointer;
+}
+
+.submit_button:active {
+    background-color: rgb(9, 207, 9);;
+}
+.form-button-close
+{
+    margin-bottom: auto;
+    position: absolute;
+    right: 10px;
+    top: 10%;
+    display: flex;
+}
+.form-button-close:hover
+{
+    color: rgb(247, 162, 25)
+}
+.form-button-close:active
+{
+     color: rgb(255, 220, 163)
 }
 </style>

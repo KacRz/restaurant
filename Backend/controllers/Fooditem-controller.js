@@ -1,20 +1,26 @@
 const Fooditem = require("../models/Fooditem.js");
+const  Op  = require('sequelize')
 
-
-exports.create = (req, res) => {
-    Fooditem.findOne({ where: {Name: req.body.name } }).then(async function (food) {
-
+exports.create = async (req, res) => {
+    console.log(req.body)
+    let max = await Fooditem.findAll({ where:{Category_fk: req.body.data.category},   attributes: [Op.fn('MAX', Op.col('Foodnumber'))], group: ["Category_fk"],raw: true })
+            console.log(max);
+    Fooditem.findOne({ where: {Title: req.body.data.Title } }).then(async function (food) {
+        
         if (!food) {
-            Fooditem.create({Name: req.body.data.name, Price: req.body.data.price, isAvalilable: req.body.data.available, isDishOfDay: req.body.data.dishofday})
-            res.send("Not found");
+            
+            await Fooditem.create({Title: req.body.data.Title, Price: req.body.data.Price, isAvalilable: req.body.data.isAvalilable, 
+                IsDishOfDay: req.body.data.IsDishOfDay, imgsource: req.body.data.link,  Category_fk: req.body.data.category})
+            res.status(200).send("Created");
         }
         else {
-            res.status(200).send("Logged in");
+            res.status(400).send("Dish Exists");
         }
  
     }).catch((err)=>
     {
-        res.status(400).send("Error occured");
+        console.log(err);
+        res.status(399).send(err);
     });
 };
 // Find a single type with an id
@@ -117,15 +123,19 @@ exports.changeDishOfDay = async (req,res) =>
 };
 
 // Delete a type with the specified id in the request
-exports.delete = (req, res) => {
-    Fooditem.findOne({where: {id: req.params.id}}).then(function (food)
+exports.delete = async (req, res) => {
+    try{
+    let tmp = await Fooditem.findOne({where:{id: req.params.id}});
+    tmp.destroy();
+
+    await Fooditem.update({Foodnumber:sequelize.literal('Foodnumber - 1')},{where:{Category_fk: req.body.data.Category, Foodnumber:{[Op.gte]: req.body.data.Foodnumber}}})
+    res.status(200).send("Dish deleted");
+    }
+    catch(err)
     {
-        food.delete();
-        res.send("Dish deleted");
-    }).catch((err)=>
-    {
+        console.log(err)
         res.status(400).send("Error occured");
-    });;
+    }
 };
 
 

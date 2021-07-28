@@ -51,7 +51,7 @@ const routes = [
     component: CartPage
   },
   {
-    path: '/cart/order',
+    path: '/order',
     name: 'Order',
     component: Order
   },

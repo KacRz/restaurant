@@ -98,23 +98,32 @@ exports.findOne = async (req, res) => {
 
 exports.updateSmall = async(req, res) => {
 
-    User.findOne({ where: {email: req.body.data.email} }).then(async function (user)
+    User.findOne({ where: {email: req.params.email} }).then(async function (user)
     {
-        console.log(user);
         if (!user) {
             res.send("user doesnt exist");
         }
         else {
-            user.email = req.body.data.email;
             user.firstname = req.body.data.firstname;
             user.lastname = req.body.data.lastname;
             await user.save();
             res.send("user updated");
         }
+
+    })
+}
+
+exports.getSmalldata = async(req, res) => {
+    console.log(req.params.email);
+    User.findOne({ where: {email: req.params.email} }).then(async function (user) {
+        res.send(user);
+    })
+
     }).catch((err)=>
     {
         res.status(400).send("Error occured");
     });
+
 
 }
 
@@ -200,6 +209,7 @@ UserType.create({NameType: "Klient", id: 1});
 UserType.create({NameType: "Dostawca",id: 2});
 UserType.create({NameType: "Obsługa",id: 3});
 UserType.create({NameType: "Kierownik",id: 4});
+UserType.create({NameType: "Niezarejestrowany", id: 100});
 
 User.create({email: "adamW@gmail.com", password: "123", firstname: "Adam", lastname: "Wesołowski", UserType_fk: 1, id:27});
 User.create({email: "BrzeczyG@gmail.com", password: "123", firstname: "Grzegorz", lastname: "Brzęczystrzykiewicz", UserType_fk: 1, id:26});
@@ -239,24 +249,24 @@ exports.fill_the_database_Booking = (req, res) =>
 {
     for(i = 1; i<=10; i++)
     {
-        Table.create({Size: 4, id: i});
-    }
-    for(i = 11; i<=20; i++)
-    {
         Table.create({Size: 2, id: i});
+    }
+    for(i = 11; i<=14; i++)
+    {
+        Table.create({Size: 4, id: i});
     }
        
 
-    Booking.create({id: 1, ReservationStart: new Date( 2021, 6, 19, 10,00), ReservationEnd: new Date( 2021,6, 19, 11,00),Table_fk: 2, User_fk: 25});
-    Booking.create({id: 2, ReservationStart: new Date( 2021, 6, 19, 11,00), ReservationEnd: new Date( 2021,6, 19, 12,00), Table_fk: 2, User_fk: 25});
-    Booking.create({id: 3, ReservationStart: new Date( 2021, 6, 19, 12,00), ReservationEnd: new Date( 2021,6, 19, 13,00), Table_fk: 3, User_fk: 21});
-    Booking.create({id: 4, ReservationStart: new Date( 2021, 6, 19, 13,00), ReservationEnd: new Date( 2021,6, 19, 14,00), Table_fk: 4, User_fk: 23});
-    Booking.create({id: 5, ReservationStart: new Date( 2021, 6, 19, 14,00), ReservationEnd: new Date( 2021,6, 19, 15,00), Table_fk: 5, User_fk: 19});
-    Booking.create({id: 6, ReservationStart: new Date( 2021, 6, 19, 15,00), ReservationEnd: new Date( 2021,6, 19, 16,00), Table_fk: 6, User_fk: 17});
-    Booking.create({id: 7, ReservationStart: new Date( 2021, 6, 19, 16,00), ReservationEnd: new Date( 2021,6, 19, 17,00), Table_fk: 7, User_fk: 15});
-    Booking.create({id: 8, ReservationStart: new Date( 2021, 6, 19, 17,00), ReservationEnd: new Date( 2021,6, 19, 18,00), Table_fk: 8, User_fk: 13});
+    Booking.create({id: 1, ReservationStart: new Date( 2021, 6, 27, 10,00), ReservationEnd: new Date( 2021,6, 19, 11,00),Table_fk: 2, User_fk: 25});
+    Booking.create({id: 2, ReservationStart: new Date( 2021, 6, 27, 11,00), ReservationEnd: new Date( 2021,6, 19, 12,00), Table_fk: 2, User_fk: 25});
+    Booking.create({id: 3, ReservationStart: new Date( 2021, 6, 27, 12,00), ReservationEnd: new Date( 2021,6, 19, 13,00), Table_fk: 3, User_fk: 21});
+    Booking.create({id: 4, ReservationStart: new Date( 2021, 6, 27, 13,00), ReservationEnd: new Date( 2021,6, 19, 14,00), Table_fk: 4, User_fk: 23});
+    Booking.create({id: 5, ReservationStart: new Date( 2021, 6, 27, 14,00), ReservationEnd: new Date( 2021,6, 19, 15,00), Table_fk: 5, User_fk: 19});
+    Booking.create({id: 6, ReservationStart: new Date( 2021, 6, 27, 15,00), ReservationEnd: new Date( 2021,6, 19, 16,00), Table_fk: 6, User_fk: 17});
+    Booking.create({id: 7, ReservationStart: new Date( 2021, 6, 27, 16,00), ReservationEnd: new Date( 2021,6, 19, 17,00), Table_fk: 7, User_fk: 15});
+    Booking.create({id: 8, ReservationStart: new Date( 2021, 6, 27, 17,00), ReservationEnd: new Date( 2021,6, 19, 18,00), Table_fk: 8, User_fk: 13});
     
-    res.send("Created booking "+ new Date(2021, 7, 19, 10,00));
+    res.send("Created booking "+ new Date(2021, 7, 27, 10,00));
  
 
 

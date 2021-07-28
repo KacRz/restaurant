@@ -2,10 +2,11 @@
     <div class="staff">
         <ul class="staff-list">
 
-        <li v-for="person in staff.data" :key="person.id"><PersonPanel v-bind="person" @delete= deletePerson /></li>
-        </ul>
-        <AddStaffComponent />         
-        
+            <li v-for="person in staff.data" :key="person.id">
+                <PersonPanel v-bind="person" @delete= deletePerson /></li>
+                <AddStaffComponent />         
+            </ul>    
+
 
     </div>
 </template>

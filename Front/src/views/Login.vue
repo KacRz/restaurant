@@ -74,6 +74,17 @@ export default {
             {
                 this.$store.dispatch('user/SignIn', tmp.data);
                 this.$store.dispatch('user/setAddress', tmp2.data);
+                this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Jesteś zalogowany</h3></center>',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '16rem',
+                    icon: 'success'
+                });
                 this.$router.push('/');
             }             
 

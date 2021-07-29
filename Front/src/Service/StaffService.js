@@ -12,7 +12,7 @@ class ManagerService
         catch(err)
         {
             console.log(err);
-            return {err};            
+            return err;            
         }
     }
     static async changeDishOfDay(toke,id, dishofday)
@@ -23,7 +23,7 @@ class ManagerService
         catch(err)
         {
             console.log(err);
-            return {err};            
+            return err;            
         }
     }
     static async changeDescription(toke, id, dat)
@@ -34,7 +34,7 @@ class ManagerService
         catch(err)
         {
             console.log(err);
-            return {err};            
+            return err;            
         }
     }
     static async delStaff(toke, uid)
@@ -45,7 +45,7 @@ class ManagerService
         catch(err)
         {
             console.log(err);
-            return {err};            
+            return err;            
         }
     }
     static async addCategory(toke, dat)
@@ -56,7 +56,7 @@ class ManagerService
         catch(err)
         {
             console.log(err);
-            return {err};            
+            return err;            
         }
     }
     static async delCategory(toke, id)
@@ -67,7 +67,7 @@ class ManagerService
         catch(err)
         {
             console.log(err);
-            return {err};            
+            return err;            
         }
     }
     
@@ -78,8 +78,8 @@ class ManagerService
         }
         catch(err)
         {
-            console.log(err);
-            return {err};            
+
+            return err;            
         }
     }
     static async createDish(toke, dat)
@@ -89,8 +89,8 @@ class ManagerService
         }
         catch(err)
         {
-            console.log(err);
-            return {err};            
+
+            return err;            
         }
     }
 }

@@ -92,6 +92,7 @@ export default {
     data() {
         return {
             isEditing: false,
+            modals: [ ],
             editField: '',
             details: this.$route.params,
             changed: {
@@ -128,16 +129,16 @@ export default {
         },
         changeAvailable()
         {
-            if(this.changed.isAvalilable == '')
+            if(this.changed.isAvalilable === '')
             {
                 this.changed.isAvalilable = Boolean(parseInt(this.details.isAvalilable));
-                this.details.isAvalilable= Boolean(parseInt(this.details.isAvalilable));
+                this.details.isAvalilable = Boolean(parseInt(this.details.isAvalilable));
             }
             this.details.isAvalilable = !this.details.isAvalilable;
+            console.log(this.details.isAvalilable);
         },
         undoChanges()
         {
-            console.log(this.changed)
             if(this.changed.Title !== '')
             {
                 this.details.Title = this.changed.Title;
@@ -158,11 +159,10 @@ export default {
             {
                 this.details.IsDishOfDay = this.changed.IsDishOfDay;
             }
-            console.log(this.details);
         },
         setDishOfDay()
         {
-            if(this.changed.IsDishOfDay == '')
+            if(this.changed.IsDishOfDay === '')
             {
                 
                 this.changed.IsDishOfDay = Boolean(parseInt(this.details.IsDishOfDay));
@@ -172,13 +172,16 @@ export default {
         },
         async saveChanges()
         {
+            this.modals = [ ];
             if(this.details.IsDishOfDay != this.changed.IsDishOfDay && this.changed.IsDishOfDay !== '')
             {
-               console.log(await StaffService.changeDishOfDay(this.$store.getters['user/getToken'],this.details.id,this.details.IsDishOfDay))
+                this.changed.IsDishOfDay = this.details.IsDishOfDay;
+                this.alertHandler(await StaffService.changeDishOfDay(this.$store.getters['user/getToken'],this.details.id,this.details.IsDishOfDay), 'Danie dnia');
             }
             if(this.details.isAvalilable != this.changed.isAvalilable && this.changed.isAvalilable !== '')
             {
-               console.log(await StaffService.changeAvailbility(this.$store.getters['user/getToken'],this.details.id,this.details.isAvalilable))
+                this.changed.isAvalilable = this.details.isAvalilable;
+                this.alertHandler(await StaffService.changeAvailbility(this.$store.getters['user/getToken'],this.details.id,this.details.isAvalilable), 'Dostępność dania');
             }
             if((this.details.Description != this.changed.Description&& this.changed.Description !=='' )|| (this.details.Title != this.changed.Title && this.changed.Title !=='') ||(this.details.Price != this.changed.Price && this.changed.Price !==0))
             {
@@ -187,8 +190,45 @@ export default {
                     Description: this.details.Description ,
                     Price: parseFloat(this.details.Price).toFixed(2)
                 }
-                console.log(await StaffService.changeDescription(this.$store.getters['user/getToken'], this.details.id, temp))
+                this.changed.Description = this.details.Description;
+                this.changed.Title = this.details.Title;
+                this.changed.Price = this.details.Price;
+                this.alertHandler(await StaffService.changeDescription(this.$store.getters['user/getToken'], this.details.id, temp), 'Nazwa, opis oraz nazwa dania');
+                
             }
+            for(let i = 0; i< this.modals.length; i++)
+            {
+                await this.$swal(this.modals[i]);
+            }
+        },
+        alertHandler(response, add)
+        {
+            if(response.status == '200')
+                this.modals.push({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">'+add+' pomyślnie zmieniono' +'</h3></center>',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '16rem',
+                    icon: 'success'
+            })
+            else{
+                this.modals.push({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">'+'Wystąpił błąd przy elemencie '+ add +'</h3></center>',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '16rem',
+                    icon: 'success'
+            })
+            }
+
         },
         async focusField(name){
             this.editField = name;

@@ -11,7 +11,10 @@
       </div>
     </div>
     <div class="reservation-sandbox">
-      <Sandbox />
+      <Sandbox @response = getTableNumber />
+    </div>
+    <div class="button"  @click="print()" > 
+            <span>Dodaj kategorię</span><i class="far fa-save" ></i>
     </div>
   </div>
 </template>
@@ -30,6 +33,26 @@ export default {
     components: {
       Sandbox,
       Datepicker
+    },
+    methods:
+    {
+      print()
+      {
+        console.log(this.time1);
+      },
+      reservationTable(date, table) {
+            this.$router.push({
+                name: 'ReservationTable', params: {Date: date, Table: table},
+            })
+      },
+      getTableNumber(number)
+      {
+        this.reservationTable(this.time1, number);
+      }
+    },
+    created()
+    {
+      console.log(this.time1)
     },
 
 }
@@ -79,6 +102,17 @@ export default {
     width: 95%;
   }
 }
+button
+{
+    background-color: green;
+    color: white;
+    padding: 0.5em 1.2em;
+    margin: 0 0.3em;
+    border-radius: 10px;
+    font-size: 1.2em;
 
+    transition: padding 0.3s, background-color 0.3s;
+    
+}
 
 </style>

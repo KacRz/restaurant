@@ -64,6 +64,10 @@ export const user = {
         setUserAdresses(state, data) {
             this.state.user.Addresses = data;
             
+        },
+        setUserData(state, dat) {
+            state.data.Lastname = dat.lastname;
+            state.data.Firstname = dat.firstname;
         }
   
     },
@@ -86,7 +90,7 @@ export const user = {
             context.commit("setUserAdresses", payload);
         },
         updateData: (context, payload) => {
-            context.commit("setData", payload);
+            context.commit("setUserData", payload);
         }
     },
 

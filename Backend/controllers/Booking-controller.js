@@ -1,10 +1,13 @@
+const Booking = require("../models/Booking.js")
 
 exports.create = (req, res) => {
   
 };
 // Find a single type with an id
-exports.find= (req, res) => {
-  
+exports.findbyDate= (req, res) => {
+  Booking.findAll({where: {ReservationStart: req.params.date}}).then(async function(booking){
+      res.send(booking);
+  })
 };
 
 // Update a type by the id in the request

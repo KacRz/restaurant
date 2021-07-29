@@ -35,6 +35,10 @@ export const cart = {
                     state.cartItems.splice(index, 1);
                 }
             }
+        },
+        cleanCart(state) {
+            state.cartItemCount = 0;
+            state.cartItems = [];
         }
     },
 
@@ -44,6 +48,9 @@ export const cart = {
         },
         removeItem: (context, payload) => {
             context.commit("removeItem", payload);
+        },
+        cleanCart: (context) => {
+            context.commit("cleanCart");
         }
     },
 

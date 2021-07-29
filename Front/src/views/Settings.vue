@@ -19,8 +19,7 @@
             </div>
             <div class="content">
                 <span class="title">Email</span>
-                <span class="data" v-if="edituser"> {{ AccountData.Email }} </span>
-                <input type="text" v-else class="data-input" :value="AccountData.Email" name="newemail"/>
+                <span class="data" > {{ AccountData.Email }} </span>
             </div>
             <div class="content" v-if="!edituser">
                 <button class="address-btn" v-on:click="changeData">Zmień dane</button>
@@ -99,7 +98,17 @@ export default {
             await Service.addNewAddress(this.$store.getters['user/getToken'], this.$store.getters['user/getEmail'], this.newAddress);
             const tmp2 = await Service.getAddresses(this.$store.getters['user/getEmail']);
             this.$store.dispatch('user/setAddress', tmp2.data);
-            this.$router.go();
+            this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Dodano adres</h3></center>',
+                    position: 'center',
+                    background: '#1b1b1b',
+                    icon: 'success',
+                    confirmButtonColor: 'green'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.$router.go();
+                    }
+                });
         },
         validPostalcode(postalcode) {
             let re = /^(([0-9]{2}-[0-9]{3}))$/;
@@ -108,23 +117,43 @@ export default {
         async changeData() {
             const newfirstname = document.querySelector("input[name=newfirstname]").value;
             const newlastname = document.querySelector("input[name=newlastname]").value;
-            const newemail = document.querySelector("input[name=newemail]").value;
 
             const newData = {
                 firstname: newfirstname,
                 lastname: newlastname,
-                email: newemail
             }
-
-            await Service.updateUserData(this.$store.getters['user/getToken'], newData);
-            this.$router.go();
+            await Service.updateUserData(this.$store.getters['user/getToken'], newData, this.$store.getters['user/getEmail']);
+            
+            const temp = await Service.getUserData(this.$store.getters['user/getToken'], this.$store.getters['user/getEmail']);
+            this.$store.dispatch('user/updateData', temp.data);
+            this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Złożono zamówienie</h3></center>',
+                    position: 'center',
+                    background: '#1b1b1b',
+                    icon: 'success',
+                    confirmButtonColor: 'green'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.$router.go();
+                    }
+                });
 
         },
         async deleteOneAddress(adresid) {
             await Service.deleteAddress(this.$store.getters['user/getToken'], adresid);
             const tmp2 = await Service.getAddresses(this.$store.getters['user/getEmail']);
             this.$store.dispatch('user/setAddress', tmp2.data);
-            this.$router.go();
+            this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Usunięto adres</h3></center>',
+                    position: 'center',
+                    background: '#1b1b1b',
+                    icon: 'success',
+                    confirmButtonColor: 'green'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.$router.go();
+                    }
+                });
         }
     }
 }

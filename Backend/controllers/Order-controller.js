@@ -13,10 +13,12 @@ exports.createGuest = async (req, res) => {
     }).then(async function(address) {
       await Order.create({
           Address_fk: address.id,
-          Date: Date(req.body.data.date),
+          OrderDate: Date(req.body.data.date),
           Delivery: req.body.data.delivery,
           Payment: req.body.data.payment,
-          Email: req.body.data.email
+          Email: req.body.data.email,
+          Status: req.body.data.status,
+          TotalSum: req.body.data.totalprice
         }).then(async function(order) {
 
             for (const item in req.body.data.cart) {
@@ -45,10 +47,12 @@ exports.create = (req, res) => {
 
   Order.create({
     Address_fk: req.body.data.address.id, 
-    Date: Date(req.body.data.date),
+    OrderDate: Date(req.body.data.date),
     Delivery: req.body.data.delivery,
     Email: req.body.data.email,
-    Payment: req.body.data.payment}).then(async function(order) {
+    Payment: req.body.data.payment,
+    Status: req.body.data.status,
+    TotalSum: req.body.data.totalprice}).then(async function(order) {
 
       for (const item in req.body.data.cart) {
         OrderList.create({
@@ -67,15 +71,16 @@ exports.create = (req, res) => {
     })
 
   res.send("Order created");
-
   };
   
+exports.findByMail = async (req, res) => {
+  console.log(req.params.email);
+  res.send(await Order.findAll({where: {Email: req.params.email}}));
+}
+
 // Find a single type with an id
 exports.find= (req, res) => {
-  res.send(Order.findOne({where: {id: req.params.id}})).catch((err)=>
-  {
-      res.status(400).send("Error occured");
-  });;
+  res.send(Order.findOne({where: {id: req.params.id}}));
 };
 
 // Delete a type with the specified id in the request

@@ -33,12 +33,12 @@ exports.validateUser = async (req, res) => {
 
         }
  
-    }).catch((err)=>
+    }).catch(function(err)
     {
-        res.status(400).send("Error occured");
-    });
+        res.status(400).send({Error:"Something gone wrong", isLogged: false});
+    }
     
-    
+    )
 };
 // Create and Save a new User - register or create
 exports.create = async (req, res) => {
@@ -68,10 +68,7 @@ exports.create = async (req, res) => {
             res.send("user Exists");
         }
         
-    }).catch((err)=>
-    {
-        res.status(400).send("Error occured");
-    });
+    })
     
 };
 
@@ -79,10 +76,7 @@ exports.create = async (req, res) => {
 exports.findAll = async (req, res) => {
     User.findAll({attributes: ['id', 'UserType_fk','firstname','lastname', 'email'],where: {[Op.not]: [{UserType_fk: 1}]}}).then(function (users) {
         res.send(users);
-    }).catch((err)=>
-    {
-        res.status(400).send("Error occured");
-    });;
+    });
 };
 
 // Find a single User with an id
@@ -90,10 +84,7 @@ exports.findOne = async (req, res) => {
     await User.findOne({attributes: ['id', 'UserType_fk','firstname','lastname', 'email'],where: {id: req.params.id}}).then(async function (user)
     {
         res.send(user);
-    }).catch((err)=>
-    {
-        res.status(400).send("Error occured");
-    });;
+    });
 };
 
 exports.updateSmall = async(req, res) => {
@@ -109,7 +100,6 @@ exports.updateSmall = async(req, res) => {
             await user.save();
             res.send("user updated");
         }
-
     })
 }
 
@@ -118,12 +108,6 @@ exports.getSmalldata = async(req, res) => {
     User.findOne({ where: {email: req.params.email} }).then(async function (user) {
         res.send(user);
     })
-
-    }).catch((err)=>
-    {
-        res.status(400).send("Error occured");
-    });
-
 
 }
 
@@ -147,10 +131,7 @@ exports.update = async (req, res) => {
             await user.save();
             res.send("user updated");
         }        
-    }).catch((err)=>
-    {
-        res.status(400).send("Error occured");
-    });
+    })
 };
 
 // Delete a User with the specified id in the request
@@ -159,9 +140,6 @@ exports.delete = async (req, res) =>  {
     {
         user.destroy();
         res.send("user detroyed");
-    }).catch((err)=>
-    {
-        res.status(400).send("Error occured");
     });
 };
 
@@ -193,9 +171,6 @@ exports.createStaff = async (req, res) =>  {
                 res.status(400).send("Error occured"+err);
             }
         }
-    }).catch((err)=>
-    {
-        res.status(400).send("Error occured");
     });
 };
 
@@ -218,7 +193,7 @@ User.create({email: "Karolcia9128@gmail.com", password: "123", firstname: "Karol
 User.create({email: "Komandos4231@gmail.com", password: "123", firstname: "Karol", lastname: "Komadowski", UserType_fk: 1, id:23});
 User.create({email: "Wesolek@gmail.com", password: "123", firstname: "Marcelina", lastname: "Wesołowska", UserType_fk: 1, id:22});
 User.create({email: "Czekan@gmail.com", password: "123", firstname: "Bartosz", lastname: "Czekański", UserType_fk: 1, id:21});
-User.create({email: "Kretek@gmail.com", password: "123", firstname: "Wojciech", lastname: "Kret", UserType_fk: 1, id:20});
+User.create({email: "Kretek@gmail.com", password: "123", firstname: "Norbert", lastname: "Kret", UserType_fk: 1, id:20});
 User.create({email: "Huberk@gmail.com", password: "123", firstname: "Hubert", lastname: "Kłoda", UserType_fk: 1, id:19});
 User.create({email: "Adnrzej123@gmail.com", password: "123", firstname: "Andrzej", lastname: "Piekarz", UserType_fk: 1, id:18});
 User.create({email: "Krola@gmail.com", password: "123", firstname: "Arkadiusz", lastname: "Król", UserType_fk: 1, id:17});
@@ -332,49 +307,49 @@ exports.fill_the_database_Offerts = (req, res) =>
     Category.create({id: 4,Name: 'Napoje'});
     Category.create({id: 5,Name: 'Sałatki'});
 
-    Fooditem.create({id: 1,Category_fk: 1, Discount_fk: null, Title: 'Bolognese',Price: 29.99, IsDishOfDay: false, isAvalilable:true, 
+    Fooditem.create({id: 1,Category_fk: 1, Discount_fk: null, Title: 'Bolognese',Price: 29.99, isDishOfDay: false, isAvalilable:true, 
         Description: 'mięso wołowe, pomidory, przyprawy', Foodnumber: '1', 
         imgsource: 'https://images.unsplash.com/photo-1571175534150-72cd2b5a6039?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80'});
-    Fooditem.create({id: 2,Category_fk: 1, Discount_fk: null, Title: 'Carbonara',Price: 39.99, IsDishOfDay: false, isAvalilable:true,
+    Fooditem.create({id: 2,Category_fk: 1, Discount_fk: null, Title: 'Carbonara',Price: 39.99, isDishOfDay: false, isAvalilable:true,
         Description: 'bekon, śmietana, przyprawy', Foodnumber: '2',
         imgsource: 'https://images.unsplash.com/photo-1612874742237-6526221588e3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1051&q=80'});
-    Fooditem.create({id: 3,Category_fk: 1, Discount_fk: null, Title: 'Tuńczyk',Price: 23.99, IsDishOfDay: false, isAvalilable:true,
+    Fooditem.create({id: 3,Category_fk: 1, Discount_fk: null, Title: 'Tuńczyk',Price: 23.99, isDishOfDay: false, isAvalilable:true,
         Description: 'tuńczyk, cebula, przyprawy', Foodnumber: '3',
         imgsource: 'https://images.unsplash.com/photo-1581228258201-fe6e5861d1f6?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80'});
-    Fooditem.create({id: 14,Category_fk: 1, Discount_fk: null, Title: 'Szpinak',Price: 28.99, IsDishOfDay: false, isAvalilable:true,
+    Fooditem.create({id: 14,Category_fk: 1, Discount_fk: null, Title: 'Szpinak',Price: 28.99, isDishOfDay: false, isAvalilable:true,
         Description: 'szpinak, śmietana, przyprawy', Foodnumber: '4',
         imgsource: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1103&q=80'});
-    Fooditem.create({id: 15,Category_fk: 1, Discount_fk: null, Title: 'Meksyk',Price: 30.99, IsDishOfDay: false, isAvalilable:true,
+    Fooditem.create({id: 15,Category_fk: 1, Discount_fk: null, Title: 'Meksyk',Price: 30.99, isDishOfDay: false, isAvalilable:true,
         Description: 'mięso wołowe, jalapeno, pomidory, przyprawy', Foodnumber: '5',
         imgsource: 'https://images.unsplash.com/photo-1601565960311-8a7f4e1ab709?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1051&q=80'});
-    Fooditem.create({id: 4,Category_fk: 3, Discount_fk: null, Title: 'Hamburger',Price: 26.99, IsDishOfDay: false, isAvalilable:true,
+    Fooditem.create({id: 4,Category_fk: 3, Discount_fk: null, Title: 'Hamburger',Price: 26.99, isDishOfDay: false, isAvalilable:true,
         Description: 'mięso wołowe, sałata, cebula, sos', Foodnumber: '1',
         imgsource: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=902&q=80'});
-    Fooditem.create({id: 5,Category_fk: 3, Discount_fk: null, Title: 'Cheeseburger',Price: 20.99, IsDishOfDay: false, isAvalilable:true,
+    Fooditem.create({id: 5,Category_fk: 3, Discount_fk: null, Title: 'Cheeseburger',Price: 20.99, isDishOfDay: false, isAvalilable:true,
         Description: 'mięso wołowe, ser żółty, sałata, cebula, sos', Foodnumber: '2',
         imgsource: 'https://images.unsplash.com/photo-1550317138-10000687a72b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1093&q=80'});
-    Fooditem.create({id: 6,Category_fk: 3, Discount_fk: null, Title: 'Amerykański burger',Price: 39.99, IsDishOfDay: false, isAvalilable:true,
+    Fooditem.create({id: 6,Category_fk: 3, Discount_fk: null, Title: 'Amerykański burger',Price: 39.99, isDishOfDay: false, isAvalilable:true,
         Description: 'mięso wołowo-wieprzowe, sałata, cebula, pomidor, boczek, sos amerykański', Foodnumber: '3',
         imgsource: 'https://images.unsplash.com/photo-1576843776838-032ac46fbb93?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1015&q=80'});
-    Fooditem.create({id: 7,Category_fk: 2, Discount_fk: null, Title: 'Pizza margharita',Price: 15.99, IsDishOfDay: false, isAvalilable:true,
+    Fooditem.create({id: 7,Category_fk: 2, Discount_fk: null, Title: 'Pizza margharita',Price: 15.99, isDishOfDay: false, isAvalilable:true,
         Description: 'sos, ser żółty, przyprawy', Foodnumber: '1',
         imgsource: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80'});
-    Fooditem.create({id: 8,Category_fk: 2, Discount_fk: null, Title: 'Pizza z Ananasem',Price: 18.99, IsDishOfDay: false, isAvalilable:true,
+    Fooditem.create({id: 8,Category_fk: 2, Discount_fk: null, Title: 'Pizza z Ananasem',Price: 18.99, isDishOfDay: false, isAvalilable:true,
         Description: 'sos, ser żółty, ananas, oliwki, salami, przyprawy', Foodnumber: '2',
         imgsource: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=714&q=80'});
-    Fooditem.create({id: 9,Category_fk: 2, Discount_fk: null, Title: 'Pizza w stylu Nowojorskim',Price: 25.99, IsDishOfDay: false, isAvalilable:true,
+    Fooditem.create({id: 9,Category_fk: 2, Discount_fk: null, Title: 'Pizza w stylu Nowojorskim',Price: 25.99, isDishOfDay: false, isAvalilable:true,
         Description: 'sos, ser żółty, salami, kiełbasa, kukurydza, pomidor ,przyprawy', Foodnumber: '3',
         imgsource: 'https://images.unsplash.com/photo-1593246049226-ded77bf90326?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=675&q=80'});
-    Fooditem.create({id: 10,Category_fk: 4, Discount_fk: null, Title: 'Cola',Price: 10.00, IsDishOfDay: false, isAvalilable:true,
+    Fooditem.create({id: 10,Category_fk: 4, Discount_fk: null, Title: 'Cola',Price: 10.00, isDishOfDay: false, isAvalilable:true,
         Description: 'Napój cola 1l', Foodnumber: '1',
         imgsource: 'https://images.unsplash.com/photo-1605712916345-6ef6bcc2e29c?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8Y29sYXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'});
-    Fooditem.create({id: 11,Category_fk: 4, Discount_fk: null, Title: 'Pomarańcz',Price: 8.00, IsDishOfDay: false, isAvalilable:true,
+    Fooditem.create({id: 11,Category_fk: 4, Discount_fk: null, Title: 'Pomarańcz',Price: 8.00, isDishOfDay: false, isAvalilable:true,
         Description: 'Napój pomarańczowy 1l', Foodnumber: '2', 
         imgsource: 'https://images.unsplash.com/photo-1593817124586-f8196427ba6a?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=700&q=80'});
-    Fooditem.create({id: 12,Category_fk: 5, Discount_fk: null, Title: 'Sałatka po grecku',Price: 8.99, IsDishOfDay: false, isAvalilable:true,
+    Fooditem.create({id: 12,Category_fk: 5, Discount_fk: null, Title: 'Sałatka po grecku',Price: 8.99, isDishOfDay: false, isAvalilable:true,
         Description: 'pomidory, ogórki, cebula, feta, oregano', Foodnumber: '1',
         imgsource: 'https://images.unsplash.com/photo-1625944230945-1b7dd3b949ab?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Z3JlZWNlJTIwc2FsYWR8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'});
-    Fooditem.create({id: 13,Category_fk: 5, Discount_fk: null, Title: 'Sałatka Cezar',Price: 9.99, IsDishOfDay: false, isAvalilable:true,
+    Fooditem.create({id: 13,Category_fk: 5, Discount_fk: null, Title: 'Sałatka Cezar',Price: 9.99, isDishOfDay: false, isAvalilable:true,
         Description: 'sałata rzymska, grzanki, parmezan', Foodnumber: '2',
         imgsource: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=631&q=80'});
 

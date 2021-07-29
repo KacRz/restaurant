@@ -11,17 +11,11 @@ exports.create = (req, res) => {
     {
         res.send("Category Exists");
     }
-  }).catch((err)=>
-  {
-      res.status(400).send("Error occured");
   });
 };
 
 exports.returnAll = (req,res)=>{
-    res.send(Discount.findAll()).catch((err)=>
-    {
-        res.status(400).send("Error occured");
-    });
+    res.send(Discount.findAll());
 
 }
 // Update a type by the id in the request
@@ -46,9 +40,6 @@ exports.update = (req, res) => {
         disc.save();
         res.send("Updated");
     }
-  }).catch((err)=>
-  {
-      res.status(400).send("Error occured");
   });
 };
 
@@ -65,8 +56,5 @@ exports.delete = (req, res) => {
         disc.dalete();
         res.send("Deleted");
     }
-}).catch((err)=>
-{
-    res.status(400).send("Error occured");
 });
 };

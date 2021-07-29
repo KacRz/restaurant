@@ -96,7 +96,7 @@ export default {
 
             this.editField = name;
         },
-        deleteDish(data)
+        async deleteDish(data)
         {
 
 
@@ -104,9 +104,13 @@ export default {
             tmp.catIndex = this.findByIdCategory(this.productList[tmp.foodIndex].Category_fk);
             tmp.incatIndex = this.findDishInCategory(tmp.catIndex,data);
 
-            StaffService.deleteDish(this.$store.getters['user/getToken'],{Foodnumber: this.productList[tmp.foodIndex].Foodnumber,
+            let temp = await StaffService.deleteDish(this.$store.getters['user/getToken'],{Foodnumber: this.productList[tmp.foodIndex].Foodnumber,
             Category: this.productList[tmp.foodIndex].Category_fk},this.productList[tmp.foodIndex].id);
-
+            if(temp.status == '200')            
+                this.alertHandler('Usunięto danie z menu');
+            else{
+                this.alertHandler('Nie usunięto dania z mneu, wystąpił błąd kod: ' + temp.status);
+            }
             this.productList.splice(tmp.foodIndex,1);
             for(let i = tmp.foodIndex; i< this.productCategoryItems[tmp.catIndex].length; i++)
             {
@@ -119,7 +123,12 @@ export default {
         },
         async addDish(data)
         {
-            await StaffService.createDish(this.$store.getters['user/getToken'], data);
+            let temp = await StaffService.createDish(this.$store.getters['user/getToken'], data);
+            if(temp.status == '200')            
+                this.alertHandler('Dodano danie do menu');
+            else{
+                this.alertHandler('Nie dodano dania do menu, wystąpił błąd kod: ' + temp.status);
+            }
             const tmp = await Service.menu();
             const tmp2 = await Service.category();
             this.productList=[];
@@ -142,19 +151,37 @@ export default {
         },
         async deleteCategory(category)
         {
-            await StaffService.delCategory(this.$store.getters['user/getToken'], category);
-            let tmp = this.findByIdCategory(category);
-            for(let i = 0;i< this.productCategoryItems[tmp].length; i++)
-            {
-                this.productList.splice(this.findByIdDish(this.productCategoryItems[tmp][i]),1);
+
+            let temp = await StaffService.delCategory(this.$store.getters['user/getToken'], category);
+            if(temp.status == '200') 
+            {      
+                this.alertHandler('Usunięto kategorię oraz dania znajdujące się w kategorii');
+                let tmp = this.findByIdCategory(category);
+                for(let i = 0;i< this.productCategoryItems[tmp].length; i++)
+                {
+                    this.productList.splice(this.findByIdDish(this.productCategoryItems[tmp][i]),1);
+                }
+                this.productCategoryItems.splice(tmp, 1);
+                this.productCategories.splice(tmp,1);
+            } 
+            else{
+                this.alertHandler('Nie kategorii, wystąpił błąd, kod: ' + temp.status);
             }
-            this.productCategoryItems.splice(tmp, 1);
-            this.productCategories.splice(tmp,1);
+            
         },
         async addCategory(catName)
         {
-            await StaffService.addCategory(this.$store.getters['user/getToken'], catName);
-            this.productCategories.push(catName);
+            let temp = await StaffService.addCategory(this.$store.getters['user/getToken'], catName);
+            if(temp.status == '200') 
+            {
+                this.alertHandler('Utworzono nową kategorię');
+                this.productCategories.push(catName);
+            }           
+            else{
+                this.alertHandler('Nie kategorii, wystąpił błąd, kod: ' + temp.status);
+            }
+           
+
 
         },
         //return index in array of item or category
@@ -194,7 +221,23 @@ export default {
                 }
             }
                 return -1;
-        }
+        },
+        alertHandler(resp)
+        {
+            
+               this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">'+ resp +'</h3></center>',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '16rem',
+                    icon: 'success'
+                })         
+
+        },
     },
     watch: {
     

@@ -187,13 +187,28 @@ export default {
                 postalcode: this.postalcode,
                 usertype: this.usertype
             }
+            let temp;
             if(!this.usertype)
             {
                 //zwykły user
-                console.log(await Service.register(data));
+                temp = await Service.register(data);
             }
             else{
-                console.log(await ManagerService.addStaff(this.$store.getters['user/getToken'],data));
+                temp =await ManagerService.addStaff(this.$store.getters['user/getToken'],data);
+            }
+            if(temp.status == '200')
+            {
+                this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Pomyślnie utworzono użytkownika </h3></center>',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '16rem',
+                    icon: 'success'
+                });
             }
             
             

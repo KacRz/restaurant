@@ -62,7 +62,7 @@ class ManagerService
     static async delCategory(toke, id)
     {
         try{
-            return await axios.post(url+'categories/del/'+id, { headers: {"x-auth-token" :  toke} });
+            return await axios.delete(url+'categories/del/'+id, { headers: {"x-auth-token" :  toke} });
         }
         catch(err)
         {

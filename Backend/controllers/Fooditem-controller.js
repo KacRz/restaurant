@@ -1,27 +1,38 @@
 const Fooditem = require("../models/Fooditem.js");
-const  Op  = require('sequelize')
+const  Opt  = require('sequelize')
+const {Op} = require('sequelize')
 
 exports.create = async (req, res) => {
-    console.log(req.body)
-    let max = await Fooditem.findAll({ where:{Category_fk: req.body.data.category},   attributes: [Op.fn('MAX', Op.col('Foodnumber'))], group: ["Category_fk"],raw: true })
-            console.log(max);
-    Fooditem.findOne({ where: {Title: req.body.data.Title } }).then(async function (food) {
+    try{
+    
+    let max = await Fooditem.findAll({ where:{Category_fk: req.body.data.category},   attributes: [[Opt.fn('MAX', Opt.col('Foodnumber')), 'max']], group: ["Category_fk"],raw: true })
+    //there is problem when category there is no fooditem in category - max will be undefinded [] 
+    if(max[0] === undefined )
+    {
+        max = 0;
+    }
+    else 
+        max = max[0].max
+    
+        Fooditem.findOne({ where: {Title: req.body.data.Title } }).then(async function (food) {
         
         if (!food) {
             
-            await Fooditem.create({Title: req.body.data.Title, Price: req.body.data.Price, isAvalilable: req.body.data.isAvalilable, 
-                IsDishOfDay: req.body.data.IsDishOfDay, imgsource: req.body.data.link,  Category_fk: req.body.data.category})
+            await Fooditem.create({Title: req.body.data.Title, Price: req.body.data.Price, isAvalilable: req.body.data.isAvalilable,  Description: req.body.data.Description,
+                IsDishOfDay: req.body.data.IsDishOfDay, imgsource: req.body.data.link,Foodnumber:max+1 ,  Category_fk: req.body.data.category})
             res.status(200).send("Created");
         }
         else {
             res.status(400).send("Dish Exists");
         }
  
-    }).catch((err)=>
+    })
+    }
+    catch(err)
     {
         console.log(err);
-        res.status(399).send(err);
-    });
+            res.status(399).send(err);
+    }
 };
 // Find a single type with an id
 exports.find= async (req, res) => {

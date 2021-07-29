@@ -151,6 +151,7 @@ export default {
         },
         async deleteCategory(category)
         {
+
             let temp = await StaffService.delCategory(this.$store.getters['user/getToken'], category);
             if(temp.status == '200') 
             {      
@@ -180,6 +181,7 @@ export default {
                 this.alertHandler('Nie kategorii, wystąpił błąd, kod: ' + temp.status);
             }
            
+
 
         },
         //return index in array of item or category

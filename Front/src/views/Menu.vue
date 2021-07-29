@@ -18,20 +18,20 @@
         </div>
         </div>
         <DeleteDish id ="DeleteDish" v-bind:categories= "productCategories" v-bind:dishes="productList"  v-show="showField('DeleteDish')" @close= blurField @response= deleteDish />
-        <DeleteCategory id ="DeleteCategory" v-bind:categories= "productCategories"   v-show="showField('DeleteCategory')" @close= blurField @response= cos />
+        <DeleteCategory id ="DeleteCategory" v-bind:categories= "productCategories"   v-show="showField('DeleteCategory')" @close= blurField @response= deleteCategory />
         <AddDish  id ="AddDish" v-bind:categories= "productCategories"  v-show="showField('AddDish')" @close= blurField @response= addDish />
-        <AddCategory id ="AddCategory"  v-show="showField('AddCategory')" @close= blurField @response= cos />
+        <AddCategory id ="AddCategory"  v-show="showField('AddCategory')" @close= blurField @response= addCategory />
         
     </div>
         <div class="menu-content">
 
-            <div v-for="category in productCategories" :key="category.id">
+            <div v-for="(category, index ) in productCategories" :key="index">
 
                 <div class="menu-category__title">
-                    <h1> {{ category.Name }} </h1>
+                    <h1> {{ category.Name }}</h1>
                 </div>
                 <div class="menu-category__row">
-                    <div class="menu-category__element" v-for="item in productCategoryItems[category.id-1]" :key="item.id" >
+                    <div class="menu-category__element" v-for="item in productCategoryItems[index]" :key="item.id" >
                         <Fooditem v-bind="item" v-on:click="foodDetails(item)" />
                     </div>
                 </div>
@@ -86,15 +86,14 @@ export default {
         },
         blurField(){
 
-            console.log("blurFIeld: aaa")
             this.editField = '';
         },
         showField(name){
-            console.log("showField: "+this.editField == name)
+
             return (this.editField == name)
         },
         focusField(name) {
-            console.log("focusField: "+name)
+
             this.editField = name;
         },
         deleteDish(data)
@@ -104,7 +103,6 @@ export default {
             let tmp = {foodIndex:this.findByIdDish(data), catIndex: 0, incatIndex: 0 };
             tmp.catIndex = this.findByIdCategory(this.productList[tmp.foodIndex].Category_fk);
             tmp.incatIndex = this.findDishInCategory(tmp.catIndex,data);
-            console.log(tmp);
 
             StaffService.deleteDish(this.$store.getters['user/getToken'],{Foodnumber: this.productList[tmp.foodIndex].Foodnumber,
             Category: this.productList[tmp.foodIndex].Category_fk},this.productList[tmp.foodIndex].id);
@@ -112,7 +110,7 @@ export default {
             this.productList.splice(tmp.foodIndex,1);
             for(let i = tmp.foodIndex; i< this.productCategoryItems[tmp.catIndex].length; i++)
             {
-                console.log(this.productCategoryItems[tmp.catIndex][i].Foodnumber)
+
                 this.productCategoryItems[tmp.catIndex][i].Foodnumber = this.productCategoryItems[tmp.catIndex][i].Foodnumber-1;
             }
             this.productCategoryItems[tmp.catIndex].splice(tmp.incatIndex,1);
@@ -124,6 +122,9 @@ export default {
             await StaffService.createDish(this.$store.getters['user/getToken'], data);
             const tmp = await Service.menu();
             const tmp2 = await Service.category();
+            this.productList=[];
+            this.productCategories= [];
+            this.productCategoryItems= [];
 
             Array.prototype.push.apply(this.productList, tmp.data);
             Array.prototype.push.apply(this.productCategories, tmp2.data);
@@ -138,6 +139,23 @@ export default {
                 this.productCategoryItems.push(temp);
             }
             
+        },
+        async deleteCategory(category)
+        {
+            await StaffService.delCategory(this.$store.getters['user/getToken'], category);
+            let tmp = this.findByIdCategory(category);
+            for(let i = 0;i< this.productCategoryItems[tmp].length; i++)
+            {
+                this.productList.splice(this.findByIdDish(this.productCategoryItems[tmp][i]),1);
+            }
+            this.productCategoryItems.splice(tmp, 1);
+            this.productCategories.splice(tmp,1);
+        },
+        async addCategory(catName)
+        {
+            await StaffService.addCategory(this.$store.getters['user/getToken'], catName);
+            this.productCategories.push(catName);
+
         },
         //return index in array of item or category
         findByIdCategory(catID)
@@ -157,7 +175,6 @@ export default {
             
             for(let i = 0; i < this.productList.length; i++)
             {
-                console.log(this.productList[i].id);
                 if(dishID == this.productList[i].id)
                 {
                     return i;
@@ -170,7 +187,7 @@ export default {
         {
             for(let i = 0; i < this.productCategoryItems[categoryIndex].length; i++)
             {
-                console.log(this.productCategoryItems[categoryIndex][i]);
+
                 if(dishID == this.productCategoryItems[categoryIndex][i].id)
                 {
                     return i;

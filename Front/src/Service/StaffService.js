@@ -2,7 +2,7 @@ const axios = require('axios');
 
 const url = 'http://localhost:5000/'
 
-class ManagerService
+class StaffService
 {
     static async changeAvailbility(toke,id)
     {
@@ -95,6 +95,14 @@ class ManagerService
             return err;            
         }
     }
+    static async getTodaysOrders() {
+        try {
+            return await axios.get(url+'stafforder/gettoday/');
+        }
+        catch(err) {
+            return err;
+        }
+    }
 
 }
-export default ManagerService
+export default StaffService

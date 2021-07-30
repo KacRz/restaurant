@@ -11,6 +11,7 @@ import Settings from '../views/Settings.vue'
 import Staff from '../views/Staff.vue'
 import Order from '../views/Order.vue'
 import ReservationTable from '../views/ReservationTable.vue'
+import OrderStaff from '../views/OrderStaff.vue'
 
 
 const routes = [
@@ -75,6 +76,11 @@ const routes = [
     path: '/staff',
     name: 'staff',
     component: Staff
+  },
+  {
+    path: '/orderstaff',
+    name: 'Orderstaff',
+    component: OrderStaff
   }
 ]
 

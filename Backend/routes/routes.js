@@ -43,6 +43,14 @@ router.post('/orders/create/',order_contr.create);
 router.put('/orders/:id',auth,order_contr.find);
 router.get('/orders/findbymail/:email', order_contr.findByMail);
 
+//get todays orders for staff
+router.get('/stafforder/gettoday/', order_contr.gettodayorders);
+//get user for order info
+router.get('/user/getuserbyaddress/:id', user_contr.getuserbyaddress);
+//update order status
+router.get('/order/changestatus/:id', order_contr.changestatus);
+router.get('/order/getstatus/:id', order_contr.getStatus);
+
 //order for unregistered
 router.post('/orders/createforguest/', order_contr.createGuest);
 

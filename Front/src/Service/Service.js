@@ -130,5 +130,30 @@ class Service
             console.log(err);
         }
     }
+    static getUserByAddress(id) {
+        try {
+            return axios.get(url+'user/getuserbyaddress/'+id)
+        }
+        catch(err) {
+            console.log(err);
+
+        }
+    }
+    static changeStatus(id) {
+        try {
+            return axios.get(url+'order/changestatus/'+id)
+        }
+        catch(err) {
+            console.log(err);
+        }
+    }
+    static getStatus(id) {
+        try {
+            return axios.get(url+'order/getstatus/'+id)
+        }
+        catch(err) {
+            console.log(err);
+        }
+    }
 }
 export default Service;

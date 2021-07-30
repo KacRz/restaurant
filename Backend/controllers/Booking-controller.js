@@ -16,7 +16,7 @@ exports.findByID = (req,res) =>
   console.log(req.params)
   Booking.findAll({where: { [Op.and]:[{Table_fk: req.params.id},{[Op.gte]:{ReservationEnd: new Date(Date.now()) }}]}}).then(function(book)
   {
-    console.log(book);
+
     res.send(book);
   })
 }

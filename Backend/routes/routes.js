@@ -35,14 +35,13 @@ router.get('/fooditem/',fooditem_contr.returnAll);
 router.put('/fooditem/:id', fooditem_contr.find);
 router.put('/fooditem/aval/:id', auth, fooditem_contr.changeAvalilable);
 router.put('/fooditem/dishofday/:id', auth,fooditem_contr.changeDishOfDay);
-router.post('/fooditem/chDescription/:id', auth, fooditem_contr.changeDescription);
 router.post('/fooditem/update',auth,fooditem_contr.update);
-router.post('/fooditem/del/:id',auth,fooditem_contr.delete);
-
+router.delete('/fooditem/del/:id',auth,fooditem_contr.delete);
 
 //orders
 router.post('/orders/create/',order_contr.create);
 router.put('/orders/:id',auth,order_contr.find);
+router.get('/orders/findbymail/:email', order_contr.findByMail);
 
 //order for unregistered
 router.post('/orders/createforguest/', order_contr.createGuest);
@@ -50,11 +49,13 @@ router.post('/orders/createforguest/', order_contr.createGuest);
 //orderLists
 router.post('/order/create/',orderlist_contr.create);
 router.put('/order/one/:id',orderlist_contr.find);
-router.put('/order/:order_fk',orderlist_contr.findbyOrderFk);
+router.get('/order/:order_id',orderlist_contr.findbyOrderFk);
+
+router.get('/order/findbyorderid/:orderid', orderlist_contr.findByOrderFK);
 
 //users
-router.delete('/user/del/:id', auth,user_contr.delete);
-router.post('/register', user_contr.create);
+router.delete('/user/:id', auth,user_contr.delete);
+router.post('/register', auth,user_contr.create);
 router.post('/login', user_contr.validateUser);
 router.post('/user/update', auth,user_contr.update);
 router.get('/user/all', auth,user_contr.findAll);

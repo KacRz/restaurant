@@ -114,5 +114,21 @@ class Service
             console.log(err);
         }
     }
+    static getOrders(email) {
+        try {
+            return axios.get(url+'orders/findbymail/'+email)
+        }
+        catch(err) {
+            console.log(err);
+        }
+    }
+    static getOrderList(id) {
+        try {
+            return axios.get(url+'order/findbyorderid/'+id)
+        }
+        catch(err) {
+            console.log(err);
+        }
+    }
 }
 export default Service;

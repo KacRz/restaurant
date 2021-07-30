@@ -120,7 +120,9 @@ export default {
                     payment: this.paymentOptions[this.chosenPayment],
                     cart: this.$store.state.cart.cartItems,
                     email: this.$store.getters['user/getEmail'],
-                    date: new Date()
+                    date: new Date(),
+                    totalprice: this.totalPrice,
+                    status: "Złożono zamówienie"
                 }
                 if (data.delivery == "localDelivery") {
                     data.address = false;
@@ -166,7 +168,9 @@ export default {
                     delivery: this.deliveryOptions[this.chosenDelivery],
                     payment: this.paymentOptions[this.chosenPayment],
                     cart: this.$store.state.cart.cartItems,
-                    date: new Date()
+                    date: new Date(),
+                    totalprice: this.totalPrice,
+                    status: "Złożono zamówienie"
                 }
                 await Service.createNewOrderForGuest(data);
                 this.$store.dispatch("cart/cleanCart");

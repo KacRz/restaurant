@@ -10,7 +10,7 @@ import FoodDetails from '../views/FoodDetails.vue'
 import Settings from '../views/Settings.vue'
 import Staff from '../views/Staff.vue'
 import Order from '../views/Order.vue'
-import ReservationTable from '../views/ReservationTable.vue'
+
 
 
 const routes = [
@@ -60,11 +60,6 @@ const routes = [
     path: '/reservation',
     name: 'Reservation',
     component: Reservation
-  },
-  {
-    path: '/reservation/table',
-    name: 'ReservationTable',
-    component: ReservationTable
   },
   {
     path: '/menu/food-details',

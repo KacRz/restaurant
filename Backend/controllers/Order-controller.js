@@ -74,7 +74,6 @@ exports.create = (req, res) => {
   };
   
 exports.findByMail = async (req, res) => {
-  console.log(req.params.email);
   res.send(await Order.findAll({where: {Email: req.params.email}}));
 }
 

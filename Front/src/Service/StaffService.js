@@ -2,38 +2,38 @@ const axios = require('axios');
 
 const url = 'http://localhost:5000/'
 
-class ManagerService
+class StaffService
 {
-    static async changeAvailbility(toke,id)
+    static async changeAvailbility(toke,id, isavailable)
     {
         try{
-            return await axios.put(url+'fooditem/Available/'+id,{ headers: {"x-auth-token" :  toke} });
+            return await axios.put(url+'fooditem/aval/'+id,{isavailable},{ headers: {"x-auth-token" :  toke} });
         }
         catch(err)
         {
-            console.log(err);
-            return err;            
-        }
-    }
-    static async changeDishOfDay(toke,id)
-    {
-        try{
-            return await axios.put(url+'fooditem/Available/'+id,{ headers: {"x-auth-token" :  toke} });
-        }
-        catch(err)
-        {
-            console.log(err);
+            console.log(err);         
             return err;            
         }
     }
     static async changeDescription(toke, id, dat)
     {
         try{
-            return await axios.post(url+'user/descritpion/:id',{data: dat },{ headers: {"x-auth-token" :  toke}});
+            return await axios.post(url+'fooditem/chDescription/'+id,{data: dat },{ headers: {"x-auth-token" :  toke}});
         }
         catch(err)
         {
-            console.log(err);
+            console.log(err);            
+            return err;            
+        }
+    }
+    static async changeDishOfDay(toke,id, dishofday)
+    {
+        try{
+            return await axios.put(url+'fooditem/dishofday/'+id,{dishofday},{ headers: {"x-auth-token" :  toke} });
+        }
+        catch(err)
+        {
+            console.log(err);            
             return err;            
         }
     }
@@ -97,4 +97,4 @@ class ManagerService
     }
 
 }
-export default ManagerService
+export default StaffService

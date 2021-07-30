@@ -5,10 +5,8 @@
                 <PersonPanel v-bind="person" @delete= deletePerson /></li>
                 <AddStaffComponent />         
             </ul>    
-
     </div>
 </template>
-
 <script>
 import ManagerService from '../Service/ManagerService'
 import PersonPanel from  '../components/StaffItems/PersonPanel.vue'
@@ -26,7 +24,6 @@ export default {
         if(!this.$store.getters['user/isManager'])
             this.$router.push("/");
         else{
-
             this.staff = await ManagerService.getStaff(this.$store.getters['user/getToken']);
             await this.staff.data.splice(this.searchEmailInData(this.$store.getters['user/getEmail']),1)
         }
@@ -40,9 +37,7 @@ export default {
             if( tmp != -1 )
             {
 
-                let temp = await ManagerService.delStaff(this.$store.getters['user/getToken'],this.staff.data[tmp].id);
-                if(temp.status == '200')
-                {
+                await ManagerService.delStaff(this.$store.getters['user/getToken'],this.staff.data[tmp].id);
                     this.$swal({
                     html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Usunięto użytkownika </h3></center>',
                     timer: 3000,
@@ -55,10 +50,9 @@ export default {
                     icon: 'success'
                 });
                 this.staff.data.splice(tmp,1);
-                }
-                
+
             }
-                        
+
         },
         searchidInData(id)
         {
@@ -83,15 +77,12 @@ export default {
                 }
             }
                 return -1;
-
         }
         
     }
-
-
 }
-</script>
 
+</script>
 <style scoped>
 .staff
 {

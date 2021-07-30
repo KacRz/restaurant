@@ -1,5 +1,6 @@
 <template>
     <div class="menu">
+
     <div v-if="isStaff()" class="MenuManagment">
         <div class="dish-buttons"  @blur="blurField">
         <div class="MenuManagment-delete-button"  @click="focusField('DeleteDish')" >
@@ -23,6 +24,7 @@
         <AddCategory id ="AddCategory"  v-show="showField('AddCategory')" @close= blurField @response= addCategory />
         
     </div>
+
         <div class="menu-content">
 
             <div v-for="(category, index ) in productCategories" :key="index">
@@ -34,7 +36,10 @@
                     <div class="menu-category__element" v-for="item in productCategoryItems[index]" :key="item.id" >
                         <Fooditem v-bind="item" v-on:click="foodDetails(item)" />
                     </div>
+
+                    
                 </div>
+            
             </div>
         </div>
     </div>
@@ -42,13 +47,9 @@
 
 <script>
 import Fooditem from '../components/Fooditem.vue'
-import Service from '../Service/Service.js'
-import StaffService from '../Service/StaffService.js'
 
-import DeleteDish from '../components/MenuStaffItems/DeleteDish.vue'
-import DeleteCategory from '../components/MenuStaffItems/DeleteCategory.vue'
-import AddDish from '../components/MenuStaffItems/AddDish.vue'
-import AddCategory from '../components/MenuStaffItems/AddCategory.vue'
+import Service from '../Service/Service.js'
+
 export default {
     name: "Menu",
     data() {
@@ -57,20 +58,14 @@ export default {
             clickedItem: '',
             productList: [],
             productCategories: [],
-            productCategoryItems: [],
-            editField: '',
+            productCategoryItems: []
         }
     },
     components: {
         Fooditem,
-        DeleteDish,
-        DeleteCategory,
-        AddDish,
-        AddCategory
     },
     setup() {
     },
-
     methods: {
         foodDetails(item) {
             this.$router.push({
@@ -80,6 +75,7 @@ export default {
         addItemToCart() {
             this.$store.dispatch("cart/addToCart", this.products[this.clickedItem]);
         },
+
         isStaff()
         {
             return this.$store.getters['user/isStaff'];
@@ -241,6 +237,7 @@ export default {
     },
     watch: {
     
+
     },
     async created()
     {
@@ -249,8 +246,6 @@ export default {
 
         Array.prototype.push.apply(this.productList, tmp.data);
         Array.prototype.push.apply(this.productCategories, tmp2.data);
-
-        // I know this is bad but i dunno how to do it better :( 
 
         for (let i=0; i < this.productCategories.length; i++) {
             let temp = [];
@@ -303,93 +298,6 @@ export default {
     display: flex;
     justify-content: flex-start;
 }
-.MenuManagment
-{
-     width: 100%;
-    height: 50%;
-
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-    padding: 0.3em;
-    margin-bottom: 0.3em;
-    background-color: #2d2d2d;
-    color: rgb(255, 205, 124);
-}
-.dish-buttons
-{
-margin-right: 10%;
-display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-}
-.category-buttons
-{
-margin-left: 10%;
-display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-}
-.MenuManagment-delete-button
-{
-    background-color: red;
-    color: white;
-    padding: 0.5em 1.2em;
-    margin: 0 0.3em;
-    border-radius: 10px;
-    font-size: 1.2em;
-
-    transition: padding 0.3s, background-color 0.3s;
-
-}
-.MenuManagment-delete-button:hover
-{
-background-color: rgb(187, 50, 50);
-    padding: 0.5em 1.6em;
-    border-radius: 10px;
-    cursor: pointer;
-}
-.MenuManagment-delete-button:active
-{
-    background-color: rgb(235, 38, 38);
-    padding: 0.5em 1.6em;
-    border-radius: 10px;
-    cursor: pointer;
-}
-.MenuManagment-add-button
-{
-    background-color: green;
-    color: white;
-    padding: 0.5em 1.2em;
-    margin: 0 0.3em;
-    border-radius: 10px;
-    font-size: 1.2em;
-
-    transition: padding 0.3s, background-color 0.3s;
-    
-}
-.MenuManagment-add-button:hover
-{
-    background-color: rgb(50, 187, 50);
-    padding: 0.5em 1.6em;
-    border-radius: 10px;
-    cursor: pointer;
-}
-.MenuManagment-add-button:active
-{
-    background-color: rgb(38, 235, 38);
-    padding: 0.5em 1.6em;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-
 
 @media (max-width: 660px) {
     .menu-category__element {

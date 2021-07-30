@@ -56,13 +56,6 @@
                  Cena: {{ details.Price }}zł</p>
                 <input v-model="details.Price" v-show="showField('Price')" id="dish-Price" type="text" class="field-value form-control" @focus="focusField('Price')" @blur="blurField">
               </div>
-                <h4>
-                    Dostępny: {{details.isAvalilable? "Tak": "Nie"}}<br>
-                    Danie dania: {{details.IsDishOfDay? "Tak": "Nie"}}
-                </h4>
-            </div>
-            <div class = "fields-aval-dishofday">
-
             </div>
         </div>
     </div>
@@ -90,22 +83,32 @@ import StaffService from '../Service/StaffService'
 export default {
     name: "FoodDetails",
     data() {
+        let det = this.$route.params
         return {
             isEditing: false,
             modals: [ ],
             editField: '',
-            details: this.$route.params,
+            details: det,
             changed: {
             Price: 0,
             Title: '',
             Description: '',
             isAvalilable:'',
-            IsDishOfDay: '',
+            IsDishOfDay: ''
             }
         }
         
     },
     methods: {
+        initChanged()
+        {
+            this.changed ={
+            Price: this.details.Price,
+            Title: this.details.Title,
+            Description: this.details.Description,
+            isAvalilable:this.details.isAvalilable,
+            IsDishOfDay: this.details.IsDishOfDay}
+        },
         addToCart() {
             this.$store.dispatch("cart/addToCart", this.details);
             this.$swal({
@@ -125,10 +128,16 @@ export default {
         },
         isStaff()
         {
+            
+            if(this.changed.isAvalilable =='')
+            {
+                this.initChanged();
+            }
             return this.$store.getters['user/isStaff'];
         },
         changeAvailable()
         {
+
             if(this.changed.isAvalilable === '')
             {
                 this.changed.isAvalilable = Boolean(parseInt(this.details.isAvalilable));
@@ -177,19 +186,27 @@ export default {
             {
                 this.changed.IsDishOfDay = this.details.IsDishOfDay;
                 this.alertHandler(await StaffService.changeDishOfDay(this.$store.getters['user/getToken'],this.details.id,this.details.IsDishOfDay), 'Danie dnia');
+
             }
-            if(this.details.isAvalilable != this.changed.isAvalilable && this.changed.isAvalilable !== '')
+            if(this.details.isAvalilable != this.changed.isAvalilable)
             {
+
                 this.changed.isAvalilable = this.details.isAvalilable;
                 this.alertHandler(await StaffService.changeAvailbility(this.$store.getters['user/getToken'],this.details.id,this.details.isAvalilable), 'Dostępność dania');
+
             }
-            if((this.details.Description != this.changed.Description&& this.changed.Description !=='' )|| (this.details.Title != this.changed.Title && this.changed.Title !=='') ||(this.details.Price != this.changed.Price && this.changed.Price !==0))
+            if(this.details.Description != this.changed.Description || this.details.Title != this.changed.Title ||this.details.Price != this.changed.Price)
             {
                 let temp = {
-                    Title: this.details.Title ,
-                    Description: this.details.Description ,
-                    Price: parseFloat(this.details.Price).toFixed(2)
+                    Title: this.changed.Title,
+                    Description: this.tmp.Description,
+                    Price: this.changed.Price
                 }
+
+            }
+        },
+        focusField(name){
+
                 this.changed.Description = this.details.Description;
                 this.changed.Title = this.details.Title;
                 this.changed.Price = this.details.Price;
@@ -231,21 +248,17 @@ export default {
 
         },
         async focusField(name){
+
             this.editField = name;
-            if(this.changed[name] == '' || this.changed[name] == 0)
-            {
-                this.changed[name] = await this.details[name];
-            }
-                
         },
         blurField(){
-            this.editField = '';
+          this.editField = '';
         },
         showField(name){
-            return (this.details[name] == '' || this.editField == name)
+          return (this.details[name] == '' || this.editField == name)
         },
     },
-     created() {
+    created() {
         if (this.$route.params.id !== undefined){
             localStorage.setItem("details", JSON.stringify(this.$route.params))
         }
@@ -441,10 +454,6 @@ export default {
     padding: 0.5em 1.6em;
     border-radius: 10px;
     cursor: pointer;
-}
-.fields-aval-dishofday
-{
-    display:flex;
 }
 @media (max-width: 750px) {
     .addto-cart {

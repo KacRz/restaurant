@@ -7,7 +7,7 @@ module.exports = global.sequelize.define("Order", {
             autoIncrement: true,
             primaryKey: true,
         },
-        Date: {
+        OrderDate: {
             type: Sequelize.DATE,
         },
         Delivery: {
@@ -18,6 +18,12 @@ module.exports = global.sequelize.define("Order", {
         },
         Email: {
             type: Sequelize.STRING(50),
+        },
+        TotalSum: {
+            type: Sequelize.DECIMAL(6,2),
+        },
+        Status: {
+            type: Sequelize.STRING(30),
         }
         
 });

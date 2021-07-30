@@ -35,6 +35,7 @@ router.get('/fooditem/',fooditem_contr.returnAll);
 router.put('/fooditem/:id', fooditem_contr.find);
 router.put('/fooditem/aval/:id', auth, fooditem_contr.changeAvalilable);
 router.put('/fooditem/dishofday/:id', auth,fooditem_contr.changeDishOfDay);
+router.post('/fooditem/chDescription/:id', auth, fooditem_contr.changeDescription);
 router.post('/fooditem/update',auth,fooditem_contr.update);
 router.delete('/fooditem/del/:id',auth,fooditem_contr.delete);
 
@@ -62,11 +63,12 @@ router.get('/order/:order_id',orderlist_contr.findbyOrderFk);
 router.get('/order/findbyorderid/:orderid', orderlist_contr.findByOrderFK);
 
 //users
-router.delete('/user/:id', auth,user_contr.delete);
+router.delete('/user/del/:id', auth,user_contr.delete);
 router.post('/register', auth,user_contr.create);
 router.post('/login', user_contr.validateUser);
 router.post('/user/update', auth,user_contr.update);
 router.get('/user/all', auth,user_contr.findAll);
+router.post('/user/addStaf', auth,user_contr.createStaff);
 
 //user update from settings page
 router.put('/user/updateSmall/:email', auth, user_contr.updateSmall);

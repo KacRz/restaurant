@@ -20,7 +20,6 @@ export default {
         this.$router.push("/register");
       }
     }
-
 }
 </script>
 
@@ -56,4 +55,4 @@ export default {
   color:rgba(153, 150, 145,255);
   background-color: #1b1b1b;
 }
-</style>
+</style> 

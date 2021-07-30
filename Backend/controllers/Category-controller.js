@@ -1,11 +1,11 @@
 const Category = require("../models/Category.js");
-
+const Fooditem = require("../models/Fooditem.js");
 exports.create = (req, res) => {
-  Category.findOne({where: {Name: req.body.name} }).then(function(cat)
+  Category.findOne({where: {Name: req.body.data} }).then(function(cat)
   {
     if(!cat)
     {
-        Category.create({Name: req.body.name});
+        Category.create({Name: req.body.data});
     }
     else
     {
@@ -45,8 +45,9 @@ exports.delete = (req, res) => {
     }
     else
     {
-        cat.dalete();
-        res.send("Deleted");
+        Fooditem.destroy({where:{Category_fk: req.params.id}});
+        cat.destroy();
+        res.status(200).send("Deleted");
     }
 });
 };

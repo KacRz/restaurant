@@ -40,11 +40,11 @@ export default {
         {
             if(!this.Name)
             {
-                this.errors.push('Musisz wypełnić pole');
+                console.log('Musisz wypełnić pole');
             }
             else
             {
-                console.log('No errors')
+                this.$emit('response', this.Name);
             }
         }
     },
@@ -70,8 +70,8 @@ export default {
 .submit_button {
     background-color: green;
     font-size: 1em;
-    width: 70%;
-    margin-top: 1em;
+    width: 20%;
+    margin-top: 0.5em;
     margin-bottom: 1em;
     padding: 0.1em;
     color: white;
@@ -81,8 +81,8 @@ export default {
 
     transition: 0.3s width;
 }
-.rsubmit_button:hover {
-    width: 75%;
+.submit_button:hover {
+    width: 25%;
     cursor: pointer;
 }
 

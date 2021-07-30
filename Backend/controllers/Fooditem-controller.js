@@ -1,18 +1,42 @@
 const Fooditem = require("../models/Fooditem.js");
 
+const  Opt  = require('sequelize')
+const {Op} = require('sequelize')
 
-exports.create = (req, res) => {
-    Fooditem.findOne({ where: {Name: req.body.name } }).then(async function (food) {
-
+exports.create = async (req, res) => {
+    try{
+    
+    let max = await Fooditem.findAll({ where:{Category_fk: req.body.data.category},   attributes: [[Opt.fn('MAX', Opt.col('Foodnumber')), 'max']], group: ["Category_fk"],raw: true })
+    //there is problem when category there is no fooditem in category - max will be undefinded [] 
+    if(max[0] === undefined )
+    {
+        max = 0;
+    }
+    else 
+        max = max[0].max
+    
+        Fooditem.findOne({ where: {Title: req.body.data.Title } }).then(async function (food) {
+        
         if (!food) {
-            Fooditem.create({Name: req.body.data.name, Price: req.body.data.price, isAvalilable: req.body.data.available, isDishOfDay: req.body.data.dishofday})
-            res.send("Not found");
+            
+            await Fooditem.create({Title: req.body.data.Title, Price: req.body.data.Price, isAvalilable: req.body.data.isAvalilable,  Description: req.body.data.Description,
+                IsDishOfDay: req.body.data.IsDishOfDay, imgsource: req.body.data.link,Foodnumber:max+1 ,  Category_fk: req.body.data.category})
+            res.status(200).send("Created");
+
         }
         else {
             res.send("Logged in");
         }
  
     })
+
+    }
+    catch(err)
+    {
+        console.log(err);
+            res.status(399).send(err);
+    }
+
 };
 // Find a single type with an id
 exports.find= async (req, res) => {

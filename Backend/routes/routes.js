@@ -72,6 +72,7 @@ router.delete('/address/delete/:id', auth, addrress_contr.delete);
 
 //booking
 router.get('/booking/:date', booking_contr.findbyDate);
+router.get('/booking/id/:id', auth, booking_contr.findByID);
 
 
 //testing data

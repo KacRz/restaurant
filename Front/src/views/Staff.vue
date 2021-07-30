@@ -39,32 +39,24 @@ export default {
             let tmp =this.searchidInData(id);
             if( tmp != -1 )
             {
-                /*
-                let mess = Swal.fire({
-                    title: 'Do you want to save the changes?',
-                    showDenyButton: true,
-                    showCancelButton: true,
-                    confirmButtonText: `Save`,
-                    denyButtonText: `Don't save`,
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            Swal.fire('Saved!', '', 'success')
-                            return true;
-                        } 
-                        else if (result.isDenied) 
-                        {
-                            Swal.fire('Changes are not saved', '', 'info')
-                            return false;
-                        }
-                    })
-                    
-                if(mess)
+
+                let temp = await ManagerService.delStaff(this.$store.getters['user/getToken'],this.staff.data[tmp].id);
+                if(temp.status == '200')
                 {
-                    //ManagerService.delStaff(this.staff[tmp].id);
-                    this.staff.data.splice(tmp,1);
-                }*/
-                await ManagerService.delStaff(this.$store.getters['user/getToken'],this.staff.data[tmp].id);
+                    this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Usunięto użytkownika </h3></center>',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '16rem',
+                    icon: 'success'
+                });
                 this.staff.data.splice(tmp,1);
+                }
+                
             }
                         
         },

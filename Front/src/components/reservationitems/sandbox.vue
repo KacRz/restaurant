@@ -1,24 +1,24 @@
 <template>
     <div class="sandbox">
         <div class="row">
-            <Table size="small" name="1"/>
-            <Table size="small" name="2"/>
-            <Table size="small" name="3"/>
-            <Table size="small" name="4"/>
-            <Table size="small" name="5"/>
+            <Table size="small" name="1" @response= TableResponse />
+            <Table size="small" name="2" @response= TableResponse />
+            <Table size="small" name="3" @response= TableResponse />
+            <Table size="small" name="4" @response= TableResponse />
+            <Table size="small" name="5" @response= TableResponse />
         </div>
         <div class="row">
-            <Table size="big" name="11"/>
-            <Table size="big" name="12"/>
-            <Table size="big" name="13"/>
-            <Table size="big" name="14"/>
+            <Table size="big" name="11" @response= TableResponse />
+            <Table size="big" name="12" @response= TableResponse />
+            <Table size="big" name="13" @response= TableResponse />
+            <Table size="big" name="14" @response= TableResponse />
         </div>
         <div class="row">
-            <Table size="small" name="6"/>
-            <Table size="small" name="7"/>
-            <Table size="small" name="8"/>
-            <Table size="small" name="9"/>
-            <Table size="small" name="10"/>
+            <Table size="small" name="6"  @response= TableResponse />
+            <Table size="small" name="7"  @response= TableResponse />
+            <Table size="small" name="8"  @response= TableResponse />
+            <Table size="small" name="9"  @response= TableResponse />
+            <Table size="small" name="10" @response= TableResponse />
         </div>
     </div>
 </template>
@@ -30,6 +30,13 @@ export default {
     name: "sandbox",
     components: {
         Table
+    },
+    methods:
+    {
+        TableResponse(name)
+        {
+            this.$emit('response', name);
+        }
     }
 }
 </script>

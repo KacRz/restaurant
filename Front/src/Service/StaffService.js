@@ -12,7 +12,7 @@ class ManagerService
         catch(err)
         {
             console.log(err);
-            return {err};            
+            return err;            
         }
     }
     static async changeDishOfDay(toke,id)
@@ -23,7 +23,7 @@ class ManagerService
         catch(err)
         {
             console.log(err);
-            return {err};            
+            return err;            
         }
     }
     static async changeDescription(toke, id, dat)
@@ -34,7 +34,7 @@ class ManagerService
         catch(err)
         {
             console.log(err);
-            return {err};            
+            return err;            
         }
     }
     static async delStaff(toke, uid)
@@ -46,9 +46,55 @@ class ManagerService
         catch(err)
         {
             console.log(err);
-            return {err};            
+            return err;            
+        }
+    }
+
+    static async addCategory(toke, dat)
+    {
+        try{
+            return await axios.post(url+'categories/create/',{data:dat}, { headers: {"x-auth-token" :  toke} });
+        }
+        catch(err)
+        {
+            console.log(err);
+            return err;            
+        }
+    }
+    static async delCategory(toke, id)
+    {
+        try{
+            return await axios.delete(url+'categories/del/'+id, { headers: {"x-auth-token" :  toke} });
+        }
+        catch(err)
+        {
+            console.log(err);
+            return err;            
         }
     }
     
+    static async deleteDish(toke,dat, id)
+    {
+        try{
+            return await axios.post(url+'fooditem/del/'+id,{data:dat}, { headers: {"x-auth-token" :  toke} });
+        }
+        catch(err)
+        {
+
+            return err;            
+        }
+    }
+    static async createDish(toke, dat)
+    {
+        try{
+            return await axios.post(url+'fooditem/create/',{data: dat}, { headers: {"x-auth-token" :  toke} });
+        }
+        catch(err)
+        {
+
+            return err;            
+        }
+    }
+
 }
 export default ManagerService

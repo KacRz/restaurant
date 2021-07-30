@@ -126,8 +126,8 @@ export default {
 .submit_button {
     background-color: green;
     font-size: 1em;
-    width: 70%;
-    margin-top: 1em;
+    width: 20%;
+    margin-top: 0.5em;
     margin-bottom: 1em;
     padding: 0.1em;
     color: white;
@@ -136,6 +136,14 @@ export default {
     border-radius: 5px;
 
     transition: 0.3s width;
+}
+.submit_button:hover {
+    width: 25%;
+    cursor: pointer;
+}
+
+.submit_button:active {
+    background-color: rgb(9, 207, 9);;
 }
 .form-button-close
 {

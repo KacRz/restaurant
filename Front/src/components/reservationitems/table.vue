@@ -1,5 +1,5 @@
 <template>
-    <div class="table" :class="size">
+    <div class="table" :class="size" v-on:click="response()">
         {{ name }}
     </div>
 </template>
@@ -10,7 +10,15 @@ export default {
     props: {
         size: String,
         name: String
-    }
+    },
+    methods:
+    {
+      response()
+      {
+          this.$emit('response', this.name);
+      }  
+    },
+
 }
 </script>
 

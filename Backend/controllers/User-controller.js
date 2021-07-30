@@ -108,15 +108,19 @@ exports.getSmalldata = async(req, res) => {
     User.findOne({ where: {email: req.params.email} }).then(async function (user) {
         res.send(user);
     })
-
-
     .catch((err)=>
     {
         res.status(400).send("Error occured");
     });
+}
 
-
-
+exports.getuserbyaddress = async(req, res) => {
+    User.findOne({where: {id: req.params.id}}).then(async function(user){
+        res.send(user);
+    })
+    .catch((err) => {
+        res.status(400).send("Error occured");
+    })
 }
 
 // Update a User by the id in the request

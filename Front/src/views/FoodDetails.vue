@@ -245,7 +245,9 @@ export default {
             return (this.details[name] == '' || this.editField == name)
         },
     },
+
     async created() {
+
         if (this.$route.params.id !== undefined){
             localStorage.setItem("details", JSON.stringify(this.$route.params))
         }

@@ -115,7 +115,6 @@ export default {
     async created() {
         const temp = await Service.getOrderList(this.id);
         Array.prototype.push.apply(this.orderDetailsList, temp.data);
-        console.log(this.Status);
     }
 }
 </script>

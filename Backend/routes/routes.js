@@ -69,13 +69,11 @@ router.get('/order/:order_id',orderlist_contr.findbyOrderFk);
 router.get('/order/findbyorderid/:orderid', orderlist_contr.findByOrderFK);
 
 //users
-<<<<<<< HEAD
-router.delete('/user/:id', auth,user_contr.delete);
-router.post('/register',user_contr.create);
-=======
+
+
 router.delete('/user/del/:id', auth,user_contr.delete);
-router.post('/register', auth,user_contr.create);
->>>>>>> 2cbfda87f42fdefcf0a6cfa346051b099c359d08
+router.post('/register',user_contr.create);
+
 router.post('/login', user_contr.validateUser);
 router.post('/user/update', auth,user_contr.update);
 router.get('/user/all', auth,user_contr.findAll);
@@ -95,9 +93,9 @@ router.post('/address/addtoclient', auth, addrress_contr.create);
 router.delete('/address/delete/:id', auth, addrress_contr.delete);
 
 //booking
-router.get('/booking/:date', booking_contr.findbyDate);
-router.get('/booking/id/:id', auth, booking_contr.findByID);
 
+router.get('/booking/id/:id', auth, booking_contr.findByID);
+router.get('/booking/all/', auth, booking_contr.getAll)
 
 //testing data
 router.get('/fill_the_database/users', user_contr.fill_the_database_Users);

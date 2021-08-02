@@ -1,5 +1,5 @@
 <template>
-    <div class="table" :class="size" v-on:click="response()">
+    <div  :class="[size ,{'table': !isDisabled, 'table-disabled': isDisabled }]" v-on:click="response()" >
         {{ name }}
     </div>
 </template>
@@ -9,7 +9,8 @@ export default {
     name: "Table",
     props: {
         size: String,
-        name: String
+        name: Number,
+        isDisabled: Boolean,
     },
     methods:
     {
@@ -25,6 +26,11 @@ export default {
 <style scoped>
 .table {
     background-color: brown;
+    border-radius: 5px;
+}
+.table-disabled
+{
+    background-color: red;
     border-radius: 5px;
 }
 .small {

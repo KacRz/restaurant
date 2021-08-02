@@ -6,6 +6,7 @@ const order_contr = require("../controllers/Order-controller");
 const orderlist_contr = require("../controllers/OrderList-controller");
 const addrress_contr = require("../controllers/Address-controller");
 const booking_contr = require("../controllers/Booking-controller");
+const restinfo_contr = require("../controllers/Restaurantinfo-controller");
 const auth = require("../middleware/auth");
 
 const express = require('express');
@@ -19,6 +20,11 @@ router.get('/', (req, res)=> {
     res.send("Hello world!");
 
 })
+//restaurant infos
+router.get('/restaurantinfo/', restinfo_contr.getInfo);
+router.post('/restaurantinfo/addnew', restinfo_contr.addNew);
+router.delete('/restaurantinfo/delete/:infoid', restinfo_contr.delete);
+
 //categories
 router.post('/categories/create/', auth,cat_routes.create);
 router.get('/categories/', cat_routes.returnAll);
@@ -63,7 +69,7 @@ router.get('/order/findbyorderid/:orderid', orderlist_contr.findByOrderFK);
 
 //users
 router.delete('/user/:id', auth,user_contr.delete);
-router.post('/register', auth,user_contr.create);
+router.post('/register',user_contr.create);
 router.post('/login', user_contr.validateUser);
 router.post('/user/update', auth,user_contr.update);
 router.get('/user/all', auth,user_contr.findAll);
@@ -71,6 +77,9 @@ router.get('/user/all', auth,user_contr.findAll);
 //user update from settings page
 router.put('/user/updateSmall/:email', auth, user_contr.updateSmall);
 router.get('/user/getSmalldata/:email', auth, user_contr.getSmalldata);
+
+// reset password for user
+router.post('/resetpassword', user_contr.resetpassword);
 
 //addresses
 router.get('/address', addrress_contr.findAll);

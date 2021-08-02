@@ -25,6 +25,38 @@
                 <button class="address-btn" v-on:click="changeData">Zmień dane</button>
             </div>
         </div>
+        <div class="restaurant-settings" v-if="isStaff">
+            <div class="restaurant-settings__title">
+                <h2>Informacje o restauracji</h2>
+                <div class="icon" v-on:click="isAddNewInfo = !isAddNewInfo">
+                    <i class="fas fa-plus-circle "></i>
+                </div>
+            </div>
+            <div class="one-info" v-if="isAddNewInfo">
+                <div class="info-type">
+                    <select id="newInfoType" v-model="newInfoType">
+                        <option value="Telefon">Telefon</option>
+                        <option value="Lokalizacja">Lokalizacja</option>
+                        <option value="Godziny">Godziny</option>
+                    </select>
+                </div>
+                <div class="info-value">
+                    <input type="text" v-model="newInfoValue"/>
+                </div>
+                <button v-on:click="addNewInfo" class="btn">Dodaj</button>
+            </div>
+            <div class="one-info" v-for="info in restaurantinfo" :key="info.id">
+                <div class="info-type">
+                    {{ info.type }}
+                </div>
+                <div class="info-value">
+                    {{ info.value }}
+                </div>
+                <div class="delete-info" v-on:click="deleteInfo(info.id)">
+                    <i class="fas fa-trash-alt"></i>
+                </div>
+            </div>
+        </div>
         <div class="settings-address">
             <h2>Adresy</h2>
             <div class="one-address" v-for="(adres, index) in AddressList" :key="index">
@@ -75,14 +107,79 @@ export default {
                 newHouseNumber: '',
                 newPostalCode: ''
             },
-            edituser: true
+            edituser: true,
+            restaurantinfo: [],
+            isAddNewInfo: false,
+            newInfoValue: '',
+            newInfoType: '',
         }
     },
-    created() {
+    async created() {
         this.AddressList = this.$store.getters['user/getAddresses'];
         this.AccountData = this.$store.getters['user/getAccountData'];
+        this.loadInfos();
+    },
+    computed: {
+        isClient()
+        {
+            return (this.$store.getters['user/getMode'] == 'Guest' || this.$store.getters['user/getMode'] == 'Klient')
+        },
+        isStaff()
+        {
+            return (this.$store.getters['user/getMode'] == 'Obsługa')
+        },
     },
     methods: {
+        async loadInfos() {
+            this.restaurantinfo = [];
+            const temp = await Service.getRestaurantInfo();
+            Array.prototype.push.apply(this.restaurantinfo.sort(), temp.data);
+            this.restaurantinfo.sort(this.dynamicSort("type"));
+        },
+        async deleteInfo(id) {
+            await Service.deleteRestaurantInfo(id);
+            this.loadInfos();
+            this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Usunięto informację</h3></center>',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '16rem',
+                    icon: 'success'
+                });
+        },
+        async addNewInfo() {
+            if (this.newInfoType == '' || this.newInfoValue == '') {
+                this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Podaj wszystkie dane</h3></center>',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '16rem',
+                    icon: 'error'
+                });
+                return false;
+            }await Service.addNewRestaurantInfo(this.newInfoType, this.newInfoValue);
+            this.loadInfos();
+            this.isAddNewInfo = false;
+            this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Dodano nową informację</h3></center>',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '16rem',
+                    icon: 'success'
+                });
+        },
         async checkForm() {
             if (this.newAddress.newPostalCode) {
                 if (!this.validPostalcode(this.newAddress.newPostalCode)){
@@ -154,7 +251,21 @@ export default {
                         this.$router.go();
                     }
                 });
-        }
+        },
+        dynamicSort(property) {
+            var sortOrder = 1;
+            if(property[0] === "-") {
+                sortOrder = -1;
+                property = property.substr(1);
+            }
+            return function (a,b) {
+                /* next line works with strings and numbers, 
+                * and you may want to customize it to your needs
+                */
+                var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+                return result * sortOrder;
+            }
+        },
     }
 }
 </script>
@@ -169,6 +280,60 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+.restaurant-settings {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.restaurant-settings__title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.delete-info {
+    transition: 0.5s;
+}
+.delete-info:hover {
+    color: red;
+}
+.btn {
+    background-color: green;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5em;
+    color: white;
+    transition: 0.5s;
+}
+.btn:hover {
+    cursor: pointer;
+    background-color: lightgreen;
+    color: black;
+}
+
+.one-info {
+    width: 60%;
+    margin: 0.3em 0;
+    font-size: 1.1rem;
+    box-sizing: border-box;
+    display: flex;
+    padding: 0.3em;
+    align-items: center;
+}
+.info-type {
+    width: 30%;
+}
+.info-value {
+    width: 70%;
+}
+.one-info:hover {
+    background-color: #2b2b2b;
+    cursor: pointer;
+}
+.info-value > input {
+    width: 70%;
 }
 .settings-address {
     width: 100%;
@@ -191,6 +356,14 @@ export default {
     word-wrap: break-word;
     display: block;
     text-align: left;
+}
+.icon {
+    margin-left: 0.5em;
+    transition: 0.5s;
+}
+.icon:hover {
+    cursor: pointer;
+    color: green;
 }
 .add-address {
     font-size: 1.5em;
@@ -312,7 +485,10 @@ export default {
     }
     .add-address__form > input {
     font-size: 0.8em;
-}
+    }
+    .one-info {
+        font-size: 0.8rem;
+    }
 }
 
 </style>

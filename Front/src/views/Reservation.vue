@@ -5,7 +5,12 @@
       <div class="reservation-title__date">
         <h4>Wybierz dzień</h4>
         <datepicker v-model="time1" />
+        <div class = "hours">
+          <VueTimepicker :modelValue="yourVar" @update:modelValue="yourHandler" ></VueTimepicker>  
+        
+        </div>
       </div>
+
       <div class="reservation-info">
         Wolne stoliki: 
       </div>
@@ -16,23 +21,35 @@
     <div class="button"  @click="print()" > 
             <span>Dodaj kategorię</span><i class="far fa-save" ></i>
     </div>
+  <div class="reservation-area">
+  </div>
+
   </div>
 </template>
 
 <script>
 import Sandbox from '../components/reservationitems/sandbox.vue';
-import Datepicker from 'vue3-datepicker'
-
+import Datepicker from 'vue3-datepicker';
+import ClientService from '../Service/ClientService.js'
+import VueTimepicker from 'vue3-timepicker'
+import 'vue3-timepicker/dist/VueTimepicker.css'
 export default {
     name: "reservation",
     data() {
       return {
         time1: new Date(),
+        time2: new Date(),
+        defaultHour:new Date().getHours(),
+        defaultMinute:new Date().getMinutes(),
+        reservations: [],
+        focusArea: false,
+        activeTable: -1,
       }
     },
     components: {
       Sandbox,
-      Datepicker
+      Datepicker,
+      VueTimepicker
     },
     methods:
     {
@@ -40,19 +57,41 @@ export default {
       {
         console.log(this.time1);
       },
-      reservationTable(date, table) {
-            this.$router.push({
-                name: 'ReservationTable', params: {Date: date, Table: table},
-            })
-      },
-      getTableNumber(number)
+      async getTableNumber(number)
       {
-        this.reservationTable(this.time1, number);
+        
+        if(this.activeTable!== number)
+        {
+          this.activeTable = number;
+          this.reservations = await ClientService.getReservationTimes(this.$store.getters['user/getToken'],number)
+          console.log(this.reservations)
+        }
+        this.focus();
+      },
+      timeChangeHandler(){
+            return 0;
+      },
+
+      showField(){
+
+            return this.focusArea;
+      },
+      focus()
+      {
+        this.focusArea = true;
+      },
+      blur()
+      {
+        this.focusArea = false;
+      },
+      findIndexByNumber()
+      {
+        
       }
     },
-    created()
+    async created()
     {
-      console.log(this.time1)
+      
     },
 
 }
@@ -113,6 +152,11 @@ button
 
     transition: padding 0.3s, background-color 0.3s;
     
+}
+.hours
+{
+
+  font-size: 0.5em;
 }
 
 </style>

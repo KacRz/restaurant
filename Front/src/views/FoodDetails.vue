@@ -131,11 +131,11 @@ export default {
         {
             if(this.changed.isAvalilable === '')
             {
+
                 this.changed.isAvalilable = Boolean(parseInt(this.details.isAvalilable));
                 this.details.isAvalilable = Boolean(parseInt(this.details.isAvalilable));
             }
             this.details.isAvalilable = !this.details.isAvalilable;
-            console.log(this.details.isAvalilable);
         },
         undoChanges()
         {
@@ -245,10 +245,14 @@ export default {
             return (this.details[name] == '' || this.editField == name)
         },
     },
-     created() {
+
+    async created() {
+
         if (this.$route.params.id !== undefined){
             localStorage.setItem("details", JSON.stringify(this.$route.params))
         }
+        this.details.isAvalilable = Boolean(parseInt(await this.details.isAvalilable));
+        this.details.IsDishOfDay = Boolean(parseInt(await this.details.IsDishOfDay))
 
     },
     mounted() {

@@ -31,8 +31,26 @@ exports.findByID = (req,res) =>
   catch(err)
   {
     console.log(err);
-    res.status(400).send('error occured')
+    res.status(399).send('error occured')
   }
+}
+exports.getAll = (req,res) =>
+{
+  console.log('aaaa')
+  try{
+    Booking.findAll({order: [['ReservationStart', 'asc']],raw: true,attributes: ['Table_fk','ReservationEnd', 'ReservationStart'],where: { [Op.and]:[{ReservationStart:{[Op.gte]: new Date().toUTCString()}},{ReservationEnd:{[Op.gte]: new Date().toUTCString()}}]}})
+    .then(function(book)
+    {
+
+      res.status(200).send(book);
+    })
+    }
+    catch(err)
+    {
+      console.log(err);
+      res.status(399).send('error occured')
+    }
+
 }
 // Update a type by the id in the request
 exports.update = (req, res) => {

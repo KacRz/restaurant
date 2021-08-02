@@ -4,10 +4,10 @@ const url = 'http://localhost:5000/';
 
 class ClientService
 {
-    static async getReservationTimes(toke,TableId)
+    static async getReservationTimes(toke)
     { 
         try{
-            return await axios.get(url+'booking/id/'+TableId, { headers: {"x-auth-token" :  toke} });
+            return await axios.get(url+'booking/all/', { headers: {"x-auth-token" :  toke} });
         }
         catch(err)
         {

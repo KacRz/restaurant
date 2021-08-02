@@ -20,6 +20,7 @@
 <script>
 import Homeitem from '@/components/homeitem/Homeitem.vue'
 import Homeinfo from '@/components/homeitem/Homeinfo.vue'
+import Service from '../Service/Service'
 
 export default {
   name: 'Home',
@@ -29,9 +30,23 @@ export default {
   },
 data() {
   return {
-    phoneslist: [ "17 11 11 111", "333 333 333" ],
-    location: [ "Restauracja", "Dąbrowskiego 99", "Rzeszów" ],
-    timetable: ["pn-pt", "9:00-22:00", "sb-nd", "10:00-23:00" ],
+    phoneslist: [ ],
+    location: [ ],
+    timetable: [ ],
+    }
+  },
+  async created() {
+    const temp = await Service.getRestaurantInfo();
+    for (const item in temp.data) {
+      if (temp.data[item].type == "Telefon") {
+        this.phoneslist.push(temp.data[item].value);
+      }
+      if (temp.data[item].type == "Godziny") {
+        this.timetable.push(temp.data[item].value);
+      }
+      if (temp.data[item].type == "Lokalizacja") {
+        this.location.push(temp.data[item].value);
+      }
     }
   }
 }

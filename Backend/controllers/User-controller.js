@@ -42,6 +42,7 @@ exports.validateUser = async (req, res) => {
 };
 // Create and Save a new User - register or create
 exports.create = async (req, res) => {
+    console.log(req.body.data);
     User.findOne({ where: {email: req.body.data.email } }).then(async function (user)
     {
         if(!user)
@@ -56,10 +57,10 @@ exports.create = async (req, res) => {
             await Address.create({
                 User_fk: id,
                 Country: "Poland",
-                City: req.body.data.City,
-                Street: req.body.data.Street,
-                HouseNumber: req.body.data.HouseNumber,
-                PostalCode: req.body.data.PostalCode               
+                City: req.body.data.city,
+                Street: req.body.data.street,
+                HouseNumber: req.body.data.housenumber,
+                PostalCode: req.body.data.postalcode               
             });
             res.send("user created");
         }
@@ -186,7 +187,24 @@ exports.createStaff = async (req, res) =>  {
     });
 };
 
+exports.resetpassword = async (req, res) => {
+    const email = await User.findOne({where: {email: req.body.email}});
+    if (email == null) {
+        res.send('User doesnt exist');
+    }
+    let new_rand_password = Math.random().toString(36).slice(-8);
 
+    
+
+    const message = {
+        from: process.env.USER,
+        to: req.body.email,
+        subject: process.env.FORGOT_PASS_SUBJECT,
+        text: "Witaj, twoje nowe hasło to "+new_rand_password+". Możesz teraz zalogować się."
+    };
+
+
+}
 
 
 

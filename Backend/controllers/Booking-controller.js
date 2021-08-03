@@ -1,9 +1,31 @@
 const Booking = require("../models/Booking.js")
+const User = require("../models/User.js")
 const { Op } = require("sequelize");
 const sequelize = require("sequelize");
 const moment = require("moment");
 exports.create = (req, res) => {
-  
+  //ReservationStart: '2021-08-09T17:00:00.000Z',
+  //ReservationEnd: '2021-08-09T18:00:00.000Z',
+  //TableID: 0,
+  //email: 'KowalJan@gmail.com'
+  try{
+    User.findOne({where: {email: req.body.data.email}}).then(async function(user)
+    {
+      if(!user)
+      {
+        res.status(205).send("Login error")
+      }
+      else{
+        Booking.create({ReservationStart: req.body.data.ReservationStart, ReservationEnd: req.body.data.ReservationEnd, Table_fk: req.body.data.TableID, User_fk: user.id});
+        res.status(200).send("Booking created")
+      }
+    });
+
+  }
+  catch(err){
+    res.status(400).send("Error occured")
+  }
+
 };
 // Find a single type with an id
 exports.findbyDate= (req, res) => {
@@ -52,6 +74,11 @@ exports.getAll = (req,res) =>
     }
 
 }
+exports.update = (req, res) => {
+  
+};
+
+
 // Update a type by the id in the request
 exports.update = (req, res) => {
   

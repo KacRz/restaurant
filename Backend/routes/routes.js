@@ -93,9 +93,9 @@ router.post('/address/addtoclient', auth, addrress_contr.create);
 router.delete('/address/delete/:id', auth, addrress_contr.delete);
 
 //booking
-
 router.get('/booking/id/:id', auth, booking_contr.findByID);
-router.get('/booking/all/', auth, booking_contr.getAll)
+router.get('/booking/all/', auth, booking_contr.getAll);
+router.post('/booking/create/', auth, booking_contr.create);
 
 //testing data
 router.get('/fill_the_database/users', user_contr.fill_the_database_Users);

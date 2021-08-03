@@ -5,7 +5,7 @@
         </div>
         <div class="homeinfo-content">
             <div>
-                <div v-for="(data, index) in content" :key="index">
+                <div v-for="(data, index) in content" :key="index" class="info">
                     {{ data }}
                 </div>
             </div>
@@ -40,6 +40,10 @@ export default {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+}
+
+.info {
+    padding-right: 0.5em;
 }
 
 .homeinfo-content {

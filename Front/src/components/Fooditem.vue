@@ -16,7 +16,6 @@
            Cena: {{ Price }}zł
         </div>
       </div>
-
   </div>
 </template>
 
@@ -29,7 +28,6 @@ export default {
         Price: { type: String, required: true },
         imgsource: { type: String, required: true },
         Foodnumber: { type: Number, required: true },
-        Name: { type: String, required: false }
     },
 }
 </script>

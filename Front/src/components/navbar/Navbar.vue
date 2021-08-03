@@ -17,7 +17,7 @@
             <li v-if="isClient && logged">
                 <router-link to="/order" class="link"><i class="fas fa-clipboard-list icon"></i>Zamówienia</router-link>
             </li>
-            <li v-if="isManager">
+            <li v-if="isManager || isStaff">
                 <router-link to="/orderstaff" class="link"><i class="fas fa-clipboard-list icon"></i>Zamówienia</router-link>
             </li>
             <li>
@@ -56,6 +56,9 @@ export default {
     methods: {
         handleView() {
             this.mobileView = window.innerWidth <= 880;
+            if (window.innerWidth > 880) {
+                this.showNav = false;
+            }
         },
         showNavigation() {
             this.showNav = !this.showNav;
@@ -83,7 +86,6 @@ export default {
     computed: {
         countCart() {
             return this.$store.state.cart.cartItemCount;
-
         },
         logged()
         {
@@ -96,7 +98,9 @@ export default {
         isManager()
         {
             return (this.$store.getters['user/getMode'] == 'Kierownik')
-
+        },
+        isStaff() {
+            return (this.$store.getters['user/getMode'] == 'Obsługa')
         }
     },
 

@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import Service from '../Service/Service'
+
 export default {
     name: 'Remindpassword',
     data() {
@@ -34,11 +36,9 @@ export default {
         }
     },
     methods: {
-        handleSubmit() {
-            const data = this.email;
-
+        async handleSubmit() {
             console.log('Remind password form submitted');
-            console.log(data);
+            await Service.resetPassword(this.email);
         }
     }
 }

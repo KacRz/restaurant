@@ -26,7 +26,8 @@ export default {
     data() {
         return {
             orderList: [  ],
-            openedInfo: false
+            openedInfo: false,
+            page: 1
         }
     },
     components: {
@@ -41,6 +42,9 @@ export default {
             }
         }
         this.orderList.reverse();
+    },
+    methods: {
+        
     }
     
 }

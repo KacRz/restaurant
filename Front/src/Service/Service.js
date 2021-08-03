@@ -155,5 +155,38 @@ class Service
             console.log(err);
         }
     }
+    static getRestaurantInfo() {
+        try {
+            return axios.get(url+'restaurantinfo/')
+        }
+        catch(err) {
+            console.log(err);
+        }
+    }
+    static addNewRestaurantInfo(type, value) {
+        try {
+            return axios.post(url+'restaurantinfo/addnew',
+                { infoType: type, infoValue: value });
+        }
+        catch(err) {
+            console.log(err);
+        }
+    }
+    static deleteRestaurantInfo(id) {
+        try {
+            return axios.delete(url+'restaurantinfo/delete/'+id)
+        }
+        catch(err) {
+            console.log(err);
+        }
+    }
+    static resetPassword(email) {
+        try {
+            return axios.post(url+'resetpassword',{email: email})
+        }
+        catch(err) {
+            console.log(err);
+        }
+    }
 }
 export default Service;

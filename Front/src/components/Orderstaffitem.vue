@@ -82,13 +82,8 @@ export default {
     methods: {
         async changeStatus() {
             if (this.CorrectStatus == "Gotowe") {
-                return false;
-            }
-            else {
-                const temp = await Service.changeStatus(this.id);
-                this.CorrectStatus = temp.data.status;
                 this.$swal({
-                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Zmieniono status zamówienia</h3></center>',
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Nie można zmienić stanu tego zamówienia</h3></center>',
                     timer: 1500,
                     timerProgressBar: true,
                     toast: true,
@@ -96,8 +91,40 @@ export default {
                     background: '#1b1b1b',
                     showConfirmButton: false,
                     width: '16rem',
-                    icon: 'success'
+                    icon: 'error'
                 });
+                return false;
+            }
+            else {
+                this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Czy napewno chcesz zmienić status tego zamówienia?</h3></center>',
+                    position: 'center',
+                    background: '#1b1b1b',
+                    showCancelButton: true,
+                    width: '32rem',
+                    icon: 'warning',
+                    confirmButtonText: 'Tak',
+                    cancelButtonText: 'Nie',
+                    confirmButtonColor: 'green',
+                    cancelButtonColor: 'red'
+                }).then((async result => {
+                    if (result.isConfirmed) {
+                        const temp = await Service.changeStatus(this.id);
+                        this.CorrectStatus = temp.data.status;
+                        this.$swal({
+                            html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Zmieniono status zamówienia</h3></center>',
+                            timer: 1500,
+                            timerProgressBar: true,
+                            toast: true,
+                            position: 'top-end',
+                            background: '#1b1b1b',
+                            showConfirmButton: false,
+                            width: '16rem',
+                            icon: 'success'
+                        });
+                    }
+                }))
+                
             }
         }
     },

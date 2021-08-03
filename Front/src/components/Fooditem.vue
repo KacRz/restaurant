@@ -1,6 +1,7 @@
 <template>
   <div class="fooditem">
       <div class="fooditem-top">
+          <div class="avalilable-img" v-if="!isAvalilable"></div>
           <span class="fooditem-top__number"> {{ Foodnumber }} </span>
           <img v-bind:src="imgsource" />
           <i class="fas fa-pizza-slice fooditem-top__bg" />
@@ -15,6 +16,13 @@
         <div class="fooditem-content__price">
            Cena: {{ Price }}zł
         </div>
+        <div class="avalilable-text" v-if="!isAvalilable">
+            Produkt tymczasowo niedostępny, przepraszamy
+        </div>
+        <div class="dishofday" v-if="IsDishOfDay">
+            <i class="fab fa-hotjar"></i>
+            Danie dnia
+        </div>
       </div>
   </div>
 </template>
@@ -28,12 +36,40 @@ export default {
         Price: { type: String, required: true },
         imgsource: { type: String, required: true },
         Foodnumber: { type: Number, required: true },
+        IsDishOfDay: { type: Number, required: false },
+        isAvalilable: { type: Number, required: false }
     },
 }
 </script>
 
 <style scoped>
-
+.avalilable-text {
+    position: absolute;
+    color: red;
+    top: 50%;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: bold;
+}
+.avalilable-img {
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    background: linear-gradient(to bottom right, rgba(0,0,0,0) calc(50% - 10px), red, rgba(0,0,0,0) calc(50% + 10px));
+    position: absolute;
+}
+.dishofday {
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    top: 50%;
+    font-size: 1.5em;
+    animation: colorchanging 1s infinite;
+}
 
 .fooditem {
 
@@ -107,6 +143,7 @@ export default {
     display: flex;
     flex-direction: column;
     padding: 0.5em;
+    position: relative;
 }
 .fooditem-content > h4 {
     text-align: left;
@@ -126,5 +163,16 @@ export default {
     margin-top: auto;
 }
 
+@keyframes colorchanging {
+    0% {
+        color: rgb(255, 205, 124);
+    }
+    50% {
+        color: chocolate;
+    }
+    100% {
+        color: rgb(255, 205, 124);
+    }
+}
 
 </style>

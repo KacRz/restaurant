@@ -188,5 +188,13 @@ class Service
             console.log(err);
         }
     }
+    static changePassword(email, oldpassword, newpassword) {
+        try {
+            return axios.post(url+'changepassword', {email: email, oldpassword: oldpassword, newpassword: newpassword})
+        }
+        catch(err) {
+            return err;
+        }
+    }
 }
 export default Service;

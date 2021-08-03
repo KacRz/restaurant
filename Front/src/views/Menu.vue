@@ -24,9 +24,7 @@
         
     </div>
         <div class="menu-content">
-
             <div v-for="(category, index ) in productCategories" :key="index">
-
                 <div class="menu-category__title">
                     <h1> {{ category.Name }}</h1>
                 </div>
@@ -70,12 +68,28 @@ export default {
     },
     setup() {
     },
-
     methods: {
         foodDetails(item) {
-            this.$router.push({
+            let isstaff = this.isStaff();
+            if (item.isAvalilable || isstaff) {
+                this.$router.push({
                 name: 'food-details', params: item
-            })
+                })
+            }
+            else {
+                this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Produkt niedostępny</h3></center>',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '16rem',
+                    icon: 'error'
+                });
+            }
+            
         },
         addItemToCart() {
             this.$store.dispatch("cart/addToCart", this.products[this.clickedItem]);

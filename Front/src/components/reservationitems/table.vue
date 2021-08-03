@@ -1,6 +1,8 @@
 <template>
-    <div  :class="[size ,{'table': !isDisabled, 'table-disabled': isDisabled }]" v-on:click="response()" >
-        {{ name }}
+    <div class="tables" :class="[size ,{'table': !isDisabled, 'table-disabled': isDisabled }]" v-on:click="response()" >
+       {{ name }}
+    <div class = "active" v-show=isActivated()>
+    </div>
     </div>
 </template>
 
@@ -11,19 +13,40 @@ export default {
         size: String,
         name: Number,
         isDisabled: Boolean,
+        isActive: Boolean,
     },
     methods:
     {
       response()
       {
           this.$emit('response', this.name);
-      }  
+      },
+      isActivated()
+      {
+          return this.$props.isActive;
+      }
     },
 
 }
 </script>
 
 <style scoped>
+
+.tables
+{
+    position: relative;
+
+}
+.active
+{
+    position: absolute;
+    height: 50%;
+    width: 50%;
+    left: 25%;
+    top:25%;
+    background-color: green;
+    z-index: 3;
+}
 .table {
     background-color: brown;
     border-radius: 5px;

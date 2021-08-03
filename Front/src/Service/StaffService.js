@@ -95,6 +95,14 @@ class StaffService
             return err;            
         }
     }
+    static async getTodaysOrders() {
+        try {
+            return await axios.get(url+'stafforder/gettoday/');
+        }
+        catch(err) {
+            return err;
+        }
+    }
 
 }
 export default StaffService

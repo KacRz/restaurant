@@ -14,8 +14,11 @@
             <li v-if="logged">
                 <router-link to="/settings" class="link"><i class="fas fa-user icon"></i>Ustawienia</router-link>
             </li>
-            <li v-if="logged">
+            <li v-if="isClient && logged">
                 <router-link to="/order" class="link"><i class="fas fa-clipboard-list icon"></i>Zamówienia</router-link>
+            </li>
+            <li v-if="isManager">
+                <router-link to="/orderstaff" class="link"><i class="fas fa-clipboard-list icon"></i>Zamówienia</router-link>
             </li>
             <li>
                 <router-link to="/menu" class="link"><i class="fas fa-utensils icon"></i>Menu</router-link>

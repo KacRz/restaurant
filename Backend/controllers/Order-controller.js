@@ -1,6 +1,8 @@
 const Order = require("../models/Order.js");
 const OrderList = require("../models/OrderList.js");
 const Address = require("../models/Address.js");
+const User = require("../models/User.js")
+const { Op } = require("sequelize");
 
 exports.createGuest = async (req, res) => {
   
@@ -75,6 +77,51 @@ exports.create = (req, res) => {
   
 exports.findByMail = async (req, res) => {
   res.send(await Order.findAll({where: {Email: req.params.email}}));
+}
+
+exports.gettodayorders = async (req, res) => {
+
+  const today = new Date().toString();
+  const today_night = new Date(new Date().getFullYear(),new Date().getMonth() , new Date().getDate()).toString();
+
+  Order.findAll(
+    {where: {OrderDate: {[Op.lt]: today, [Op.gt]: today_night}},
+    include: [{ model: Address, User }]})
+  .then(async function(order){
+    res.send(order);
+  }).catch(function (err){
+    res.send(err);
+  })
+}
+
+exports.changestatus = async (req, res) => {
+
+  Order.findOne( {where: {id: req.params.id}} ).then(async function(order) {
+    if (order.Status == "Złożono zamówienie") {
+      order.update({
+        Status: "Przyjęto do realizacji"
+      })
+      res.send({status: "Przyjęto do realizacji"});
+    }
+    else if (order.Status == "Przyjęto do realizacji") {
+      order.update({
+        Status: "Gotowe"
+      })
+      res.send({status: "Gotowe"});
+    }
+    else if (order.Status == "Gotowe") {
+      res.send("Nie zaktualizowano");
+    }
+  }).catch(function (err) {
+    console.log(err);
+  })
+
+}
+
+exports.getStatus = async (req, res) => {
+  Order.findOne({where: {id: req.params.id}}).then(async function(order) {
+    res.send(order.Status);
+  })
 }
 
 // Find a single type with an id

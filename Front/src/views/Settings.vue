@@ -25,6 +25,26 @@
                 <button class="address-btn" v-on:click="changeData">Zmień dane</button>
             </div>
         </div>
+        <div class="change-password">
+            <div class="change-password__title" v-on:click="isResetPassword=!isResetPassword">
+                <h3>Zmień hasło</h3>
+                <i class="fas fa-unlock-alt"></i>
+            </div>
+            <form v-if="isResetPassword"
+            @submit.prevent = "resetPasswordForm" 
+            method="post"
+            class="reset-pass">
+                <div class="one-password">
+                    <span>Stare hasło</span>
+                    <input type="password" v-model="oldPassword"/>
+                </div>
+                <div class="one-password">
+                    <span>Nowe hasło</span>
+                    <input type="password" v-model="newPassword"/>
+                </div>
+                <button class="address-btn" type="submit">Zmień hasło</button>
+            </form>
+        </div>
         <div class="restaurant-settings" v-if="isStaff">
             <div class="restaurant-settings__title">
                 <h2>Informacje o restauracji</h2>
@@ -112,6 +132,9 @@ export default {
             isAddNewInfo: false,
             newInfoValue: '',
             newInfoType: '',
+            isResetPassword: false,
+            oldPassword: '',
+            newPassword: ''
         }
     },
     async created() {
@@ -126,10 +149,57 @@ export default {
         },
         isStaff()
         {
-            return (this.$store.getters['user/getMode'] == 'Obsługa')
+            return (this.$store.getters['user/getMode'] == 'Obsługa' || this.$store.getters['user/getMode'] == 'Kierownik')
         },
     },
     methods: {
+        async resetPasswordForm() {
+            if (this.oldPassword == '' || this.newPassword == '') {
+                this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Wprowadź dane</h3></center>',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '16rem',
+                    icon: 'error'
+                });
+                return false;
+            }
+            let temp = await Service.changePassword(this.$store.getters['user/getEmail'], this.oldPassword, this.newPassword);
+            if (temp.status == '200') {
+                this.isResetPassword = false;
+                this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Zmieniono hasło</h3></center>',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '16rem',
+                    icon: 'success'
+                });
+                return true;
+            }
+            else {
+                this.isResetPassword = false;
+                this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Wystąpił błąd</h3></center>',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '16rem',
+                    icon: 'error'
+                });
+                return false;
+            }
+        },
         async loadInfos() {
             this.restaurantinfo = [];
             const temp = await Service.getRestaurantInfo();
@@ -224,7 +294,7 @@ export default {
             const temp = await Service.getUserData(this.$store.getters['user/getToken'], this.$store.getters['user/getEmail']);
             this.$store.dispatch('user/updateData', temp.data);
             this.$swal({
-                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Złożono zamówienie</h3></center>',
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Zmieniono dane konta</h3></center>',
                     position: 'center',
                     background: '#1b1b1b',
                     icon: 'success',
@@ -237,6 +307,20 @@ export default {
 
         },
         async deleteOneAddress(adresid) {
+            if (this.AddressList.length == 1) {
+                this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Nie można usunąć jedynego adresu</h3></center>',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '16rem',
+                    icon: 'info'
+                });
+                return false;
+            }
             await Service.deleteAddress(this.$store.getters['user/getToken'], adresid);
             const tmp2 = await Service.getAddresses(this.$store.getters['user/getEmail']);
             this.$store.dispatch('user/setAddress', tmp2.data);
@@ -281,6 +365,47 @@ export default {
     align-items: center;
     justify-content: center;
 }
+.change-password {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.change-password__title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.5s;
+}
+.change-password__title > h3 {
+    margin-right: 0.5em;
+}
+.change-password__title:hover {
+    cursor: pointer;
+    color: chocolate;
+}
+.reset-pass {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.one-password {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 0.5em;
+    align-items: center;
+}
+.one-password > span {
+    width: 30%;
+}
+.one-password > input {
+    width: 70%;
+}
+
 .restaurant-settings {
     width: 100%;
     display: flex;
@@ -488,6 +613,9 @@ export default {
     }
     .one-info {
         font-size: 0.8rem;
+    }
+    .reset-pass {
+        width: 90%;
     }
 }
 

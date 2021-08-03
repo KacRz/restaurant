@@ -13,9 +13,5 @@ createApp(App)
     .use(store)
     .use(VueSweetalert2)  
     .use(router)
-<<<<<<< HEAD
     //.component('pagination', Pagination)
-=======
-
->>>>>>> 2cbfda87f42fdefcf0a6cfa346051b099c359d08
     .mount('#app')

@@ -86,6 +86,9 @@ router.get('/user/getSmalldata/:email', auth, user_contr.getSmalldata);
 // reset password for user
 router.post('/resetpassword', user_contr.resetpassword);
 
+// change password
+router.post('/changepassword', user_contr.changepassword);
+
 //addresses
 router.get('/address', addrress_contr.findAll);
 router.get('/address/:email', addrress_contr.findbyMail);

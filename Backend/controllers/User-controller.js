@@ -10,6 +10,18 @@ const User = require("../models/User.js");
 const UserType = require("../models/UserType.js");
 const { Op } = require("sequelize");
 
+const nodemailer = require('nodemailer');
+const {google} = require('googleapis');
+
+const CLIENT_ID = process.env.CLIENT_ID;
+const CLIENT_SECRET = process.env.CLIENT_SECRET;
+const REDIRECT_URI = process.env.REDIRECT_URI;
+const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
+
+const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
+oAuth2Client.setCredentials({refresh_token: REFRESH_TOKEN});
+
+
 exports.validateUser = async (req, res) => {
     User.findOne({ where: {email: req.body.email } }).then(async function (user) {
         if (!user) {
@@ -190,22 +202,62 @@ exports.createStaff = async (req, res) =>  {
 exports.resetpassword = async (req, res) => {
     const email = await User.findOne({where: {email: req.body.email}});
     if (email == null) {
-        res.send('User doesnt exist');
+        return res.send('User doesnt exist');
     }
     let new_rand_password = Math.random().toString(36).slice(-8);
 
-    
+    email.password = new_rand_password;
+    await email.hashPass();
+    email.save();
 
-    const message = {
-        from: process.env.USER,
+    //create mail
+    const accessToken = await oAuth2Client.getAccessToken();
+    const transport = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            type: 'OAuth2',
+            user: 'restaurantpremium77@gmail.com',
+            clientId: CLIENT_ID,
+            clientSecret: CLIENT_SECRET,
+            refreshToken: REFRESH_TOKEN,
+            accessToken: accessToken
+        }
+    })
+    const mailOptions = {
+        from: 'Restauracja <restaurantpremium77@gmail.com>',
         to: req.body.email,
-        subject: process.env.FORGOT_PASS_SUBJECT,
-        text: "Witaj, twoje nowe hasło to "+new_rand_password+". Możesz teraz zalogować się."
-    };
+        subject: "Przypomnienie hasła",
+        text: "Dzień dobry, twoje nowe hasło do konta to:    "+new_rand_password+", możesz się już zalogować",
+        html: "<h1>Dzień dobry</h1>Twoje nowe hasło do konta to:   "+new_rand_password+"<br> Możesz się już zalogować</p>"
+    }
 
+    await transport.sendMail(mailOptions);
 
+    return res.status(200).send("Hasło zmienione");
 }
 
+exports.changepassword = async (req, res) => {
+    try {
+        const user = await User.findOne({where: {email: req.body.email}});
+        if (user == null) {
+            res.status(400).send('User doesnt exist');
+        }
+        if (await user.validPassword(req.body.oldpassword)) {
+            user.password = req.body.newpassword;
+            await user.hashPass();
+            user.save();
+            res.status(200).send("Zmieniono hasło");
+        }
+        else {
+            res.status(201).send("Podane hasło nie zgadza się");
+        }
+    }
+    catch(err) {
+        res.status(400).send("Wystąpił błąd");
+    }
+    
+    
+}
 
 
 exports.fill_the_database_Users = (req, res) =>

@@ -32,27 +32,39 @@ export default {
     {
         async deletePerson(id)
         {
+            this.$swal({
+                html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Czy napewno chcesz usunąć tego użytkownika?</h3></center>',
+                position: 'center',
+                background: '#1b1b1b',
+                showCancelButton: true,
+                width: '32rem',
+                icon: 'warning',
+                confirmButtonText: 'Tak',
+                cancelButtonText: 'Nie',
+                confirmButtonColor: 'green',
+                cancelButtonColor: 'red'
+            }).then((async result => {
+                if (result.isConfirmed) {
+                let tmp =this.searchidInData(id);
+                if( tmp != -1 )
+                    {
+                        await ManagerService.delStaff(this.$store.getters['user/getToken'],this.staff.data[tmp].id);
+                            this.$swal({
+                            html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Usunięto użytkownika </h3></center>',
+                            timer: 3000,
+                            timerProgressBar: true,
+                            toast: true,
+                            position: 'top-end',
+                            background: '#1b1b1b',
+                            showConfirmButton: false,
+                            width: '16rem',
+                            icon: 'success'
+                        });
+                        this.staff.data.splice(tmp,1);
+                    }
+                }    
+            }))
             
-            let tmp =this.searchidInData(id);
-            if( tmp != -1 )
-            {
-
-                await ManagerService.delStaff(this.$store.getters['user/getToken'],this.staff.data[tmp].id);
-                    this.$swal({
-                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Usunięto użytkownika </h3></center>',
-                    timer: 3000,
-                    timerProgressBar: true,
-                    toast: true,
-                    position: 'top-end',
-                    background: '#1b1b1b',
-                    showConfirmButton: false,
-                    width: '16rem',
-                    icon: 'success'
-                });
-                this.staff.data.splice(tmp,1);
-
-            }
-
         },
         searchidInData(id)
         {
@@ -81,6 +93,7 @@ export default {
         
     }
 }
+
 
 </script>
 <style scoped>

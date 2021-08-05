@@ -11,8 +11,14 @@ class ClientService
         }
         catch(err)
         {
-            console.log(err);
-            return {err};            
+            if (err.response) {
+                return {Status: err.response.status, Error: err.response.data.Error};
+            } else if (err.request) {
+                return err.request;
+            } else {
+                return err.message;
+            }
+            
         }
     }
     static async setReservationTimes(toke,TableId, Dates)
@@ -22,8 +28,14 @@ class ClientService
         }
         catch(err)
         {
-            console.log(err);
-            return {err};            
+            if (err.response) {
+                return {Status: err.response.status, Error: err.response.data.Error};
+            } else if (err.request) {
+                return err.request;
+            } else {
+                return err.message;
+            }
+            
         }
     }
     static async createReservation(toke, data)
@@ -33,8 +45,48 @@ class ClientService
         }
         catch(err)
         {
-            console.log(err);
-            return {err};            
+            if (err.response) {
+                return {Status: err.response.status, Error: err.response.data.Error};
+            } else if (err.request) {
+                return err.request;
+            } else {
+                return err.message;
+            }
+            
+        }
+    }
+    static async deleteReservation(toke, id)
+    {
+        try{
+            return await axios.delete(url+'booking/del/'+id ,{ headers: {"x-auth-token" :  toke} });
+        }
+        catch(err)
+        {
+            if (err.response) {
+                return {Status: err.response.status, Error: err.response.data.Error};
+            } else if (err.request) {
+                return err.request;
+            } else {
+                return err.message;
+            }
+            
+        }
+    }
+    static async getAllClientReservations(toke, email)
+    {
+        try{
+            return await axios.get(url+'booking/user/'+email, {headers: {"x-auth-token" :  toke}});
+        }
+        catch(err)
+        {
+            if (err.response) {
+                return {Status: err.response.status, Error: err.response.data.Error};
+            } else if (err.request) {
+                return err.request;
+            } else {
+                return err.message;
+            }
+            
         }
     }
 

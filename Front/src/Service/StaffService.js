@@ -103,6 +103,21 @@ class StaffService
             return err;
         }
     }
-
+    static async getReservations(toke)
+    {
+        try {
+            return await axios.get(url+'booking/allforstaff/',{ headers: {"x-auth-token" :  toke}});
+        }
+        catch(err) {
+            if (err.response) {
+                return {Status: err.response.status, Error: err.response.data.Error};
+            } else if (err.request) {
+                return err.request;
+            } else {
+                return err.message;
+            }
+            
+        }
+    }
 }
 export default StaffService

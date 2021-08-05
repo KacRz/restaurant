@@ -28,6 +28,9 @@
             <li>
                 <router-link to="/reservation" class="link"><i class="fas fa-glass-cheers icon"></i>Rezerwacja</router-link>
             </li>
+             <li v-if="isClient">
+                <router-link to="/reservation/history" class="link"><i class="fas fa-calendar-alt"></i>Historia rezerwacji</router-link>
+            </li>
         </ul>
     </div>
 </template>

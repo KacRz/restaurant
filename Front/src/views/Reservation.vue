@@ -17,7 +17,7 @@
     <div class="reservation-sandbox">
       <Sandbox @response = getTableNumber @tables = getTables :disabled = disabledTables :selected = activeTable />
     </div>
-    <div v-if="!isStaff">
+    <div v-if="!isStaff()" class = "area">
     <div class="button-toggle-area"  @click="changeFocus()" > 
             <span>Wybierz czas rezerwacjii </span><i class="fas fa-calendar"></i>
     </div>
@@ -39,15 +39,19 @@
     </div>
     </div>
     </div>
-    <div v-else class="staff-container">
+    <div  class="staff-container area" v-else>
+      
       <h2>Pokaż rezerwacje w danym dniu ze względu na: </h2>
+    <div class="staff-buttons">
     <div class="button-toggle-area"  @click="setStufftoshow('ShowByTime')" > 
             <span>Godzinę</span><i class="fas fa-calendar"></i>
     </div>
     <div class="button-toggle-area"  @click="setStufftoshow('ShowByDate')" > 
             <span>Datę</span><i class="fas fa-calendar"></i>
     </div>
+    </div>
       <div v-show="showStuff('ShowByTime')">
+        <h4>Wybierz godzinę rozpoczęcia rezerwacjii</h4>
         <h3 v-show="!showField('H2')" @click="focusField('H2')">{{ second_timePicker }}</h3>
         <div v-show="showField('H2')">
         <VueTimepicker :modelValue="StartRes" @update:modelValue="updateStart"  :minuteInterval = 15 :hourRange= "DefaultHourRange" @focus="focusField('H2')" @blur="blurField"></VueTimepicker>
@@ -59,12 +63,16 @@
         </div>
       </div>
       <div v-show="showStuff('ShowByDate')" class="table">
-        
+        <div v-show="isempty">
+          <h4>Brak rezerwacji na ten dzień </h4>
+        </div>
+        <div v-show="!isempty">
         <table>
-          <tr><td>Nr Stolika</td>  <td>Początek</td> <td>Koniec </td></tr>
-          <tr v-for="item in temp" :key="item"> <td>{{item.idStolika}}</td> <td>{{item.Start.HH}}:{{item.Start.mm}}</td> <td>{{item.End.HH}}:{{item.End.mm}}</td> </tr>
+          <tr><td></td><td>Nr Stolika</td> <td>Imie i Nazwisko </td><td>Początek</td> <td>Koniec </td></tr>
+          <tr v-for="item in temp" :key="item"><td><DeleteReservation v-bind:resID = "item.resID" @response = deleteResponse /></td> <td>{{item.idStolika}}</td> <td> {{item.ReservaedBy}}</td> <td>{{item.Start.HH}}:{{item.Start.mm}}</td> <td>{{item.End.HH}}:{{item.End.mm}}</td></tr>
       
       </table>
+      </div>
     
     </div>
   </div>
@@ -72,11 +80,14 @@
 </template>
 
 <script>
+import DeleteReservation from '../components/reservationitems/DeleteReservation';
 import Sandbox from '../components/reservationitems/sandbox.vue';
 import Datepicker from 'vue3-datepicker';
-import ClientService from '../Service/ClientService.js'
-import VueTimepicker from 'vue3-timepicker'
-import 'vue3-timepicker/dist/VueTimepicker.css'
+import ClientService from '../Service/ClientService.js';
+import StaffService from '../Service/StaffService.js'
+import VueTimepicker from 'vue3-timepicker';
+import 'vue3-timepicker/dist/VueTimepicker.css';
+
 export default {
     name: "reservation",
     data() {
@@ -99,15 +110,41 @@ export default {
         show: 'ShowByTime',
         isEndTimeChosen: false,
         temp: [],
+        isempty: true,
       }
     },
     components: {
       Sandbox,
       Datepicker,
-      VueTimepicker
+      VueTimepicker,
+      DeleteReservation
     },
     methods:
     {
+      deleteResponse(id)
+      {
+        for(let i=0; i<this.temp.length; i++)
+        {
+          if(this.temp[i].resID == id)
+          {
+            this.temp.splice(i, 1);
+            break;
+          }
+        }
+        let tmp = this.reservationsDays.indexOf(this.time1.toDateString())
+        for(let i=0; i < this.reservations[tmp].length; i++)
+        {
+          if(this.reservations[tmp][i].resID == id)
+          {
+            this.reservations[tmp].splice(i, 1);
+            break;
+          }
+        }
+      },
+      isEmpty()
+      {
+        this.isempty = !(this.disabledTables.length>0)
+      },
       showStuff(name)
       {
         return name == this.show
@@ -115,7 +152,17 @@ export default {
       setStufftoshow(name)
       {
         if(name == 'ShowByDate')
+        {
+          this.StartRes = {HH: "00", mm:"00"};
+          this.EndRes = {HH: "24", mm:"00"};
           this.showByDate();
+        }
+        else
+          {
+           this.StartRes = {HH: "08", mm:"00"}
+           this.EndRes = {HH: "09", mm:"00"}
+          }
+
         this.show = name;
       },
       showByDate()
@@ -124,7 +171,6 @@ export default {
         this.temp = []
         if(tmp != -1)
         {
-          
           for(let i=0; i< this.reservations[tmp].length; i++)
           {
             this.temp.push( this.reservations[tmp][i])
@@ -146,7 +192,7 @@ export default {
       },
       async getTableNumber(number)
       {
-          this.activeTable = number;
+        this.activeTable = number;
       },
       updateHour(time)
       { 
@@ -300,44 +346,90 @@ export default {
       {
         this.$router.push('/');
       }
+      else{
       this.time2.HH = this.FormatForDatetime(this.time1.getHours().toString());
       this.time2.mm = this.FormatForDatetime(this.time1.getMinutes().toString());
       this.time2 = this.properMinutes(this.time2);
       this.upperLimit = new Date(new Date().setDate(this.upperLimit.getDate()+7));
       //data is sorted by ReservationStart
-      let reservations =await ClientService.getReservationTimes(this.$store.getters['user/getToken'])
-      let tmp = 0;
-      let temp = 0;
-      let tmp2 = 0;
-      //this loop is making 2 arrays of dates
-      //first array (reservationsDays) holds all dates that program got from database
-      //second (reservations) is 2 dim array that hilds time of reservation of table in particular day
-      //second array in first dim is synced with first array - its like in python dictionary but in 2 arrays (first holds keys, and second holds values)
-      for(let i = 0; i< reservations.data.length;i++)
+      if(this.isStaff())
       {
-        tmp = new Date(Date.parse(reservations.data[i].ReservationStart));
-        tmp2 = new Date(Date.parse(reservations.data[i].ReservationEnd))
-        temp = tmp.toDateString();
-        if(!this.reservationsDays.includes(temp))
+        let reservations = await StaffService.getReservations(this.$store.getters['user/getToken'])
+        let tmp = 0;
+        let temp = 0;
+        let tmp2 = 0;
+        //this loop is making 2 arrays of dates
+        //first array (reservationsDays) holds all dates that program got from database
+        //second (reservations) is 2 dim array that hilds time of reservation of table in particular day
+        //second array in first dim is synced with first array - its like in python dictionary but in 2 arrays (first holds keys, and second holds values)
+        for(let i = 0; i< reservations.data.length;i++)
         {
-          this.reservationsDays.push(temp)
-          this.reservations.push([]);         
-          this.reservations[this.reservationsDays.indexOf(temp)].push(
-            {idStolika: reservations.data[i].Table_fk, 
-            Start: {HH: this.FormatForDatetime(tmp.getHours().toString()), mm: this.FormatForDatetime(tmp.getMinutes().toString())},
-            End: {HH: this.FormatForDatetime(tmp2.getHours().toString()), mm: this.FormatForDatetime(tmp2.getMinutes().toString())}            
-            });
-        }
-        else
-        {
-          this.reservations[this.reservationsDays.indexOf(temp)].push(
-            {idStolika: reservations.data[i].Table_fk, 
-            Start: {HH: this.FormatForDatetime(tmp.getHours().toString()), mm: this.FormatForDatetime(tmp.getMinutes().toString())},
-            End: {HH: this.FormatForDatetime(tmp2.getHours().toString()), mm: this.FormatForDatetime(tmp2.getMinutes().toString())}            
-            });
+          tmp = new Date(Date.parse(reservations.data[i].ReservationStart));
+          tmp2 = new Date(Date.parse(reservations.data[i].ReservationEnd))
+          temp = tmp.toDateString();
+          if(!this.reservationsDays.includes(temp))
+          {
+            this.reservationsDays.push(temp)
+            this.reservations.push([]);         
+            this.reservations[this.reservationsDays.indexOf(temp)].push(
+              {idStolika: reservations.data[i].Table_fk, 
+              Start: {HH: this.FormatForDatetime(tmp.getHours().toString()), mm: this.FormatForDatetime(tmp.getMinutes().toString())},
+              End: {HH: this.FormatForDatetime(tmp2.getHours().toString()), mm: this.FormatForDatetime(tmp2.getMinutes().toString())},
+              resID: reservations.data[i].id,
+              ReservaedBy: reservations.data[i]['User.firstname']+' '+reservations.data[i]['User.lastname']         
+              });
+          }
+          else
+          {
+            this.reservations[this.reservationsDays.indexOf(temp)].push(
+              {idStolika: reservations.data[i].Table_fk, 
+              Start: {HH: this.FormatForDatetime(tmp.getHours().toString()), mm: this.FormatForDatetime(tmp.getMinutes().toString())},
+              End: {HH: this.FormatForDatetime(tmp2.getHours().toString()), mm: this.FormatForDatetime(tmp2.getMinutes().toString())} ,
+              resID: reservations.data[i].id,
+              ReservaedBy: reservations.data[i]['User.firstname']+' '+reservations.data[i]['User.lastname']             
+              });
+          }
         }
       }
-    },
+      else
+      {
+        let reservations = await ClientService.getReservationTimes(this.$store.getters['user/getToken'])
+                let tmp = 0;
+        let temp = 0;
+        let tmp2 = 0;
+        //this loop is making 2 arrays of dates
+        //first array (reservationsDays) holds all dates that program got from database
+        //second (reservations) is 2 dim array that hilds time of reservation of table in particular day
+        //second array in first dim is synced with first array - its like in python dictionary but in 2 arrays (first holds keys, and second holds values)
+        for(let i = 0; i< reservations.data.length;i++)
+        {
+          tmp = new Date(Date.parse(reservations.data[i].ReservationStart));
+          tmp2 = new Date(Date.parse(reservations.data[i].ReservationEnd))
+          temp = tmp.toDateString();
+          if(!this.reservationsDays.includes(temp))
+          {
+            this.reservationsDays.push(temp)
+            this.reservations.push([]);         
+            this.reservations[this.reservationsDays.indexOf(temp)].push(
+              {idStolika: reservations.data[i].Table_fk, 
+              Start: {HH: this.FormatForDatetime(tmp.getHours().toString()), mm: this.FormatForDatetime(tmp.getMinutes().toString())},
+              End: {HH: this.FormatForDatetime(tmp2.getHours().toString()), mm: this.FormatForDatetime(tmp2.getMinutes().toString())},
+              resID: reservations.data[i].id,         
+              });
+          }
+          else
+          {
+            this.reservations[this.reservationsDays.indexOf(temp)].push(
+              {idStolika: reservations.data[i].Table_fk, 
+              Start: {HH: this.FormatForDatetime(tmp.getHours().toString()), mm: this.FormatForDatetime(tmp.getMinutes().toString())},
+              End: {HH: this.FormatForDatetime(tmp2.getHours().toString()), mm: this.FormatForDatetime(tmp2.getMinutes().toString())} ,
+              resID: reservations.data[i].id,           
+              });
+          }
+        }
+        
+      
+    }}},
     computed:
     {
       //its for showing user wich tables are reserved
@@ -358,7 +450,8 @@ export default {
             
           }
         }
-        this.showByDate()
+        this.isEmpty();
+        this.showByDate();
         return this.reservationsDays.indexOf(this.time1.toDateString());
       },
       first_timePicker()
@@ -380,6 +473,25 @@ export default {
 </script>
 
 <style scoped>
+.area
+{
+  margin-top: 10px;
+  width: 100%;
+  border-top: 0.3em black solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+}
+.staff-buttons
+{
+  display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
 .staff-container
 {
   padding-bottom: 10%;
@@ -454,9 +566,10 @@ button
 }
 .button-toggle-area
 {
+    width: 25%;
     background-color: #3b3b3b;
     color: white;
-    padding: 0.5em 1.2em;
+    padding: 0.5em 0.6em;
     border-radius: 10px;
     font-size: 1.2em;
     margin: 1em;
@@ -485,7 +598,7 @@ button
 {
     background-color: #3b3b3b;
     color: white;
-    padding: 0.5em 1.2em;
+    padding: 0.5em 0.5em;
     border-radius: 10px;
     font-size: 1.2em;
     margin: 1em;

@@ -25,7 +25,7 @@ exports.create = async (req, res) => {
 
         }
         else {
-            res.send("Logged in");
+            res.status(400).send("Fooditem exists");
         }
  
     })
@@ -34,7 +34,7 @@ exports.create = async (req, res) => {
     catch(err)
     {
         console.log(err);
-            res.status(399).send(err);
+            res.status(400).send(err);
     }
 
 };

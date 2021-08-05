@@ -37,11 +37,11 @@ exports.update = (req, res) => {
 
 // Delete a type with the specified id in the request
 exports.delete = (req, res) => {
-  Category.findOne({where: {id: req.params.id} }).then(function(cat)
+try{  Category.findOne({where: {id: req.params.id} }).then(function(cat)
   {
   if(!cat)
     {
-        res.send("Category doesn't exists");
+        res.status(200).send("Category doesn't exists");
     }
     else
     {
@@ -49,5 +49,11 @@ exports.delete = (req, res) => {
         cat.destroy();
         res.status(200).send("Deleted");
     }
-});
+  })
+  }
+  catch(err)
+  {
+    res.status(400).send(err);
+  }
+
 };

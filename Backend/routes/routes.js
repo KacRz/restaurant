@@ -101,7 +101,11 @@ router.delete('/address/delete/:id', auth, addrress_contr.delete);
 //booking
 router.get('/booking/id/:id', auth, booking_contr.findByID);
 router.get('/booking/all/', auth, booking_contr.getAll);
+router.get('/booking/allforstaff/', auth, booking_contr.getAllForStaff)
+router.get('/booking/user/:email', auth,booking_contr.getAllUserResrvations);
 router.post('/booking/create/', auth, booking_contr.create);
+router.delete('/booking/del/:id', auth, booking_contr.delete);
+
 
 // ratings
 router.post('/rating/add', rating_contr.create);

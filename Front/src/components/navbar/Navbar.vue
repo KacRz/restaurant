@@ -32,6 +32,9 @@
             <li>
                 <router-link to="/reservation" class="link"><i class="fas fa-glass-cheers icon"></i>Rezerwacja</router-link>
             </li>
+            <li v-if="isClient">
+                <router-link to="/reservation/history" class="link"><i class="fas fa-calendar-alt"></i>Historia rezerwacji</router-link>
+            </li>
         </ul>
         <div class="burger" v-else v-on:click="showNavigation" :class="{'bar':showNav}">
             <i class="fas fa-bars"></i>

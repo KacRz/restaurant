@@ -5,27 +5,40 @@ const url = 'http://localhost:5000/'
 class Service
 {
     //login 
-    static login(email, password)
+    static async login(email, password)
     {
         try{
-            return axios.post(url+'login/', {email, password});
+            return await axios.post(url+'login/', {email, password})
         }
         catch(err)
         {
-            console.log(err);
-
+            if (err.response) {
+                return {Status: err.response.status, Error: err.response.data.Error};
+            } else if (err.request) {
+                return err.request;
+            } else {
+                return err.message;
+            }
+            
         }
     }
+
     //register
-    static register(data)
+    static async register(data)
     {
         try{
-            return axios.post(url+'register/', {data});
+            return await axios.post(url+'register/', {data});
         }
         catch(err)
         {
-            console.log(err);
-            return {isLogged: false};            
+            if (err.response) {
+                return {Status: err.response.status, Error: err.response.data.Error, isLogged: false};
+            } else if (err.request) {
+                console.log(err.request);
+                return err.request;
+            } else {
+                return err.message;
+            }        
         }
     }
     static menu()
@@ -196,5 +209,34 @@ class Service
             return err;
         }
     }
+    static deleteOrder(id) {
+        try {
+            return axios.post(url+'deleteorder', {id: id})
+        }
+        catch(err) {
+            return err;
+        }
+    }
+    static addRating(email, rating, comment, fooditemid) {
+        try {
+            return axios.post(url+'rating/add', 
+                { Email: email,
+                  Rating: rating,
+                  Comment: comment,
+                  Fooditemid: fooditemid })
+        }
+        catch(err) {
+            return err;
+        }
+    }
+    static async getRatings(id) {
+        try {
+            return await axios.get(url+'rating/get/'+id)
+        }
+        catch(err) {
+            return err;
+        }
+    }
 }
+
 export default Service;

@@ -23,14 +23,30 @@
             <i class="fab fa-hotjar"></i>
             Danie dnia
         </div>
+        <div class="rating">
+            <div class="star" v-for="(star, index) in Math.floor(ratingInStars)" :key="index" :class="{ isNoRatings: isNoRatings }">
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="star" v-if="isHalfStar" :class="{ isNoRatings: isNoRatings }">
+                <i class="fas fa-star-half-alt"></i>
+            </div>
+            <div class="star" v-for="(star, index) in Math.floor(5 - ratingInStars)" :key="index" :class="{ isNoRatings: isNoRatings }">
+                <i class="far fa-star"></i>
+            </div>
+            <div v-if="Rating == 0" class="no-ratings">
+                <span>Brak ocen</span>
+            </div>
+        </div>
       </div>
   </div>
 </template>
 
 <script>
+import Service from '../Service/Service'
 export default {
     name: "Fooditem",
     props: {
+        id: { type: Number, required: true },
         Title: { type: String, required: true },
         Description: { type: String, required: true },
         Price: { type: String, required: true },
@@ -39,6 +55,37 @@ export default {
         IsDishOfDay: { type: Number, required: false },
         isAvalilable: { type: Number, required: false }
     },
+    data() {
+        return {
+            Rating: 0,
+            isNoRatings: false
+        }
+    },
+    computed: {
+        ratingInStars() {
+            return Math.round(this.Rating*2)/2;
+        },
+        isHalfStar() {
+            if (this.ratingInStars % Math.floor(this.ratingInStars) > 0) {
+                return true
+            }
+            return false;
+        }
+    },
+    async created() {
+        const temp = await Service.getRatings(this.id);
+        if (temp.data.length != 0) {
+            let allRatings = 0;
+            for (const item in temp.data) {
+                allRatings = allRatings + temp.data[item].Rating;
+            }
+            let avgAllRatings = allRatings / temp.data.length;
+            this.Rating = avgAllRatings;
+        } else {
+            this.Rating = 0;
+            this.isNoRatings = true;
+        }
+    }
 }
 </script>
 
@@ -53,6 +100,26 @@ export default {
     margin-right: auto;
     font-weight: bold;
 }
+.rating {
+    position: absolute;
+    bottom: 5px;
+    left: 10px;
+    display: flex;
+}
+.no-ratings {
+    position: absolute;
+    color: red;
+    font-weight: bold;
+    font-size: 1.1rem;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+.isNoRatings {
+    opacity: 0.4;
+}
+
 .avalilable-img {
     width: 100%;
     height: 100%;

@@ -70,6 +70,21 @@ export default {
             const tmp = await Service.login(this.email, this.password);
             const tmp2 = await Service.getAddresses(this.email);
 
+            if (tmp.Status == 400) {
+                this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">'+tmp.Error+'</h3></center>',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '20rem',
+                    icon: 'error'
+                });
+                return false;
+            }
+
             if(tmp.data.isLogged)
             {
                 this.$store.dispatch('user/SignIn', tmp.data);
@@ -86,7 +101,7 @@ export default {
                     icon: 'success'
                 });
                 this.$router.push('/');
-            }             
+            }
 
         }
     },

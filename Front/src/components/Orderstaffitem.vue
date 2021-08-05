@@ -18,6 +18,7 @@
                 <i class="fas fa-lightbulb icon"></i>
                 {{ CorrectStatus }}
                 <button class="btn" v-on:click="changeStatus">Zmień status</button>
+                <button class="btn-del" v-on:click="deleteOrder">Anuluj</button>
             </div>
         </div>
         <div class="details">
@@ -80,8 +81,68 @@ export default {
         Address: { type: Object, required: false },
     },
     methods: {
+        async deleteOrder() {
+            if (this.CorrectStatus == "Anulowano") {
+                this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Nie można zmienić stanu tego zamówienia</h3></center>',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '16rem',
+                    icon: 'error'
+                });
+                return false;
+            }
+            else {
+                this.$swal({
+                        html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Czy napewno chcesz anulować to zamówienie?</h3></center>',
+                        position: 'center',
+                        background: '#1b1b1b',
+                        showCancelButton: true,
+                        width: '32rem',
+                        icon: 'warning',
+                        confirmButtonText: 'Tak',
+                        cancelButtonText: 'Nie',
+                        confirmButtonColor: 'green',
+                        cancelButtonColor: 'red'
+                    }).then((async result => {
+                        if (result.isConfirmed) {
+                            const temp = await Service.deleteOrder(this.id);
+                            this.CorrectStatus = temp.data.status;
+                            this.$swal({
+                                html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Anulowano zamówienie</h3></center>',
+                                timer: 1500,
+                                timerProgressBar: true,
+                                toast: true,
+                                position: 'top-end',
+                                background: '#1b1b1b',
+                                showConfirmButton: false,
+                                width: '16rem',
+                                icon: 'success'
+                            });
+                        }
+                    }))
+                }
+        },
         async changeStatus() {
             if (this.CorrectStatus == "Gotowe") {
+                this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Nie można zmienić stanu tego zamówienia</h3></center>',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '16rem',
+                    icon: 'error'
+                });
+                return false;
+            }
+            else if (this.CorrectStatus == "Anulowano") {
                 this.$swal({
                     html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Nie można zmienić stanu tego zamówienia</h3></center>',
                     timer: 1500,
@@ -131,8 +192,20 @@ export default {
     computed: {
         CorrectDate() {
             let correct = this.OrderDate;
-            correct = correct.replace('T', ' ');
-            correct = correct.replace('.000Z', '');
+            correct = correct.replace('GMT+0200 (czas środkowoeuropejski letni)', ' ');
+            correct = correct.substr(4, 24);
+            correct = correct.replace('Jan', 'Styczeń');
+            correct = correct.replace('Feb', 'Luty');
+            correct = correct.replace('Mar', 'Marzec');
+            correct = correct.replace('Apr', 'Kwiecień ');
+            correct = correct.replace('May', 'Maj ');
+            correct = correct.replace('Jun', 'Czerwiec');
+            correct = correct.replace('Jul', 'Lipiec');
+            correct = correct.replace('Aug', 'Sierpień');
+            correct = correct.replace('Sep', 'Wrzesień');
+            correct = correct.replace('Oct', 'Październik');
+            correct = correct.replace('Nov', 'Listopad');
+            correct = correct.replace('Dec', 'Grudzień');
             return correct;
         },
         CorrectPayment() {
@@ -209,6 +282,21 @@ export default {
 .btn:hover {
     cursor: pointer;
     background-color: lightgreen;
+    color: black;
+}
+.btn-del {
+    background-color: red;
+    border: none;
+    padding: 0.4em;
+    margin-left: 0.3em;
+    border-radius: 5px;
+    color: white;
+    transition: 0.5s;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+}
+.btn-del:hover {
+    cursor: pointer;
+    background-color: rgb(226, 55, 55);
     color: black;
 }
 .user-details {

@@ -7,6 +7,7 @@ const orderlist_contr = require("../controllers/OrderList-controller");
 const addrress_contr = require("../controllers/Address-controller");
 const booking_contr = require("../controllers/Booking-controller");
 const restinfo_contr = require("../controllers/Restaurantinfo-controller");
+const rating_contr = require("../controllers/Ratings-controller");
 const auth = require("../middleware/auth");
 
 const express = require('express');
@@ -57,6 +58,8 @@ router.get('/user/getuserbyaddress/:id', user_contr.getuserbyaddress);
 //update order status
 router.get('/order/changestatus/:id', order_contr.changestatus);
 router.get('/order/getstatus/:id', order_contr.getStatus);
+// cancel order
+router.post('/deleteOrder', order_contr.cancelOrder);
 
 //order for unregistered
 router.post('/orders/createforguest/', order_contr.createGuest);
@@ -99,6 +102,11 @@ router.delete('/address/delete/:id', auth, addrress_contr.delete);
 router.get('/booking/id/:id', auth, booking_contr.findByID);
 router.get('/booking/all/', auth, booking_contr.getAll);
 router.post('/booking/create/', auth, booking_contr.create);
+
+// ratings
+router.post('/rating/add', rating_contr.create);
+router.get('/rating/get/:id', rating_contr.getAllRatingsForOneFooditem);
+
 
 //testing data
 router.get('/fill_the_database/users', user_contr.fill_the_database_Users);

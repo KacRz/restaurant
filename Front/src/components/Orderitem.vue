@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="order-status">
-            <i class="fas fa-lightbulb icon" :class="{ orderCreated: orderCreated, orderPending: orderPending, orderReady: orderReady }" ></i>
+            <i class="fas fa-lightbulb icon" :class="{ orderCreated: orderCreated, orderPending: orderPending, orderReady: orderReady, orderCanceled: orderCanceled }" ></i>
             {{ Status }}
             <div class="more-info" v-on:click="showMoreInfo">
                 <i class="fas fa-info-circle"></i>
@@ -68,8 +68,20 @@ export default {
     computed: {
         CorrectDate() {
             let correct = this.OrderDate;
-            correct = correct.replace('T', ' ');
-            correct = correct.replace('.000Z', '');
+            correct = correct.replace('GMT+0200 (czas środkowoeuropejski letni)', ' ');
+            correct = correct.substr(4, 24);
+            correct = correct.replace('Jan', 'Styczeń');
+            correct = correct.replace('Feb', 'Luty');
+            correct = correct.replace('Mar', 'Marzec');
+            correct = correct.replace('Apr', 'Kwiecień ');
+            correct = correct.replace('May', 'Maj ');
+            correct = correct.replace('Jun', 'Czerwiec');
+            correct = correct.replace('Jul', 'Lipiec');
+            correct = correct.replace('Aug', 'Sierpień');
+            correct = correct.replace('Sep', 'Wrzesień');
+            correct = correct.replace('Oct', 'Październik');
+            correct = correct.replace('Nov', 'Listopad');
+            correct = correct.replace('Dec', 'Grudzień');
             return correct;
         },
         CorrectPayment() {
@@ -107,6 +119,12 @@ export default {
         orderReady() {
             if (this.Status == 'Gotowe') { 
                 return true; 
+            }
+            return false;
+        },
+        orderCanceled() {
+            if (this.Status == 'Anulowano') {
+                return true;
             }
             return false;
         }
@@ -168,6 +186,9 @@ export default {
 }
 .orderReady {
     color: green;
+}
+.orderCanceled {
+    color: red;
 }
 .order-info {
     margin: 0 1em;

@@ -253,12 +253,32 @@ export default {
         async checkForm() {
             if (this.newAddress.newPostalCode) {
                 if (!this.validPostalcode(this.newAddress.newPostalCode)){
-                    alert("Podaj prawidłowy kod-pocztowy");
+                    this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Podaj prawidłowy kod-pocztowy</h3></center>',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '20rem',
+                    icon: 'error'
+                });
                     return false;
                 }
             }
             if (!this.newAddress) {
-                    alert("Podaj wszystkie dane");
+                    this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Podaj wszystkie dane</h3></center>',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '20rem',
+                    icon: 'error'
+                });
                     return false;
                 }
             // dodawanie nowego adresu
@@ -284,6 +304,21 @@ export default {
         async changeData() {
             const newfirstname = document.querySelector("input[name=newfirstname]").value;
             const newlastname = document.querySelector("input[name=newlastname]").value;
+
+            if (newfirstname == '' || newlastname == '') {
+                this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Wystąpił błąd</h3></center>',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '20rem',
+                    icon: 'error'
+                });
+                return false;
+            }
 
             const newData = {
                 firstname: newfirstname,

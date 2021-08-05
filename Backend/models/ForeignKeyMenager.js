@@ -13,6 +13,7 @@ module.exports = async () => {
     const Fooditem = require("./Fooditem.js");
     const Category = require("./Category.js");
     const Discount = require("./Discount.js");
+    const Ratings = require("./Rating.js");
     User.belongsTo(UserType,{foreignKey: 'UserType_fk', targetKey: 'id'});
 
     Booking.belongsTo(User,{foreignKey: 'User_fk', targetKey: 'id'});
@@ -28,4 +29,7 @@ module.exports = async () => {
     Fooditem.belongsTo(Category,{foreignKey: 'Category_fk', targetKey: 'id'});
     Fooditem.belongsTo(Discount,{foreignKey: 'Discount_fk', targetKey: 'id'});
 
+    //ratings
+    Ratings.belongsTo(Fooditem, {foreignKey: 'Fooditem_fk', targetKey: 'id'});
+    Ratings.belongsTo(User, {foreignKey: 'User_fk', targetKey: 'id'});
 }

@@ -298,8 +298,20 @@ export default {
     {
       if(!this.$store.getters['user/getLogged'])
       {
+        this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Musisz być zalogowany</h3></center>',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    toast: false,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '16rem',
+                    icon: 'info'
+                });
         this.$router.push('/');
       }
+      else {
       this.time2.HH = this.FormatForDatetime(this.time1.getHours().toString());
       this.time2.mm = this.FormatForDatetime(this.time1.getMinutes().toString());
       this.time2 = this.properMinutes(this.time2);
@@ -336,7 +348,7 @@ export default {
             End: {HH: this.FormatForDatetime(tmp2.getHours().toString()), mm: this.FormatForDatetime(tmp2.getMinutes().toString())}            
             });
         }
-      }
+      }}
     },
     computed:
     {

@@ -13,7 +13,7 @@
             <li v-if="isClient && logged">
                 <router-link to="/order" class="link"><i class="fas fa-clipboard-list icon"></i>Zamówienia</router-link>
             </li>
-            <li v-if="isManager">
+            <li v-if="isManager || isStaff">
                 <router-link to="/orderstaff" class="link"><i class="fas fa-clipboard-list icon"></i>Zamówienia</router-link>
             </li>
             <li>
@@ -56,6 +56,9 @@ export default {
         {
             return (this.$store.getters['user/getMode'] == 'Kierownik')
 
+        },
+        isStaff() {
+            return (this.$store.getters['user/getMode'] == 'Obsługa')
         }
     },
     methods: {

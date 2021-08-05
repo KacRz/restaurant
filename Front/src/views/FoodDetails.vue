@@ -32,6 +32,103 @@
           </div>
       </div>
     </div>
+    <div class="rating">
+        <div class="rating-stars">
+            <span :class="{ isNoRatings: isNoRatings }">Ocena użytkowników: </span>
+            <div class="star" v-for="(star, index) in Math.floor(ratingInStars)" :key="index" :class="{ isNoRatings: isNoRatings }">
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="star" v-if="isHalfStar" :class="{ isNoRatings: isNoRatings }">
+                <i class="fas fa-star-half-alt"></i>
+            </div>
+            <div class="star" v-for="(star, index) in Math.floor(5 - ratingInStars)" :key="index" :class="{ isNoRatings: isNoRatings }">
+                <i class="far fa-star"></i>
+            </div>
+            <div v-if="Rating == 0" class="no-ratings">
+                <span>Brak ocen</span>
+            </div>
+        </div>
+        <div class="add-rating" v-if="logged">
+            <span>Dodaj swoją ocenę</span>
+            <div class="add-rating">
+                <div class="add-rating__stars">
+                    <div class="add-rating__star" v-if="userRating < 1" v-on:click="userRating = 1">
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="add-rating__star" v-else v-on:click="userRating = 1">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="add-rating__star" v-if="userRating < 2" v-on:click="userRating = 2">
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="add-rating__star" v-else v-on:click="userRating = 2">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="add-rating__star" v-if="userRating < 3" v-on:click="userRating = 3">
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="add-rating__star" v-else v-on:click="userRating = 3">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="add-rating__star" v-if="userRating < 4" v-on:click="userRating = 4">
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="add-rating__star" v-else v-on:click="userRating = 4">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="add-rating__star" v-if="userRating < 5" v-on:click="userRating = 5">
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="add-rating__star" v-else v-on:click="userRating = 5">
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <textarea v-model="comment" placeholder="Dodaj kometarz do dania" rows="4" cols="50" class="comment" maxlength="200" />
+                <button class="btn" v-on:click="addRating">Dodaj ocenę</button>
+            </div>
+        </div>
+        <div class="all-ratings" v-if="allRatingsList.length != 0">
+            <h4>Wszystkie oceny:</h4>
+            <div v-for="item in allRatingsList" :key="item.id" class="all-ratings__item">
+                <span class="item">{{ item.User.firstname }}</span>
+                <div class="see-rating__stars">
+                    <div class="see-rating__star" v-if="item.Rating < 1">
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="see-rating__star" v-else>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="see-rating__star" v-if="item.Rating < 2">
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="see-rating__star" v-else>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="see-rating__star" v-if="item.Rating < 3">
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="see-rating__star" v-else>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="see-rating__star" v-if="item.Rating < 4">
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="see-rating__star" v-else>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="see-rating__star" v-if="item.Rating < 5">
+                        <i class="far fa-star"></i>
+                    </div>
+                    <div class="see-rating__star" v-else>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="see-comment item">
+                    {{ item.Comment }}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="addto-cart" v-else>
   <div class="addto-cart__info">
@@ -87,6 +184,7 @@
 
 <script>
 import StaffService from '../Service/StaffService'
+import Service from '../Service/Service'
 export default {
     name: "FoodDetails",
     data() {
@@ -101,7 +199,12 @@ export default {
             Description: '',
             isAvalilable:'',
             IsDishOfDay: '',
-            }
+            },
+            Rating: 0,
+            userRating: 5,
+            comment: '',
+            isNoRatings: false,
+            allRatingsList: [  ]
         }
         
     },
@@ -244,6 +347,10 @@ export default {
         showField(name){
             return (this.details[name] == '' || this.editField == name)
         },
+        async addRating() {
+            await Service.addRating(this.$store.getters['user/getEmail'], this.userRating, this.comment, this.details.id);
+            this.$router.go();
+        },
     },
 
     async created() {
@@ -252,11 +359,41 @@ export default {
             localStorage.setItem("details", JSON.stringify(this.$route.params))
         }
         this.details.isAvalilable = Boolean(parseInt(await this.details.isAvalilable));
-        this.details.IsDishOfDay = Boolean(parseInt(await this.details.IsDishOfDay))
+        this.details.IsDishOfDay = Boolean(parseInt(await this.details.IsDishOfDay));
+
+        const temp = await Service.getRatings(this.details.id);
+        if (temp.data.length != 0) {
+            let allRatings = 0;
+            for (const item in temp.data) {
+                allRatings = allRatings + temp.data[item].Rating;
+                this.allRatingsList.push(temp.data[item]);
+            }
+            let avgAllRatings = allRatings / temp.data.length;
+            this.Rating = avgAllRatings;
+        } else {
+            this.Rating = 0;
+            this.isNoRatings = true;
+        }
+        
+        console.log(this.allRatingsList);
 
     },
     mounted() {
         this.details = JSON.parse(localStorage.getItem("details"));
+    },
+    computed: {
+        ratingInStars() {
+            return Math.round(this.Rating*2)/2;
+        },
+        isHalfStar() {
+            if (this.ratingInStars % Math.floor(this.ratingInStars) > 0) {
+                return true
+            }
+            return false;
+        },
+        logged() {
+            return this.$store.getters['user/getLogged'];
+        },
     }
 }
 </script>
@@ -270,13 +407,105 @@ export default {
     border: 1px solid black;
     border-radius: 10px;
 
-    color: rgb(255, 205, 124);;
+    color: rgb(255, 205, 124);
 
     display: flex;
     flex-direction: column;
     margin-left: auto;
     margin-right: auto;
 }
+.rating {
+    display: flex;
+    background-color: #1b1b1b;
+    border-top: 1px solid rgb(255, 205, 124);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0.3em 0;
+}
+.item {
+    width: 20%;
+    text-align: center;
+}
+.rating-stars {
+    display: flex;
+    font-size: 1.7rem;
+}
+.see-comment {
+    width: 60%;
+    text-align: left;
+}
+.all-ratings {
+    margin: 0.5em 0;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1em;
+}
+.add-rating {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.7em;
+}
+.add-rating__stars {
+    display: flex;
+    font-size: 1.5rem;
+    margin-bottom: 0.3em;
+}
+.see-rating__stars {
+    display: flex;
+    margin: 0.1em 0.2em;
+    width: 20%;
+}
+.add-rating__star:hover {
+    cursor: pointer;
+}
+.no-ratings {
+    position: absolute;
+    color: red;
+    font-weight: bold;
+    font-size: 1.6rem;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+.isNoRatings {
+    opacity: 0.3;
+}
+.all-ratings__item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+}
+
+.btn {
+    margin-top: 0.3em;
+    background-color: green;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5em;
+    color: white;
+    transition: 0.5s;
+}
+.btn:hover {
+    cursor: pointer;
+    background-color: lightgreen;
+    color: black;
+}
+.comment {
+    width: 100%;
+    outline: none;
+    resize: none;
+}
+
 .addto-cart__info {
     width: 100%;
     height: 50%;
@@ -469,6 +698,22 @@ export default {
     }
     .addto-cart__add-button > span {
         display: none;
+    }
+    .comment {
+        width: 80%;
+    }
+    .rating {
+        font-size: 0.9em;
+    }
+    .rating-stars {
+    font-size: 1.2rem;
+    }
+    .add-rating__stars {
+        font-size: 1.2rem;
+        margin-bottom: 0.3em;
+    }
+    .all-ratings {
+        width: 100%;
     }
 }
 

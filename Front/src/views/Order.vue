@@ -31,6 +31,13 @@
                     </div>
                     <span>Twoje zamówienie jest w drodze do Ciebie lub możesz odebrać swoje zamówienie w lokalu</span>
                 </div>
+                <div class="one-status">
+                    <div>
+                        <i class="fas fa-lightbulb icon" style="color: red"></i> 
+                        <span class="status-title">Anulowano</span>
+                    </div>
+                    <span> Twoje zamówienie zostało anulowane</span>
+                </div>
             </div>
         </div>
         <div class="order-content">
@@ -71,6 +78,9 @@ export default {
             }
         }
         this.orderList.reverse();
+        for (const j in this.orderList) {
+            this.orderList[j].OrderDate = new Date(this.orderList[j].OrderDate).toString();
+        }
     },
     methods: {
         
@@ -94,7 +104,6 @@ export default {
 .information {
     position: absolute;
     width: 200px;
-    height: 300px;
     background-color: #2b2b2b;
     top: 180px;
     right: 0;

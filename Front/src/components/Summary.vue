@@ -141,21 +141,61 @@ export default {
             else {
                 // Obsługa zamówienia dla niezalogowanego
                 if (this.totalPrice >= 100.00) {
-                    alert("Musisz się zalogować, aby złożyć zamówienie za więcej niż 100zł");
+                    this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Musisz się zalogować, aby złożyć zamówienie za więcej niż 100zł</h3></center>',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '20rem',
+                    icon: 'error'
+                });
                     return false;
                 }
                 if (this.email === '' || this.city === '' || this.street === '' || this.housenumber === '' || this.postalcode === '' ) {
-                    alert("Podaj wymagane dane do kontaktu");
+                    this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Podaj wymagane dane do kontaktu</h3></center>',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '20rem',
+                    icon: 'error'
+                });
                     return false;
                 }
                 if (this.postalcode) {
                     if (!this.validPostalcode(this.postalcode)){
-                        alert("Podaj prawidłowy kod-pocztowy");
+                        this.$swal({
+                            html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Podaj prawidłowy kod-pocztowy</h3></center>',
+                            timer: 1500,
+                            timerProgressBar: true,
+                            toast: true,
+                            position: 'top-end',
+                            background: '#1b1b1b',
+                            showConfirmButton: false,
+                            width: '20rem',
+                            icon: 'error'
+                        });
                         return false;
                 }
                 if (this.email) {
                     if (!this.validEmail(this.email)){
-                        alert("Podaj prawidłowy email");
+                        this.$swal({
+                            html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Podaj prawidłowy email</h3></center>',
+                            timer: 1500,
+                            timerProgressBar: true,
+                            toast: true,
+                            position: 'top-end',
+                            background: '#1b1b1b',
+                            showConfirmButton: false,
+                            width: '20rem',
+                            icon: 'error'
+                        });
                         return false;
                 }
             }   

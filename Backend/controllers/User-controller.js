@@ -25,11 +25,11 @@ oAuth2Client.setCredentials({refresh_token: REFRESH_TOKEN});
 exports.validateUser = async (req, res) => {
     User.findOne({ where: {email: req.body.email } }).then(async function (user) {
         if (!user) {
-            res.status(400).send({Error:"Invalid Email and/or Password", isLogged: false});
+            res.status(400).send({Error:"Niepoprawny login lub hasło", isLogged: false});
             //res.redirect('/login');
         }
         else if (!(await user.validPassword(req.body.password)) ) {
-            res.status(400).send({Error:"Invalid Email and/or Password", isLogged: false});
+            res.status(400).send({Error:"Niepoprawny login lub hasło", isLogged: false});
             //res.redirect('/login');
         } else {
             const tok = await user.generateAuthToken();
@@ -47,7 +47,7 @@ exports.validateUser = async (req, res) => {
  
     }).catch(function(err)
     {
-        res.status(400).send({Error:"Something gone wrong", isLogged: false});
+        res.status(400).send({Error:"Wystąpił błąd", isLogged: false});
     }
     
     )
@@ -74,11 +74,11 @@ exports.create = async (req, res) => {
                 HouseNumber: req.body.data.housenumber,
                 PostalCode: req.body.data.postalcode               
             });
-            res.send("user created");
+            res.status(200).send("Konto zostało założone");
         }
         else{
             //create response thath user with that e-mail exists
-            res.send("user Exists");
+            res.status(400).send({Error: "Konto o podanym mailu istnieje"});
         }
         
     })

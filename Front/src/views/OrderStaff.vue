@@ -66,7 +66,9 @@ export default {
             }
         }
         this.orderList.reverse();
-        //console.log(this.orderList);
+        for (const j in this.orderList) {
+            this.orderList[j].OrderDate = new Date(this.orderList[j].OrderDate).toString();
+        }
     }
 }
 </script>

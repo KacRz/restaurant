@@ -45,6 +45,17 @@ exports.createGuest = async (req, res) => {
   
 }
 
+exports.cancelOrder = (req, res) => {
+  Order.findOne( {where: {id: req.body.id}} ).then(async function(order) {
+    order.update({
+      Status: "Anulowano"
+    })
+    res.send({status: "Anulowano"})
+  }).catch(function (err) {
+    console.log(err);
+  })
+}
+
 exports.create = (req, res) => {
 
   Order.create({

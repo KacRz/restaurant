@@ -37,8 +37,18 @@ export default {
     },
     methods: {
         async handleSubmit() {
-            console.log('Remind password form submitted');
             await Service.resetPassword(this.email);
+            this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Wysłano email</h3></center>',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '20rem',
+                    icon: 'success'
+                });
         }
     }
 }

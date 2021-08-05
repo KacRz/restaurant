@@ -139,17 +139,50 @@ export default {
 
             if (this.postalcode) {
                 if (!this.validPostalcode(this.postalcode)){
-                    this.errors.push('Podaj prawidłowy kod pocztowy (xx-xxx)');
+                    this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Podaj prawidłowy kod pocztowy (xx-xxx)</h3></center>',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '20rem',
+                    icon: 'error'
+                });
+                return false;
                 }
             }
 
             if (this.password !== this.password2){
-                this.errors.push('Podane hasła nie są identyczne');
+                this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Podane hasła nie są identyczne</h3></center>',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '20rem',
+                    icon: 'error'
+                });
+                return false;
             }
             
 
             if (!this.email || !this.password || !this.password2 || !this.firstname || !this.lastname || !this.city || !this.street || !this.housenumber || !this.postalcode) {
-                this.errors.push('Musisz wypełnić wszystkie pola');
+                this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Musisz wypełnić wszystkie pola</h3></center>',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '20rem',
+                    icon: 'error'
+                });
+                return false;
             }
 
             if (this.email && this.password && this.password2 && this.firstname && this.lastname && this.city && this.street && this.housenumber && this.postalcode && !this.errors.length) {
@@ -161,12 +194,35 @@ export default {
             this.errors = [];
 
             if (this.password !== this.password2){
-                this.errors.push('Podane hasła nie są identyczne');
+                this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Podane hasła nie są identyczne</h3></center>',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '20rem',
+                    icon: 'error'
+                });
+                return false;
+                
             }
             
 
             if (!this.email || !this.password || !this.password2 || !this.usertype ) {
-                this.errors.push('Musisz wypełnić wszystkie pola');
+                this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Musisz wypełnić wszystkie pola</h3></center>',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '20rem',
+                    icon: 'error'
+                });
+                return false;
             }
 
             if (this.email && this.password && this.password2 && this.usertype ) {
@@ -199,7 +255,7 @@ export default {
             if(temp.status == '200')
             {
                 this.$swal({
-                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Pomyślnie utworzono użytkownika </h3></center>',
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">Pomyślnie założono konto</h3></center>',
                     timer: 3000,
                     timerProgressBar: true,
                     toast: true,
@@ -209,6 +265,22 @@ export default {
                     width: '16rem',
                     icon: 'success'
                 });
+                this.$router.push("/login");
+            }
+            if(temp.Status == '400')
+            {
+                this.$swal({
+                    html: '<center><h3 style="color: rgb(255, 205, 124); font-family: Avenir, Helvetica, Arial, sans-serif;">'+temp.Error+'</h3></center>',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    toast: true,
+                    position: 'top-end',
+                    background: '#1b1b1b',
+                    showConfirmButton: false,
+                    width: '16rem',
+                    icon: 'error'
+                });
+                this.$router.push("/login");
             }
             
             
